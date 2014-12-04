@@ -1,31 +1,47 @@
 package de.tudarmstadt.awesome.erclaerung;
 
-import static org.apache.uima.fit.factory.AnalysisEngineFactory.*;
-import static org.apache.uima.fit.factory.CollectionReaderFactory.*;
-import static org.apache.uima.fit.pipeline.SimplePipeline.*;
+import org.kohsuke.args4j.CmdLineParser;
 
-import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.apache.uima.collection.CollectionReaderDescription;
-import org.apache.uima.fit.component.CasDumpWriter;
-
-import de.tudarmstadt.ukp.dkpro.core.io.text.TextReader;
-import de.tudarmstadt.ukp.dkpro.core.opennlp.OpenNlpPosTagger;
-import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
-
+/**
+ * erclaerung main entry point
+ * 
+ * @author Patrick Lerner
+ */
 public class Program {
-	public static void main(String[] args) throws Exception {
-		CollectionReaderDescription cr = createReaderDescription(
-				TextReader.class, TextReader.PARAM_PATH,
-				"src/test/resources/*.txt", TextReader.PARAM_LANGUAGE, "en");
+	/**
+	 * The main entry point for the program when it is launched from the command line.
+	 * 
+	 * @param args
+	 *            the command line parameters passed into the program
+	 */
+	public static void main(String[] args) {
+		new Program().doMain(args);
+	}
 
-		AnalysisEngineDescription seg = createEngineDescription(BreakIteratorSegmenter.class);
+	/**
+	 * @see main
+	 * @param args
+	 *            the command line parameters passed into the program
+	 */
+	private void doMain(String[] args) {
+		AnalysisPipeline pipeline = new AnalysisPipeline();
 
-		AnalysisEngineDescription tagger = createEngineDescription(OpenNlpPosTagger.class);
+		CmdLineParser parser = new CmdLineParser(pipeline);
 
-		AnalysisEngineDescription cc = createEngineDescription(
-				CasDumpWriter.class, CasDumpWriter.PARAM_OUTPUT_FILE,
-				"target/output.txt");
+		try {
+			// set the pipeline up according to the parameters the user specifies
+			parser.parseArgument(args);
 
-		runPipeline(cr, seg, tagger, cc);
+			// now run the pipeline
+			pipeline.run();
+		}
+		catch (Exception e) {
+			System.err.println(e.getMessage());
+			System.err.println("java erclaerung [options...] inputFiles...");
+			// print the list of available options
+			parser.printUsage(System.err);
+			System.err.println();
+			e.printStackTrace();
+		}
 	}
 }
