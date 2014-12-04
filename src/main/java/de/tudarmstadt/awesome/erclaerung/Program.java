@@ -41,6 +41,7 @@ public class Program {
 			// print the list of available options
 			parser.printUsage(System.err);
 			System.err.println();
+			e.printStackTrace();
 		}
 	}
 }
