@@ -46,5 +46,12 @@
 			</artifactId>
 			<version>1.6.2</version>
 		</dependency>
+		<dependency>
+			<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+			<artifactId>
+				de.tudarmstadt.ukp.dkpro.core.io.xml-asl
+			</artifactId>
+			<version>1.6.2</version>
+		</dependency>
 	</dependencies>
 </project>
