@@ -51,19 +51,19 @@ public class AnalysisPipeline {
 		Object[] featureExtractors = new Object[] { createExternalResourceDescription(NrOfTokensDFE.class),
 		                createExternalResourceDescription(NrOfSentencesDFE.class) };
 
-		AnalysisEngineDescription fea = createEngineDescription(ExtractFeaturesConnector.class,
+		AnalysisEngineDescription fea = createEngineDescription(ExtractFeaturesConnector.class);
 		// output directory
-		                ExtractFeaturesConnector.PARAM_OUTPUT_DIRECTORY, "target/temp_feature_output",
-		                // writer
-		                ExtractFeaturesConnector.PARAM_DATA_WRITER_CLASS, WekaDataWriter.class,
-		                // learning mode (single label, i.e. only based on dialect for now)
-		                ExtractFeaturesConnector.PARAM_LEARNING_MODE, Constants.LM_SINGLE_LABEL,
-		                // whole document extraction
-		                ExtractFeaturesConnector.PARAM_FEATURE_MODE, Constants.FM_DOCUMENT,
-		                // probably good for something (copied from example)
-		                ExtractFeaturesConnector.PARAM_ADD_INSTANCE_ID, true,
-		                // which extractos are to be used
-		                ExtractFeaturesConnector.PARAM_FEATURE_EXTRACTORS, Arrays.asList(featureExtractors));
+		fea.setAttributeValue(ExtractFeaturesConnector.PARAM_OUTPUT_DIRECTORY, "target/temp_feature_output");
+		// writer
+		fea.setAttributeValue(ExtractFeaturesConnector.PARAM_DATA_WRITER_CLASS, WekaDataWriter.class);
+		// single label (only dialect for now)
+		fea.setAttributeValue(ExtractFeaturesConnector.PARAM_LEARNING_MODE, Constants.LM_SINGLE_LABEL);
+		// scope is whole document
+		fea.setAttributeValue(ExtractFeaturesConnector.PARAM_FEATURE_MODE, Constants.FM_DOCUMENT);
+		// something rather (was in the example)
+		fea.setAttributeValue(ExtractFeaturesConnector.PARAM_ADD_INSTANCE_ID, true);
+		// the feature extractors to be used (as defined above)
+		fea.setAttributeValue(ExtractFeaturesConnector.PARAM_FEATURE_EXTRACTORS, Arrays.asList(featureExtractors));
 
 		AnalysisEngineDescription cc = createEngineDescription(CasDumpWriter.class, CasDumpWriter.PARAM_OUTPUT_FILE,
 		                "target/output.txt");
