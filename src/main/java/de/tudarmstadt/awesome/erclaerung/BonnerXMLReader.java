@@ -49,11 +49,6 @@ public class BonnerXMLReader extends ResourceCollectionReaderBase {
 			source.setPublicId(res.getLocation());
 			source.setSystemId(res.getLocation());
 			parser.parse(source, handler);
-
-			// Set up language
-			if (getConfigParameterValue(PARAM_LANGUAGE) != null) {
-				aCAS.setDocumentLanguage((String) getConfigParameterValue(PARAM_LANGUAGE));
-			}
 		}
 		catch (CASException e) {
 			throw new CollectionException(e);
@@ -75,6 +70,7 @@ public class BonnerXMLReader extends ResourceCollectionReaderBase {
 		private final StringBuilder buffer = new StringBuilder();
 
 		private boolean inMorphElement = false;
+		private boolean inSprachraumElement = false;
 		private boolean firstInLine = false;
 
 		public TextExtractor(final JCas jcas) {
@@ -83,6 +79,10 @@ public class BonnerXMLReader extends ResourceCollectionReaderBase {
 
 		@Override
 		public void characters(char[] aCh, int aStart, int aLength) throws SAXException {
+			if (this.inSprachraumElement) {
+				this.jcas.setDocumentLanguage(new String(aCh, aStart, aLength));
+				return;
+			}
 			// reject everything that is not in a "morph" tag (i.e. the garbage)
 			if (!this.inMorphElement)
 				return;
@@ -97,6 +97,7 @@ public class BonnerXMLReader extends ResourceCollectionReaderBase {
 		@Override
 		public void startElement(String uri, String localName, String qName, Attributes attributes) {
 			this.inMorphElement = qName.equals("morph");
+			this.inSprachraumElement = qName.equals("Sprachraum");
 			if (qName.equals("zeile")) {
 				this.buffer.append("\n");
 				this.firstInLine = true;

@@ -34,8 +34,7 @@ public class AnalysisPipeline {
 
 		// Initialize the bonner korpora
 		CollectionReaderDescription cr = createReaderDescription(BonnerXMLReader.class,
-		                BonnerXMLReader.PARAM_SOURCE_LOCATION, "src/main/resources/bonner_korpora/*.xml",
-		                BonnerXMLReader.PARAM_LANGUAGE, "en");
+		                BonnerXMLReader.PARAM_SOURCE_LOCATION, "src/main/resources/bonner_korpora/*.xml");
 
 		AnalysisEngineDescription cc = createEngineDescription(CasDumpWriter.class, CasDumpWriter.PARAM_OUTPUT_FILE,
 		                "target/output.txt");
