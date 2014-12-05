@@ -58,5 +58,25 @@
 			<artifactId>args4j</artifactId>
 			<version>2.0.29</version>
 		</dependency>
+		<dependency>
+			<groupId>de.tudarmstadt.ukp.dkpro.tc</groupId>
+			<artifactId>dkpro-tc-core</artifactId>
+			<version>0.6.0</version>
+		</dependency>
+		<dependency>
+			<groupId>de.tudarmstadt.ukp.dkpro.tc</groupId>
+			<artifactId>dkpro-tc-weka</artifactId>
+			<version>0.6.0</version>
+		</dependency>
+		<dependency>
+			<groupId>de.tudarmstadt.ukp.dkpro.tc</groupId>
+			<artifactId>dkpro-tc-features</artifactId>
+			<version>0.6.0</version>
+		</dependency>
+		<dependency>
+			<groupId>de.tudarmstadt.ukp.dkpro.tc</groupId>
+			<artifactId>dkpro-tc-features-ngram</artifactId>
+			<version>0.6.0</version>
+		</dependency>
 	</dependencies>
 </project>

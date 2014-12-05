@@ -18,14 +18,15 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import de.tudarmstadt.ukp.dkpro.core.api.io.ResourceCollectionReaderBase;
+import de.tudarmstadt.ukp.dkpro.core.io.text.TextReader;
+import de.tudarmstadt.ukp.dkpro.tc.api.type.TextClassificationOutcome;
 
 /**
  * This is a reader component for the Bonner Frühneuhochdeutschkorpus in its (horrible) XML encoding.
  * 
  * @author Patrick Lerner
  */
-public class BonnerXMLReader extends ResourceCollectionReaderBase {
+public class BonnerXMLReader extends TextReader {
 	public void getNext(CAS aCAS) throws IOException, CollectionException {
 		// get the next file and initialize cas
 		Resource res = nextFile();
@@ -49,6 +50,10 @@ public class BonnerXMLReader extends ResourceCollectionReaderBase {
 			source.setPublicId(res.getLocation());
 			source.setSystemId(res.getLocation());
 			parser.parse(source, handler);
+
+			TextClassificationOutcome outcome = new TextClassificationOutcome(jcas);
+			outcome.setOutcome(jcas.getDocumentLanguage());
+			outcome.addToIndexes();
 		}
 		catch (CASException e) {
 			throw new CollectionException(e);
