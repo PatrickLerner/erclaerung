@@ -1,18 +1,19 @@
-package de.tudarmstadt.awesome.erclaerung;
+package de.tudarmstadt.awesome.erclaerung.pipeline;
 
-import static java.util.Arrays.asList;
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
 import static org.apache.uima.fit.factory.CollectionReaderFactory.createReaderDescription;
 import static org.apache.uima.fit.factory.ExternalResourceFactory.createExternalResourceDescription;
 import static org.apache.uima.fit.pipeline.SimplePipeline.runPipeline;
 
 import java.io.File;
+import java.util.Arrays;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.collection.CollectionReaderDescription;
 import org.apache.uima.fit.component.CasDumpWriter;
 import org.kohsuke.args4j.Argument;
 
+import de.tudarmstadt.awesome.erclaerung.readers.BonnerXMLReader;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
 import de.tudarmstadt.ukp.dkpro.tc.core.Constants;
 import de.tudarmstadt.ukp.dkpro.tc.core.task.uima.ExtractFeaturesConnector;
@@ -62,7 +63,7 @@ public class AnalysisPipeline {
 		                // probably good for something (copied from example)
 		                ExtractFeaturesConnector.PARAM_ADD_INSTANCE_ID, true,
 		                // which extractos are to be used
-		                ExtractFeaturesConnector.PARAM_FEATURE_EXTRACTORS, asList(featureExtractors));
+		                ExtractFeaturesConnector.PARAM_FEATURE_EXTRACTORS, Arrays.asList(featureExtractors));
 
 		AnalysisEngineDescription cc = createEngineDescription(CasDumpWriter.class, CasDumpWriter.PARAM_OUTPUT_FILE,
 		                "target/output.txt");

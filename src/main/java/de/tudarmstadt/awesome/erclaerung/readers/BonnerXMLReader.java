@@ -1,4 +1,4 @@
-package de.tudarmstadt.awesome.erclaerung;
+package de.tudarmstadt.awesome.erclaerung.readers;
 
 import static org.apache.commons.io.IOUtils.closeQuietly;
 

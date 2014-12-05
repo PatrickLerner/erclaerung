@@ -2,6 +2,8 @@ package de.tudarmstadt.awesome.erclaerung;
 
 import org.kohsuke.args4j.CmdLineParser;
 
+import de.tudarmstadt.awesome.erclaerung.pipeline.AnalysisPipeline;
+
 /**
  * erclaerung main entry point
  * 
