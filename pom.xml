@@ -78,5 +78,10 @@
 			<artifactId>dkpro-tc-features-ngram</artifactId>
 			<version>0.6.0</version>
 		</dependency>
+		<dependency>
+			<groupId>de.tudarmstadt.ukp.dkpro.tc</groupId>
+			<artifactId>dkpro-tc-api</artifactId>
+			<version>0.6.0</version>
+		</dependency>
 	</dependencies>
 </project>

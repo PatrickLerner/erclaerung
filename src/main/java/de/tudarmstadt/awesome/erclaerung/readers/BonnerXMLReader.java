@@ -19,6 +19,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import de.tudarmstadt.ukp.dkpro.core.io.text.TextReader;
+import de.tudarmstadt.ukp.dkpro.tc.api.io.TCReaderSingleLabel;
 import de.tudarmstadt.ukp.dkpro.tc.api.type.TextClassificationOutcome;
 
 /**
@@ -26,7 +27,11 @@ import de.tudarmstadt.ukp.dkpro.tc.api.type.TextClassificationOutcome;
  * 
  * @author Patrick Lerner
  */
-public class BonnerXMLReader extends TextReader {
+public class BonnerXMLReader extends TextReader implements TCReaderSingleLabel {
+	public String getTextClassificationOutcome(JCas jcas) throws CollectionException {
+		return jcas.getDocumentLanguage();
+	}
+
 	public void getNext(CAS aCAS) throws IOException, CollectionException {
 		// get the next file and initialize cas
 		Resource res = nextFile();
