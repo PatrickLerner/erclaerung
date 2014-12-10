@@ -1,0 +1,6 @@
+#Wed Dec 10 16:33:38 CET 2014
+de.tudarmstadt.ukp.dkpro.tc.core.task.PreprocessTask|featureMode=document
+de.tudarmstadt.ukp.dkpro.tc.core.task.PreprocessTask|readerTestParams=[sourceLocation, src/main/resources/bonner_korpora_test/*.xml]
+de.tudarmstadt.ukp.dkpro.tc.core.task.PreprocessTask|readerTrainParams=[sourceLocation, src/main/resources/bonner_korpora_train/*.xml]
+de.tudarmstadt.ukp.dkpro.tc.core.task.PreprocessTask|readerTest=null
+de.tudarmstadt.ukp.dkpro.tc.core.task.PreprocessTask|readerTrain=class de.tudarmstadt.awesome.erclaerung.readers.BonnerXMLReader

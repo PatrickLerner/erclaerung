@@ -1,0 +1,7 @@
+#Wed Dec 10 16:33:46 CET 2014
+end=1418225625850
+uuid=ExtractFeaturesTask-Test-SomeCV-ed2a3409-8081-11e4-82da-6b6af1181d84
+type=de.tudarmstadt.ukp.dkpro.tc.core.task.ExtractFeaturesTask-Test-SomeCV
+begin=1418225625726
+duration=0s
+import.meta=task-id\://MetaInfoTaskSomeCV-ebabd167-8081-11e4-82da-6b6af1181d84/meta

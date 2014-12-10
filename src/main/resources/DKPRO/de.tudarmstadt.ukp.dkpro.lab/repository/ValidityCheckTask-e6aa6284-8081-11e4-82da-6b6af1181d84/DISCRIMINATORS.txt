@@ -1,0 +1,10 @@
+#Wed Dec 10 16:33:34 CET 2014
+de.tudarmstadt.ukp.dkpro.tc.core.task.ValidityCheckTask|featureSet=[de.tudarmstadt.ukp.dkpro.tc.features.length.NrOfTokensDFE]
+de.tudarmstadt.ukp.dkpro.tc.core.task.ValidityCheckTask|readerTrainParams=[sourceLocation, src/main/resources/bonner_korpora_train/*.xml]
+de.tudarmstadt.ukp.dkpro.tc.core.task.ValidityCheckTask|learningMode=singleLabel
+de.tudarmstadt.ukp.dkpro.tc.core.task.ValidityCheckTask|threshold=null
+de.tudarmstadt.ukp.dkpro.tc.core.task.ValidityCheckTask|featureMode=document
+de.tudarmstadt.ukp.dkpro.tc.core.task.ValidityCheckTask|dataWriter=de.tudarmstadt.ukp.dkpro.tc.weka.writer.WekaDataWriter
+de.tudarmstadt.ukp.dkpro.tc.core.task.ValidityCheckTask|developerMode=false
+de.tudarmstadt.ukp.dkpro.tc.core.task.ValidityCheckTask|pipelineParameters=null
+de.tudarmstadt.ukp.dkpro.tc.core.task.ValidityCheckTask|readerTrain=class de.tudarmstadt.awesome.erclaerung.readers.BonnerXMLReader

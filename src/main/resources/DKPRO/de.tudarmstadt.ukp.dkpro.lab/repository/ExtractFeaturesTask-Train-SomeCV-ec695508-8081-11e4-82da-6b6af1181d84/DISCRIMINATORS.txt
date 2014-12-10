@@ -1,0 +1,14 @@
+#Wed Dec 10 16:33:43 CET 2014
+de.tudarmstadt.ukp.dkpro.tc.core.task.MetaInfoTask|files_training=[F\:\\Medien\\SkyDrive\\Studium\\Informatik\\Management of Unstructured Information\\Projekt\\erclaerung\\src\\main\\resources\\DKPRO\\de.tudarmstadt.ukp.dkpro.lab\\repository\\PreprocessTask-SomeCV-e9527815-8081-11e4-82da-6b6af1181d84\\preprocessorOutputTrain\\117.xml.bin]
+de.tudarmstadt.ukp.dkpro.tc.core.task.ExtractFeaturesTask|learningMode=singleLabel
+de.tudarmstadt.ukp.dkpro.tc.core.task.MetaInfoTask|filesRoot=src\\main\\resources\\DKPRO\\de.tudarmstadt.ukp.dkpro.lab\\repository\\PreprocessTask-SomeCV-e9527815-8081-11e4-82da-6b6af1181d84\\preprocessorOutputTrain
+de.tudarmstadt.ukp.dkpro.tc.core.task.MetaInfoTask|pipelineParameters=null
+de.tudarmstadt.ukp.dkpro.tc.core.task.ExtractFeaturesTask|dataWriter=de.tudarmstadt.ukp.dkpro.tc.weka.writer.WekaDataWriter
+de.tudarmstadt.ukp.dkpro.tc.core.task.ExtractFeaturesTask|pipelineParameters=null
+de.tudarmstadt.ukp.dkpro.tc.core.task.ExtractFeaturesTask|developerMode=false
+de.tudarmstadt.ukp.dkpro.tc.core.task.ExtractFeaturesTask|files_training=[F\:\\Medien\\SkyDrive\\Studium\\Informatik\\Management of Unstructured Information\\Projekt\\erclaerung\\src\\main\\resources\\DKPRO\\de.tudarmstadt.ukp.dkpro.lab\\repository\\PreprocessTask-SomeCV-e9527815-8081-11e4-82da-6b6af1181d84\\preprocessorOutputTrain\\117.xml.bin]
+de.tudarmstadt.ukp.dkpro.tc.core.task.ExtractFeaturesTask|featureSet=[de.tudarmstadt.ukp.dkpro.tc.features.length.NrOfTokensDFE]
+de.tudarmstadt.ukp.dkpro.tc.core.task.ExtractFeaturesTask|filesRoot=src\\main\\resources\\DKPRO\\de.tudarmstadt.ukp.dkpro.lab\\repository\\PreprocessTask-SomeCV-e9527815-8081-11e4-82da-6b6af1181d84\\preprocessorOutputTrain
+de.tudarmstadt.ukp.dkpro.tc.core.task.MetaInfoTask|featureSet=[de.tudarmstadt.ukp.dkpro.tc.features.length.NrOfTokensDFE]
+de.tudarmstadt.ukp.dkpro.tc.core.task.ExtractFeaturesTask|files_validation=[F\:\\Medien\\SkyDrive\\Studium\\Informatik\\Management of Unstructured Information\\Projekt\\erclaerung\\src\\main\\resources\\DKPRO\\de.tudarmstadt.ukp.dkpro.lab\\repository\\PreprocessTask-SomeCV-e9527815-8081-11e4-82da-6b6af1181d84\\preprocessorOutputTrain\\111.xml.bin]
+de.tudarmstadt.ukp.dkpro.tc.core.task.ExtractFeaturesTask|featureMode=document
