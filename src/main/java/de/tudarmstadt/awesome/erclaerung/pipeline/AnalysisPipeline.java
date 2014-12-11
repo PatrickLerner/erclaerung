@@ -37,7 +37,7 @@ public class AnalysisPipeline {
 		this.input = input;
 	}
 
-	@Option(name = "-t", usage = "Sets the path to the temportary directory")
+	@Option(name = "-t", usage = "Sets the path to the temporary directory")
 	public void setTempDirectory(String path) {
 		this.tempDirectory = path;
 	}
