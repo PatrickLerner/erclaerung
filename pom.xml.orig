@@ -81,9 +81,6 @@
 		<dependency>
 			<groupId>de.tudarmstadt.ukp.dkpro.tc</groupId>
 <<<<<<< HEAD
-			<artifactId>dkpro-tc-api</artifactId>
-			<version>0.6.0</version>
-=======
 			<artifactId>dkpro-tc</artifactId>
 			<version>0.6.0</version>
 			<type>pom</type>
@@ -92,7 +89,10 @@
 			<groupId>com.googlecode.obvious</groupId>
 			<artifactId>obviousx-weka</artifactId>
 			<version>1.0</version>
->>>>>>> 8afd4857694ea8e814c77ba903bd0a37cf8e2668
+=======
+			<artifactId>dkpro-tc-api</artifactId>
+			<version>0.6.0</version>
+>>>>>>> origin/master
 		</dependency>
 	</dependencies>
 </project>
