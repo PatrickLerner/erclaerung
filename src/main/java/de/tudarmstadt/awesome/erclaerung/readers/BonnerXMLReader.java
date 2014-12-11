@@ -57,7 +57,7 @@ public class BonnerXMLReader extends TextReader implements TCReaderSingleLabel {
 			parser.parse(source, handler);
 
 			TextClassificationOutcome outcome = new TextClassificationOutcome(jcas);
-			outcome.setOutcome(jcas.getDocumentLanguage());
+			outcome.setOutcome(getTextClassificationOutcome(jcas));
 			outcome.addToIndexes();
 		}
 		catch (CASException e) {
