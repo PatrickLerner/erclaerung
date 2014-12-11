@@ -12,6 +12,7 @@ import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.collection.CollectionReaderDescription;
 import org.apache.uima.fit.component.CasDumpWriter;
 import org.kohsuke.args4j.Argument;
+import org.kohsuke.args4j.Option;
 
 import de.tudarmstadt.awesome.erclaerung.readers.BonnerXMLReader;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
@@ -29,16 +30,30 @@ import de.tudarmstadt.ukp.dkpro.tc.weka.writer.WekaDataWriter;
  */
 public class AnalysisPipeline {
 	private File input;
+	private String tempDirectory;
 
 	@Argument
 	public void setInputFile(File input) {
 		this.input = input;
 	}
 
+	@Option(name = "-t", usage = "Sets the path to the temportary directory")
+	public void setTempDirectory(String path) {
+		this.tempDirectory = path;
+	}
+
+	private void setDkproHome() {
+		if (this.tempDirectory == null)
+			this.tempDirectory = System.getProperty("java.io.tmpdir");
+		System.setProperty("DKPRO_HOME", this.tempDirectory);
+	}
+
 	/**
 	 * This method is called once the pipeline has been properly set up to start the process
 	 */
 	public void run() throws Exception {
+		this.setDkproHome();
+
 		if (this.input == null)
 			throw new RuntimeException("Input of pipeline is empty.");
 

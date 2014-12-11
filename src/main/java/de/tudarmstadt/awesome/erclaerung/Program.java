@@ -3,7 +3,6 @@ package de.tudarmstadt.awesome.erclaerung;
 import org.kohsuke.args4j.CmdLineParser;
 
 import de.tudarmstadt.awesome.erclaerung.pipeline.AnalysisPipeline;
-import de.tudarmstadt.awesome.erclaerung.pipeline.TCPipelineSimple;
 
 /**
  * erclaerung main entry point
@@ -36,11 +35,7 @@ public class Program {
 			parser.parseArgument(args);
 
 			// now run the pipeline
-			// pipeline.run();
-			// TCPipeline tcpipeline = new TCPipeline();
-			// tcpipeline.run();
-			TCPipelineSimple simple = new TCPipelineSimple();
-			simple.run();
+			pipeline.run();
 
 		}
 		catch (Exception e) {
