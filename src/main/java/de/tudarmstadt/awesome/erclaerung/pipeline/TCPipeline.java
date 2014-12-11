@@ -28,7 +28,7 @@ import de.tudarmstadt.ukp.dkpro.tc.weka.writer.WekaDataWriter;
 public class TCPipeline implements Constants {
 
 	public void run() throws Exception {
-		System.setProperty("DKPRO_HOME", "src/main/resources/DKPRO/");
+		System.setProperty("DKPRO_HOME", "/DKPro/");
 		ParameterSpace pSpace = getParameterSpace();
 		this.runCrossValidation(pSpace);
 		// this.runTrainTest(pSpace);
