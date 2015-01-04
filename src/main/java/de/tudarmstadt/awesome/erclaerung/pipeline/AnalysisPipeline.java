@@ -23,6 +23,8 @@ import de.tudarmstadt.ukp.dkpro.lab.task.Dimension;
 import de.tudarmstadt.ukp.dkpro.lab.task.ParameterSpace;
 import de.tudarmstadt.ukp.dkpro.tc.core.Constants;
 import de.tudarmstadt.ukp.dkpro.tc.features.length.NrOfTokensPerSentenceDFE;
+import de.tudarmstadt.ukp.dkpro.tc.features.ngram.LuceneNGramDFE;
+import de.tudarmstadt.ukp.dkpro.tc.features.ngram.base.FrequencyDistributionNGramFeatureExtractorBase;
 import de.tudarmstadt.ukp.dkpro.tc.weka.task.BatchTaskPrediction;
 import de.tudarmstadt.ukp.dkpro.tc.weka.writer.WekaDataWriter;
 
@@ -84,13 +86,22 @@ public class AnalysisPipeline implements Constants {
 		Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
 		                Arrays.asList(new String[] { NaiveBayes.class.getName() }));
 
-		Dimension<List<String>> dimFeatureSets = Dimension.create(DIM_FEATURE_SET,
-		                Arrays.asList(new String[] { NrOfTokensPerSentenceDFE.class.getName() }));
+		Dimension<List<String>> dimFeatureSets = Dimension.create(
+		                DIM_FEATURE_SET,
+		                Arrays.asList(new String[] { NrOfTokensPerSentenceDFE.class.getName(),
+		                                LuceneNGramDFE.class.getName() }));
+
+		Dimension<List<Object>> dimPipelineParameters = Dimension.create(
+		                DIM_PIPELINE_PARAMS,
+		                Arrays.asList(new Object[] {
+		                                FrequencyDistributionNGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K, "10",
+		                                FrequencyDistributionNGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, 1,
+		                                FrequencyDistributionNGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, 3 }));
 
 		ParameterSpace pSpace = new ParameterSpace(Dimension.createBundle("readers", dimReaders), Dimension.create(
 		                DIM_DATA_WRITER, WekaDataWriter.class.getName()), Dimension.create(DIM_LEARNING_MODE,
-		                LM_SINGLE_LABEL), Dimension.create(DIM_FEATURE_MODE, FM_DOCUMENT), dimFeatureSets,
-		                dimClassificationArgs);
+		                LM_SINGLE_LABEL), Dimension.create(DIM_FEATURE_MODE, FM_DOCUMENT), dimPipelineParameters,
+		                dimFeatureSets, dimClassificationArgs);
 
 		return pSpace;
 	}
