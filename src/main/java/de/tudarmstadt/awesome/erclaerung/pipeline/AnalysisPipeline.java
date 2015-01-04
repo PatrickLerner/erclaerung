@@ -76,7 +76,7 @@ public class AnalysisPipeline {
 		                ExtractFeaturesConnector.PARAM_FEATURE_MODE, Constants.FM_DOCUMENT,
 		                // probably good for something (copied from example)
 		                ExtractFeaturesConnector.PARAM_ADD_INSTANCE_ID, true,
-		                // which extractos are to be used
+		                // which extractors are to be used
 		                ExtractFeaturesConnector.PARAM_FEATURE_EXTRACTORS, Arrays.asList(featureExtractors));
 
 		AnalysisEngineDescription cc = createEngineDescription(CasDumpWriter.class, CasDumpWriter.PARAM_OUTPUT_FILE,
