@@ -28,7 +28,7 @@ import de.tudarmstadt.ukp.dkpro.tc.weka.writer.WekaDataWriter;
 
 public class TCPipelineSimple implements Constants {
 	public void run() throws Exception {
-		System.setProperty("DKPRO_HOME", "/DKPro/");
+		System.setProperty("DKPRO_HOME", "/Logs/DKPro/");
 		this.runCrossValidation(getParameterSpace());
 	}
 
@@ -64,7 +64,7 @@ public class TCPipelineSimple implements Constants {
 		Dimension<List<Object>> dimPipelineParameters = Dimension.create(
 		                DIM_PIPELINE_PARAMS,
 		                Arrays.asList(new Object[] {
-		                                FrequencyDistributionNGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K, "100",
+		                                FrequencyDistributionNGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K, "10",
 		                                FrequencyDistributionNGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, 1,
 		                                FrequencyDistributionNGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, 3 }));
 
