@@ -1,25 +1,29 @@
 package de.tudarmstadt.awesome.erclaerung.pipeline;
 
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
-import static org.apache.uima.fit.factory.CollectionReaderFactory.createReaderDescription;
-import static org.apache.uima.fit.factory.ExternalResourceFactory.createExternalResourceDescription;
-import static org.apache.uima.fit.pipeline.SimplePipeline.runPipeline;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
-import org.apache.uima.collection.CollectionReaderDescription;
-import org.apache.uima.fit.component.CasDumpWriter;
+import org.apache.uima.resource.ResourceInitializationException;
 import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.Option;
 
+import weka.classifiers.bayes.NaiveBayes;
 import de.tudarmstadt.awesome.erclaerung.readers.BonnerXMLReader;
+import de.tudarmstadt.awesome.erclaerung.readers.UnlabeledTextReader;
+import de.tudarmstadt.awesome.erclaerung.reports.DKProSucksReport;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
+import de.tudarmstadt.ukp.dkpro.lab.Lab;
+import de.tudarmstadt.ukp.dkpro.lab.task.Dimension;
+import de.tudarmstadt.ukp.dkpro.lab.task.ParameterSpace;
 import de.tudarmstadt.ukp.dkpro.tc.core.Constants;
-import de.tudarmstadt.ukp.dkpro.tc.core.task.uima.ExtractFeaturesConnector;
-import de.tudarmstadt.ukp.dkpro.tc.features.length.NrOfSentencesDFE;
-import de.tudarmstadt.ukp.dkpro.tc.features.length.NrOfTokensDFE;
+import de.tudarmstadt.ukp.dkpro.tc.features.length.NrOfTokensPerSentenceDFE;
+import de.tudarmstadt.ukp.dkpro.tc.weka.task.BatchTaskPrediction;
 import de.tudarmstadt.ukp.dkpro.tc.weka.writer.WekaDataWriter;
 
 /**
@@ -28,7 +32,7 @@ import de.tudarmstadt.ukp.dkpro.tc.weka.writer.WekaDataWriter;
  * @author Patrick Lerner
  *
  */
-public class AnalysisPipeline {
+public class AnalysisPipeline implements Constants {
 	private File input;
 	private String tempDirectory;
 
@@ -46,6 +50,7 @@ public class AnalysisPipeline {
 		if (this.tempDirectory == null)
 			this.tempDirectory = System.getProperty("java.io.tmpdir");
 		System.setProperty("DKPRO_HOME", this.tempDirectory);
+		System.out.println("DKPRO_HOME is \"" + this.tempDirectory + "\"");
 	}
 
 	/**
@@ -57,31 +62,49 @@ public class AnalysisPipeline {
 		if (this.input == null)
 			throw new RuntimeException("Input of pipeline is empty.");
 
-		// Initialize the bonner korpora
-		CollectionReaderDescription cr = createReaderDescription(BonnerXMLReader.class,
-		                BonnerXMLReader.PARAM_SOURCE_LOCATION, "src/main/resources/bonner_korpora/*.xml");
+		ParameterSpace pSpace = getParameterSpace();
+		runPrediction(pSpace);
+	}
 
-		AnalysisEngineDescription seg = createEngineDescription(BreakIteratorSegmenter.class);
+	@SuppressWarnings("unchecked")
+	public static ParameterSpace getParameterSpace() {
 
-		Object[] featureExtractors = new Object[] { createExternalResourceDescription(NrOfTokensDFE.class),
-		                createExternalResourceDescription(NrOfSentencesDFE.class) };
+		// training data to learn a model
+		Map<String, Object> dimReaders = new HashMap<String, Object>();
+		dimReaders.put(DIM_READER_TRAIN, BonnerXMLReader.class);
+		dimReaders.put(DIM_READER_TRAIN_PARAMS,
+		                Arrays.asList(new Object[] { BonnerXMLReader.PARAM_SOURCE_LOCATION,
+		                                "src/main/resources/bonner_korpora_train/*.xml" }));
+		// unlabeled data which will be classified using the trained model
+		dimReaders.put(DIM_READER_TEST, UnlabeledTextReader.class);
+		dimReaders.put(DIM_READER_TEST_PARAMS,
+		                Arrays.asList(new Object[] { UnlabeledTextReader.PARAM_SOURCE_LOCATION,
+		                                "/Users/patrick/Desktop/*.txt" }));
 
-		AnalysisEngineDescription fea = createEngineDescription(ExtractFeaturesConnector.class,
-		                ExtractFeaturesConnector.PARAM_OUTPUT_DIRECTORY, "target/temp_feature_output",
-		                // writer
-		                ExtractFeaturesConnector.PARAM_DATA_WRITER_CLASS, WekaDataWriter.class,
-		                // learning mode (single label, i.e. only based on dialect for now)
-		                ExtractFeaturesConnector.PARAM_LEARNING_MODE, Constants.LM_SINGLE_LABEL,
-		                // whole document extraction
-		                ExtractFeaturesConnector.PARAM_FEATURE_MODE, Constants.FM_DOCUMENT,
-		                // probably good for something (copied from example)
-		                ExtractFeaturesConnector.PARAM_ADD_INSTANCE_ID, true,
-		                // which extractors are to be used
-		                ExtractFeaturesConnector.PARAM_FEATURE_EXTRACTORS, Arrays.asList(featureExtractors));
+		Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
+		                Arrays.asList(new String[] { NaiveBayes.class.getName() }));
 
-		AnalysisEngineDescription cc = createEngineDescription(CasDumpWriter.class, CasDumpWriter.PARAM_OUTPUT_FILE,
-		                "target/output.txt");
+		Dimension<List<String>> dimFeatureSets = Dimension.create(DIM_FEATURE_SET,
+		                Arrays.asList(new String[] { NrOfTokensPerSentenceDFE.class.getName() }));
 
-		runPipeline(cr, seg, fea, cc);
+		ParameterSpace pSpace = new ParameterSpace(Dimension.createBundle("readers", dimReaders), Dimension.create(
+		                DIM_DATA_WRITER, WekaDataWriter.class.getName()), Dimension.create(DIM_LEARNING_MODE,
+		                LM_SINGLE_LABEL), Dimension.create(DIM_FEATURE_MODE, FM_DOCUMENT), dimFeatureSets,
+		                dimClassificationArgs);
+
+		return pSpace;
+	}
+
+	protected void runPrediction(ParameterSpace pSpace) throws Exception {
+		BatchTaskPrediction batch = new BatchTaskPrediction("DialectPrediction", getPreprocessing());
+		batch.setParameterSpace(pSpace);
+
+		batch.addReport(DKProSucksReport.class);
+		// Run
+		Lab.getInstance().run(batch);
+	}
+
+	protected AnalysisEngineDescription getPreprocessing() throws ResourceInitializationException {
+		return createEngineDescription(BreakIteratorSegmenter.class);
 	}
 }
