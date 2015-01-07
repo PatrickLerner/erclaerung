@@ -22,6 +22,7 @@ public class HTMLReport extends BatchReportBase implements Constants {
 	private String dataPlaceHolder = "$data";
 	private File template = new File("src/main/resources/html/template.html");
 	private File output = new File("src/main/resources/html/test.html");
+	private String titlePlaceHolder = "$title";
 
 	public void execute() throws Exception {
 		StorageService store = getContext().getStorageService();
@@ -29,13 +30,15 @@ public class HTMLReport extends BatchReportBase implements Constants {
 		for (TaskContextMetadata subcontext : getSubtasks()) {
 			if (subcontext.getType().startsWith(ExtractFeaturesAndPredictTask.class.getName())) {
 				// deserialize file
+
 				FileInputStream f = new FileInputStream(store.getStorageFolder(subcontext.getId(),
 				                ExtractFeaturesAndPredictConnector.PREDICTION_MAP_FILE_NAME));
 				ObjectInputStream s = new ObjectInputStream(f);
 				Map<String, List<String>> resultMap = (Map<String, List<String>>) s.readObject();
 				s.close();
 
-				// simple replacement of the placeholder in the template file.
+				// simple replacement of the placeholders in the template file.
+				htmlString = htmlString.replace(titlePlaceHolder, subcontext.getLabel());
 				for (String id : resultMap.keySet()) {
 					Map<String, String> row = new HashMap<String, String>();
 					row.put(predicted_value, StringUtils.join(resultMap.get(id), ","));
@@ -47,7 +50,7 @@ public class HTMLReport extends BatchReportBase implements Constants {
 		htmlString = htmlString.replace(dataPlaceHolder, "");
 
 		FileUtils.writeStringToFile(output, htmlString);
-		System.out.print("HTML created at: " + output.getAbsolutePath());
+		System.out.print("HTML report created at: " + output.getAbsolutePath());
 
 	}
 
