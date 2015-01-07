@@ -2,13 +2,17 @@ package de.tudarmstadt.awesome.erclaerung.readers;
 
 import static org.apache.commons.io.IOUtils.closeQuietly;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.collection.CollectionException;
@@ -51,7 +55,22 @@ public class BonnerXMLReader extends TextReader implements TCReaderSingleLabel {
 			SAXParserFactory pf = SAXParserFactory.newInstance();
 			SAXParser parser = pf.newSAXParser();
 
-			InputSource source = new InputSource(is);
+			StringWriter writer = new StringWriter();
+			IOUtils.copy(is, writer, "UTF8");
+			String xmlContent = writer.toString();
+
+			System.out.println("[BONN-XML] Reading file: " + res.getPath());
+
+			// because the source XML-Files are incorrect, we need to hot-patch them here
+			// for them to be read in correctly. This is obviously far from ideal, but the best
+			// solution for ease-of-use purposes as the modified xml files would not be distributable
+			// by a third party
+			if (res.getPath().equals("243.xml") || res.getPath().equals("257.xml"))
+				xmlContent = xmlContent.replaceAll(" zweit ", " zweit=\"zweit\" ");
+
+			InputStream stream = new ByteArrayInputStream(xmlContent.getBytes(StandardCharsets.UTF_8));
+
+			InputSource source = new InputSource(stream);
 			source.setPublicId(res.getLocation());
 			source.setSystemId(res.getLocation());
 			parser.parse(source, handler);
