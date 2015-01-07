@@ -11,25 +11,16 @@ import org.apache.commons.lang.StringUtils;
 import de.tudarmstadt.ukp.dkpro.lab.reporting.BatchReportBase;
 import de.tudarmstadt.ukp.dkpro.lab.reporting.FlexTable;
 import de.tudarmstadt.ukp.dkpro.lab.storage.StorageService;
-import de.tudarmstadt.ukp.dkpro.lab.storage.impl.PropertiesAdapter;
-import de.tudarmstadt.ukp.dkpro.lab.task.Task;
 import de.tudarmstadt.ukp.dkpro.lab.task.TaskContextMetadata;
 import de.tudarmstadt.ukp.dkpro.tc.core.Constants;
 import de.tudarmstadt.ukp.dkpro.tc.weka.task.ExtractFeaturesAndPredictTask;
 import de.tudarmstadt.ukp.dkpro.tc.weka.task.uima.ExtractFeaturesAndPredictConnector;
 
-/**
- * A report which collects results from all executed @link {@link ExtractFeaturesAndPredictTask}s, and writes them into
- * a human-readable format, one file per configuration.
- * 
- * @author daxenberger
- * 
- */
-public class DKProSucksReport extends BatchReportBase implements Constants {
+public class DebugReport extends BatchReportBase implements Constants {
 
-	private static final String report_name = "PredictionReport";
 	private static final String predicted_value = "Prediction";
 
+	@SuppressWarnings("unchecked")
 	public void execute() throws Exception {
 		StorageService store = getContext().getStorageService();
 
@@ -37,10 +28,6 @@ public class DKProSucksReport extends BatchReportBase implements Constants {
 
 		for (TaskContextMetadata subcontext : getSubtasks()) {
 			if (subcontext.getType().startsWith(ExtractFeaturesAndPredictTask.class.getName())) {
-
-				Map<String, String> discriminatorsMap = store.retrieveBinary(subcontext.getId(),
-				                Task.DISCRIMINATORS_KEY, new PropertiesAdapter()).getMap();
-
 				// deserialize file
 				FileInputStream f = new FileInputStream(store.getStorageFolder(subcontext.getId(),
 				                ExtractFeaturesAndPredictConnector.PREDICTION_MAP_FILE_NAME));
