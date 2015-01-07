@@ -9,7 +9,6 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 
 import de.tudarmstadt.ukp.dkpro.lab.reporting.BatchReportBase;
-import de.tudarmstadt.ukp.dkpro.lab.reporting.FlexTable;
 import de.tudarmstadt.ukp.dkpro.lab.storage.StorageService;
 import de.tudarmstadt.ukp.dkpro.lab.task.TaskContextMetadata;
 import de.tudarmstadt.ukp.dkpro.tc.core.Constants;
@@ -24,8 +23,6 @@ public class DebugReport extends BatchReportBase implements Constants {
 	public void execute() throws Exception {
 		StorageService store = getContext().getStorageService();
 
-		FlexTable<String> table = FlexTable.forClass(String.class);
-
 		for (TaskContextMetadata subcontext : getSubtasks()) {
 			if (subcontext.getType().startsWith(ExtractFeaturesAndPredictTask.class.getName())) {
 				// deserialize file
@@ -35,13 +32,10 @@ public class DebugReport extends BatchReportBase implements Constants {
 				Map<String, List<String>> resultMap = (Map<String, List<String>>) s.readObject();
 				s.close();
 
-				// write one file per batch
-				// in files: one line per instance
-
+				// temp output, should be in html somehow later on
 				for (String id : resultMap.keySet()) {
 					Map<String, String> row = new HashMap<String, String>();
 					row.put(predicted_value, StringUtils.join(resultMap.get(id), ","));
-					table.addRow(id, row);
 					System.out.println(id);
 					System.out.println(row);
 				}
