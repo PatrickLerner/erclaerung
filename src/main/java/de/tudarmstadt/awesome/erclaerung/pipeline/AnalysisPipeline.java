@@ -14,7 +14,6 @@ import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.Option;
 
 import weka.classifiers.bayes.NaiveBayes;
-import weka.classifiers.trees.RandomForest;
 import de.tudarmstadt.awesome.erclaerung.readers.BonnerXMLReader;
 import de.tudarmstadt.awesome.erclaerung.readers.UnlabeledTextReader;
 import de.tudarmstadt.awesome.erclaerung.reports.DebugReport;
@@ -83,11 +82,10 @@ public class AnalysisPipeline implements Constants {
 		dimReaders.put(DIM_READER_TEST, UnlabeledTextReader.class);
 		dimReaders.put(DIM_READER_TEST_PARAMS,
 		                Arrays.asList(new Object[] { UnlabeledTextReader.PARAM_SOURCE_LOCATION,
-		                                "src/main/resources/bonner_korpora_test/*.txt" }));
+		                                "src/main/resources/wiki_test/*.txt" }));
 
 		Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
-		                Arrays.asList(new String[] { NaiveBayes.class.getName() }),
-		                Arrays.asList(new String[] { RandomForest.class.getName() }));
+		                Arrays.asList(new String[] { NaiveBayes.class.getName() }));
 
 		Dimension<List<String>> dimFeatureSets = Dimension.create(
 		                DIM_FEATURE_SET,
