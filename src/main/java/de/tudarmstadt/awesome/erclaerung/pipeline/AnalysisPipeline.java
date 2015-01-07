@@ -14,6 +14,10 @@ import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.Option;
 
 import weka.classifiers.bayes.NaiveBayes;
+import de.tudarmstadt.awesome.erclaerung.feature.IchVariantsCountDFE;
+import de.tudarmstadt.awesome.erclaerung.feature.LetterDistributionDFE;
+import de.tudarmstadt.awesome.erclaerung.feature.UnSoundVnDominanceDFE;
+import de.tudarmstadt.awesome.erclaerung.feature.WSoundUUDominanceDFE;
 import de.tudarmstadt.awesome.erclaerung.readers.BonnerXMLReader;
 import de.tudarmstadt.awesome.erclaerung.readers.UnlabeledTextReader;
 import de.tudarmstadt.awesome.erclaerung.reports.DebugReport;
@@ -23,7 +27,6 @@ import de.tudarmstadt.ukp.dkpro.lab.Lab;
 import de.tudarmstadt.ukp.dkpro.lab.task.Dimension;
 import de.tudarmstadt.ukp.dkpro.lab.task.ParameterSpace;
 import de.tudarmstadt.ukp.dkpro.tc.core.Constants;
-import de.tudarmstadt.ukp.dkpro.tc.features.length.NrOfCharsDFE;
 import de.tudarmstadt.ukp.dkpro.tc.features.length.NrOfTokensPerSentenceDFE;
 import de.tudarmstadt.ukp.dkpro.tc.features.ngram.LuceneNGramDFE;
 import de.tudarmstadt.ukp.dkpro.tc.features.ngram.base.FrequencyDistributionNGramFeatureExtractorBase;
@@ -91,14 +94,16 @@ public class AnalysisPipeline implements Constants {
 		Dimension<List<String>> dimFeatureSets = Dimension.create(
 		                DIM_FEATURE_SET,
 		                Arrays.asList(new String[] { NrOfTokensPerSentenceDFE.class.getName(),
-		                                NrOfCharsDFE.class.getName(), LuceneNGramDFE.class.getName() }));
+		                                IchVariantsCountDFE.class.getName(), LuceneNGramDFE.class.getName(),
+		                                LetterDistributionDFE.class.getName(), UnSoundVnDominanceDFE.class.getName(),
+		                                WSoundUUDominanceDFE.class.getName() }));
 
 		Dimension<List<Object>> dimPipelineParameters = Dimension.create(
 		                DIM_PIPELINE_PARAMS,
 		                Arrays.asList(new Object[] {
-		                                FrequencyDistributionNGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K, "500",
-		                                FrequencyDistributionNGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, 2,
-		                                FrequencyDistributionNGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, 2 }));
+		                                FrequencyDistributionNGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K, "1000",
+		                                FrequencyDistributionNGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, 1,
+		                                FrequencyDistributionNGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, 5 }));
 
 		ParameterSpace pSpace = new ParameterSpace(Dimension.createBundle("readers", dimReaders), Dimension.create(
 		                DIM_DATA_WRITER, WekaDataWriter.class.getName()), Dimension.create(DIM_LEARNING_MODE,
