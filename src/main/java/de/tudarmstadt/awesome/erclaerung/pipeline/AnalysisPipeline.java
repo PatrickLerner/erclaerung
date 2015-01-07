@@ -16,12 +16,13 @@ import org.kohsuke.args4j.Option;
 import weka.classifiers.bayes.NaiveBayes;
 import de.tudarmstadt.awesome.erclaerung.readers.BonnerXMLReader;
 import de.tudarmstadt.awesome.erclaerung.readers.UnlabeledTextReader;
-import de.tudarmstadt.awesome.erclaerung.reports.DKProSucksReport;
+import de.tudarmstadt.awesome.erclaerung.reports.DebugReport;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
 import de.tudarmstadt.ukp.dkpro.lab.Lab;
 import de.tudarmstadt.ukp.dkpro.lab.task.Dimension;
 import de.tudarmstadt.ukp.dkpro.lab.task.ParameterSpace;
 import de.tudarmstadt.ukp.dkpro.tc.core.Constants;
+import de.tudarmstadt.ukp.dkpro.tc.features.length.NrOfCharsDFE;
 import de.tudarmstadt.ukp.dkpro.tc.features.length.NrOfTokensPerSentenceDFE;
 import de.tudarmstadt.ukp.dkpro.tc.features.ngram.LuceneNGramDFE;
 import de.tudarmstadt.ukp.dkpro.tc.features.ngram.base.FrequencyDistributionNGramFeatureExtractorBase;
@@ -81,7 +82,7 @@ public class AnalysisPipeline implements Constants {
 		dimReaders.put(DIM_READER_TEST, UnlabeledTextReader.class);
 		dimReaders.put(DIM_READER_TEST_PARAMS,
 		                Arrays.asList(new Object[] { UnlabeledTextReader.PARAM_SOURCE_LOCATION,
-		                                "/Users/patrick/Desktop/*.txt" }));
+		                                "src/main/resources/wiki_test/*.txt" }));
 
 		Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
 		                Arrays.asList(new String[] { NaiveBayes.class.getName() }));
@@ -89,14 +90,14 @@ public class AnalysisPipeline implements Constants {
 		Dimension<List<String>> dimFeatureSets = Dimension.create(
 		                DIM_FEATURE_SET,
 		                Arrays.asList(new String[] { NrOfTokensPerSentenceDFE.class.getName(),
-		                                LuceneNGramDFE.class.getName() }));
+		                                NrOfCharsDFE.class.getName(), LuceneNGramDFE.class.getName() }));
 
 		Dimension<List<Object>> dimPipelineParameters = Dimension.create(
 		                DIM_PIPELINE_PARAMS,
 		                Arrays.asList(new Object[] {
-		                                FrequencyDistributionNGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K, "10",
-		                                FrequencyDistributionNGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, 1,
-		                                FrequencyDistributionNGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, 3 }));
+		                                FrequencyDistributionNGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K, "500",
+		                                FrequencyDistributionNGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, 2,
+		                                FrequencyDistributionNGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, 2 }));
 
 		ParameterSpace pSpace = new ParameterSpace(Dimension.createBundle("readers", dimReaders), Dimension.create(
 		                DIM_DATA_WRITER, WekaDataWriter.class.getName()), Dimension.create(DIM_LEARNING_MODE,
@@ -110,7 +111,7 @@ public class AnalysisPipeline implements Constants {
 		BatchTaskPrediction batch = new BatchTaskPrediction("DialectPrediction", getPreprocessing());
 		batch.setParameterSpace(pSpace);
 
-		batch.addReport(DKProSucksReport.class);
+		batch.addReport(DebugReport.class);
 		// Run
 		Lab.getInstance().run(batch);
 	}
