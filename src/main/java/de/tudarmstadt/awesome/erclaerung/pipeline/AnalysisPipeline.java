@@ -14,6 +14,7 @@ import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.Option;
 
 import weka.classifiers.bayes.NaiveBayes;
+import de.tudarmstadt.awesome.erclaerung.feature.LetterRadio;
 import de.tudarmstadt.awesome.erclaerung.readers.BonnerXMLReader;
 import de.tudarmstadt.awesome.erclaerung.readers.UnlabeledTextReader;
 import de.tudarmstadt.awesome.erclaerung.reports.DebugReport;
@@ -90,7 +91,8 @@ public class AnalysisPipeline implements Constants {
 		Dimension<List<String>> dimFeatureSets = Dimension.create(
 		                DIM_FEATURE_SET,
 		                Arrays.asList(new String[] { NrOfTokensPerSentenceDFE.class.getName(),
-		                                NrOfCharsDFE.class.getName(), LuceneNGramDFE.class.getName() }));
+		                                NrOfCharsDFE.class.getName(), LuceneNGramDFE.class.getName(),
+		                                LetterRadio.class.getName() }));
 
 		Dimension<List<Object>> dimPipelineParameters = Dimension.create(
 		                DIM_PIPELINE_PARAMS,
