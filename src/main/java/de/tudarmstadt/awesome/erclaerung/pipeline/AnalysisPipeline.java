@@ -17,6 +17,7 @@ import weka.classifiers.bayes.NaiveBayes;
 import de.tudarmstadt.awesome.erclaerung.readers.BonnerXMLReader;
 import de.tudarmstadt.awesome.erclaerung.readers.UnlabeledTextReader;
 import de.tudarmstadt.awesome.erclaerung.reports.DebugReport;
+import de.tudarmstadt.awesome.erclaerung.reports.HTMLReport;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
 import de.tudarmstadt.ukp.dkpro.lab.Lab;
 import de.tudarmstadt.ukp.dkpro.lab.task.Dimension;
@@ -112,6 +113,7 @@ public class AnalysisPipeline implements Constants {
 		batch.setParameterSpace(pSpace);
 
 		batch.addReport(DebugReport.class);
+		batch.addReport(HTMLReport.class);
 		// Run
 		Lab.getInstance().run(batch);
 	}
