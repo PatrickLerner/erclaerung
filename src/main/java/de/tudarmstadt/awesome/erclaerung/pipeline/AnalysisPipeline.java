@@ -14,7 +14,9 @@ import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.Option;
 
 import weka.classifiers.bayes.NaiveBayes;
+import de.tudarmstadt.awesome.erclaerung.feature.IchVariantsCountDFE;
 import de.tudarmstadt.awesome.erclaerung.feature.LetterDistributionDFE;
+import de.tudarmstadt.awesome.erclaerung.feature.UnSoundVnDominanceDFE;
 import de.tudarmstadt.awesome.erclaerung.feature.WSoundUUDominanceDFE;
 import de.tudarmstadt.awesome.erclaerung.readers.BonnerXMLReader;
 import de.tudarmstadt.awesome.erclaerung.readers.UnlabeledTextReader;
@@ -91,7 +93,8 @@ public class AnalysisPipeline implements Constants {
 		Dimension<List<String>> dimFeatureSets = Dimension.create(
 		                DIM_FEATURE_SET,
 		                Arrays.asList(new String[] { NrOfTokensPerSentenceDFE.class.getName(),
-		                                LuceneNGramDFE.class.getName(), LetterDistributionDFE.class.getName(),
+		                                IchVariantsCountDFE.class.getName(), LuceneNGramDFE.class.getName(),
+		                                LetterDistributionDFE.class.getName(), UnSoundVnDominanceDFE.class.getName(),
 		                                WSoundUUDominanceDFE.class.getName() }));
 
 		Dimension<List<Object>> dimPipelineParameters = Dimension.create(

@@ -36,8 +36,7 @@ public class DebugReport extends BatchReportBase implements Constants {
 				for (String id : resultMap.keySet()) {
 					Map<String, String> row = new HashMap<String, String>();
 					row.put(predicted_value, StringUtils.join(resultMap.get(id), ","));
-					System.out.println(id);
-					System.out.println(row);
+					System.out.println(id + "\t" + row);
 				}
 			}
 		}
