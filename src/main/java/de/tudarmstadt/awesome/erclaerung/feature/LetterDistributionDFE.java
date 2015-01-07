@@ -11,7 +11,7 @@ import de.tudarmstadt.ukp.dkpro.tc.api.features.DocumentFeatureExtractor;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
 
-public class LetterRadio extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor {
+public class LetterDistributionDFE extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor {
 	public static final String FN_LETTER_RATIO_PREFIX = "LetterRatio";
 	public static final String LETTERS = "abcdefghijklmnopqrstuvwxyzßäöü";
 
