@@ -20,8 +20,12 @@ public class WSoundUUDominanceDFE extends FeatureExtractorResource_ImplBase impl
 		double w_sound_as_w = StringUtils.countMatches(documentText, "w") * 0.5d;
 		double w_sound_as_uu = StringUtils.countMatches(documentText, "uu");
 
+		double res = 0;
+		if (w_sound_as_w > 0 && w_sound_as_uu > 0)
+			res = w_sound_as_uu / w_sound_as_w;
+
 		List<Feature> featList = new ArrayList<Feature>();
-		featList.add(new Feature(FN_UU_DOMINANCE, w_sound_as_uu >= w_sound_as_w));
+		featList.add(new Feature(FN_UU_DOMINANCE, res));
 		return featList;
 	}
 }
