@@ -51,23 +51,6 @@ public class HTMLReport extends BatchReportBase implements Constants {
 
 		FileUtils.writeStringToFile(output, htmlString);
 		System.out.print("HTML report created at: " + output.getAbsolutePath());
-
-	}
-
-	public File getTemplate() {
-		return template;
-	}
-
-	public void setTemplate(File template) {
-		this.template = template;
-	}
-
-	public File getOutput() {
-		return output;
-	}
-
-	public void setOutput(File output) {
-		this.output = output;
 	}
 
 }
