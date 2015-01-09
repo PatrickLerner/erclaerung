@@ -50,7 +50,7 @@ public class PrefixDistributionDFE extends FeatureExtractorResource_ImplBase imp
 			// for comparisons
 			double count = variantCount.get(variant) * 1000 / tokens.size();
 			featList.add(new Feature(FN_PREFIX_VARIANT_PREFIX + variant, count));
-			System.out.println("[PREFIX-VAR] [" + variant + "] " + count);
+			// System.out.println("[PREFIX-VAR] [" + variant + "] " + count);
 		}
 		return featList;
 	}
