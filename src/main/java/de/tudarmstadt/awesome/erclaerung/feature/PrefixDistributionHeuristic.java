@@ -13,6 +13,11 @@ import de.tudarmstadt.ukp.dkpro.tc.api.features.DocumentFeatureExtractor;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
 
+/**
+ * This engine dynamically extracts a list of prefixes from the given tokens.
+ * 
+ * @author manuel
+ */
 public class PrefixDistributionHeuristic extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor {
 	public static final String FN_PREFIX_VARIANT_PREFIX_HEU = "PrefixHeuRatio_";
 	public static final int minPrefixSize = 2;
