@@ -20,9 +20,9 @@ import de.tudarmstadt.ukp.dkpro.tc.weka.task.uima.ExtractFeaturesAndPredictConne
 public class HTMLReport extends BatchReportBase implements Constants {
 	private static final String predicted_value = "Prediction";
 	private String dataPlaceHolder = "$data";
+	private String titlePlaceHolder = "$title";
 	private File template = new File("src/main/resources/html/template.html");
 	private File output = new File("src/main/resources/html/test.html");
-	private String titlePlaceHolder = "$title";
 
 	public void execute() throws Exception {
 		StorageService store = getContext().getStorageService();
