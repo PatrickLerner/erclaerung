@@ -117,10 +117,13 @@ public class AnalysisPipeline implements Constants {
 
 	protected void runPrediction(ParameterSpace pSpace) throws Exception {
 		BatchTaskPrediction batch = new BatchTaskPrediction("DialectPrediction", getPreprocessing());
+		// BatchTaskCrossValidation batch = new BatchTaskCrossValidation("Dialect", getPreprocessing(), 40);
 		batch.setParameterSpace(pSpace);
 
 		batch.addReport(DebugReport.class);
 		batch.addReport(HTMLReport.class);
+		// batch.addReport(WekaBatchCrossValidationReport.class);
+		// batch.addReport(WekaBatchRuntimeReport.class);
 		// Run
 		Lab.getInstance().run(batch);
 	}

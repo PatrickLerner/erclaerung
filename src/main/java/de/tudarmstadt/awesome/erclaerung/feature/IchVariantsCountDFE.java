@@ -24,7 +24,7 @@ import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBas
  * @author patrick
  */
 public class IchVariantsCountDFE extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor {
-	public static final String FN_ICH_VARIANT_PREFIX = "LetterRatio_";
+	public static final String FN_ICH_VARIANT_PREFIX = "IchVariant_";
 	public final String[] ICH_VARIANTS_VALUES = { "i", "ig", "ich", "ik", "ih", "ek", "isch", "ish" };
 	public final Set<String> ICH_VARIANTS = new HashSet<String>(Arrays.asList(ICH_VARIANTS_VALUES));
 
