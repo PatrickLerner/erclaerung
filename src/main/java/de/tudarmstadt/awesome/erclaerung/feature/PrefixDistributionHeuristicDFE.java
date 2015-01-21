@@ -1,11 +1,14 @@
 package de.tudarmstadt.awesome.erclaerung.feature;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.uima.fit.descriptor.ConfigurationParameter;
+import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 
+import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.tc.api.exception.TextClassificationException;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.DocumentFeatureExtractor;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
@@ -42,37 +45,37 @@ public class PrefixDistributionHeuristicDFE extends FeatureExtractorResource_Imp
 
 	public List<Feature> extract(JCas jcas) throws TextClassificationException {
 
-		// List<String> tokens = JCasUtil.toText(JCasUtil.select(jcas, Token.class));
-		// HashMap<String, Integer> occurences = new HashMap<String, Integer>();
-		// String[] tokensArray = tokens.toArray(new String[tokens.size()]);
-		// for (int tokenIndex = 0; tokenIndex < tokensArray.length; tokenIndex++) {
-		// String token = tokensArray[tokenIndex];
-		// // If token is longer than permitted maxSize set it to maxSize else to a letter less than the token is long.
-		// int letterMax = maxSize != -1 && token.length() - 1 > maxSize ? maxSize : token.length() - 2;
-		// for (int letterIndex = letterMax; letterIndex >= minSize; letterIndex--) {
-		// String prefix = token.substring(0, letterIndex + 1);
-		// for (int comTokenIndex = tokenIndex + 1; comTokenIndex < tokensArray.length; comTokenIndex++) {
-		// if (tokensArray[comTokenIndex].startsWith(prefix)) {
-		// if (occurences.containsKey(prefix)) {
-		// int t = occurences.get(prefix) + 1;
-		// occurences.put(prefix, t);
-		// }
-		//
-		// else {
-		// occurences.put(prefix, 1);
-		// System.out.println("[PREFIX-VAR] [" + prefix + "] " + 1);
-		// }
-		// }
-		// }
-		// }
-		// }
-		// // generate a feature list
-		// List<Feature> featList = new ArrayList<Feature>();
-		// for (String prefix : occurences.keySet()) {
-		// double count = occurences.get(prefix) * 1000 / tokens.size();
-		// featList.add(new Feature(FN_PREFIX_VARIANT_PREFIX_HEU + prefix, count));
-		// }
-		// return featList;
+		List<String> tokens = JCasUtil.toText(JCasUtil.select(jcas, Token.class));
+		HashMap<String, Integer> occurences = new HashMap<String, Integer>();
+		String[] tokensArray = tokens.toArray(new String[tokens.size()]);
+		for (int tokenIndex = 0; tokenIndex < tokensArray.length; tokenIndex++) {
+			String token = tokensArray[tokenIndex];
+			// If token is longer than permitted maxSize set it to maxSize else to a letter less than the token is long.
+			int letterMax = maxSize != -1 && token.length() - 1 > maxSize ? maxSize : token.length() - 2;
+			for (int letterIndex = letterMax; letterIndex >= minSize; letterIndex--) {
+				String prefix = token.substring(0, letterIndex + 1);
+				for (int comTokenIndex = tokenIndex + 1; comTokenIndex < tokensArray.length; comTokenIndex++) {
+					if (tokensArray[comTokenIndex].startsWith(prefix)) {
+						if (occurences.containsKey(prefix)) {
+							int t = occurences.get(prefix) + 1;
+							occurences.put(prefix, t);
+						}
+
+						else {
+							occurences.put(prefix, 1);
+							System.out.println("[PREFIX-VAR] [" + prefix + "] " + 1);
+						}
+					}
+				}
+			}
+		}
+		// generate a feature list
+		List<Feature> featList = new ArrayList<Feature>();
+		for (String prefix : occurences.keySet()) {
+			double count = occurences.get(prefix) * 1000 / tokens.size();
+			featList.add(new Feature(FN_PREFIX_VARIANT_PREFIX_HEU + prefix, count));
+		}
+		return featList;
 
 	}
 }
