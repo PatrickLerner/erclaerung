@@ -67,7 +67,6 @@ public class AnalysisPipeline implements Constants {
 	 */
 	public void run() throws Exception {
 		this.setDkproHome();
-
 		if (this.input == null)
 			throw new RuntimeException("Input of pipeline is empty.");
 
