@@ -56,7 +56,7 @@ public class PrefixDistributionHeuristicMetaCollector extends FreqDistBasedMetaC
 
 						else {
 							occurences.put(prefix, 1);
-							System.out.println("[PREFIX-VAR] [" + prefix + "] " + 1);
+							System.out.println("[PRE_META] [" + prefix + "] " + 1);
 						}
 					}
 				}
