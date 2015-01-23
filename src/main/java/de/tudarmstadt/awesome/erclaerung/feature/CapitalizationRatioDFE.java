@@ -14,15 +14,23 @@ public class CapitalizationRatioDFE extends FeatureExtractorResource_ImplBase im
 	public static final String FN_CAPITAL_RATIO = "CapitalizationRatio";
 
 	public List<Feature> extract(JCas jcas) throws TextClassificationException {
-		String documentText = jcas.getDocumentText().toLowerCase();
+		String documentText = jcas.getDocumentText();
 		double capitalLetters = 0;
+		double nonCapitalLetters = 0;
 
 		for (char letter : documentText.toCharArray()) {
-			if (new String(new char[] { letter }).toUpperCase().toCharArray()[0] == letter)
-				capitalLetters += 1;
+			String str = new String(new char[] { letter });
+			if (str.toLowerCase().toCharArray()[0] != str.toUpperCase().toCharArray()[0]) {
+				if (str.toUpperCase().toCharArray()[0] == letter)
+					capitalLetters += 1;
+				else
+					nonCapitalLetters += 1;
+			}
 		}
 
-		double ratio = capitalLetters / documentText.length();
+		double ratio = 0;
+		if (nonCapitalLetters > 0)
+			ratio = capitalLetters / nonCapitalLetters;
 
 		// System.out.println("[CAPITAL] " + jcas.getDocumentLanguage() + " " + ratio);
 
