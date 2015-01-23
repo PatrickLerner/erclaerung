@@ -14,12 +14,7 @@ import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.Option;
 
 import weka.classifiers.bayes.NaiveBayes;
-import de.tudarmstadt.awesome.erclaerung.feature.CapitalizationRatioDFE;
-import de.tudarmstadt.awesome.erclaerung.feature.IchVariantsCountDFE;
-import de.tudarmstadt.awesome.erclaerung.feature.LetterDistributionDFE;
-import de.tudarmstadt.awesome.erclaerung.feature.PrefixDistributionDFE;
-import de.tudarmstadt.awesome.erclaerung.feature.UnSoundVnDominanceDFE;
-import de.tudarmstadt.awesome.erclaerung.feature.WSoundUUDominanceDFE;
+import de.tudarmstadt.awesome.erclaerung.feature.PrefixDistributionHeuristicDFE;
 import de.tudarmstadt.awesome.erclaerung.readers.BonnerXMLReader;
 import de.tudarmstadt.awesome.erclaerung.readers.UnlabeledTextReader;
 import de.tudarmstadt.awesome.erclaerung.reports.DebugReport;
@@ -29,8 +24,6 @@ import de.tudarmstadt.ukp.dkpro.lab.Lab;
 import de.tudarmstadt.ukp.dkpro.lab.task.Dimension;
 import de.tudarmstadt.ukp.dkpro.lab.task.ParameterSpace;
 import de.tudarmstadt.ukp.dkpro.tc.core.Constants;
-import de.tudarmstadt.ukp.dkpro.tc.features.length.NrOfTokensPerSentenceDFE;
-import de.tudarmstadt.ukp.dkpro.tc.features.ngram.LuceneNGramDFE;
 import de.tudarmstadt.ukp.dkpro.tc.features.ngram.base.FrequencyDistributionNGramFeatureExtractorBase;
 import de.tudarmstadt.ukp.dkpro.tc.weka.task.BatchTaskPrediction;
 import de.tudarmstadt.ukp.dkpro.tc.weka.writer.WekaDataWriter;
@@ -67,7 +60,6 @@ public class AnalysisPipeline implements Constants {
 	 */
 	public void run() throws Exception {
 		this.setDkproHome();
-
 		if (this.input == null)
 			throw new RuntimeException("Input of pipeline is empty.");
 
@@ -93,13 +85,14 @@ public class AnalysisPipeline implements Constants {
 		Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
 		                Arrays.asList(new String[] { NaiveBayes.class.getName() }));
 
-		Dimension<List<String>> dimFeatureSets = Dimension.create(
-		                DIM_FEATURE_SET,
-		                Arrays.asList(new String[] { NrOfTokensPerSentenceDFE.class.getName(),
-		                                IchVariantsCountDFE.class.getName(), LuceneNGramDFE.class.getName(),
-		                                LetterDistributionDFE.class.getName(), UnSoundVnDominanceDFE.class.getName(),
-		                                WSoundUUDominanceDFE.class.getName(), PrefixDistributionDFE.class.getName(),
-		                                CapitalizationRatioDFE.class.getName() }));
+		Dimension<List<String>> dimFeatureSets = Dimension.create(DIM_FEATURE_SET,
+		                Arrays.asList(new String[] { PrefixDistributionHeuristicDFE.class.getName()
+		                // NrOfTokensPerSentenceDFE.class.getName(),
+		                // IchVariantsCountDFE.class.getName(), LuceneNGramDFE.class.getName(),
+		                // LetterDistributionDFE.class.getName(), UnSoundVnDominanceDFE.class.getName(),
+		                // WSoundUUDominanceDFE.class.getName(), PrefixDistributionDFE.class.getName(),
+		                // CapitalizationRatioDFE.class.getName()
+		                }));
 
 		Dimension<List<Object>> dimPipelineParameters = Dimension.create(
 		                DIM_PIPELINE_PARAMS,

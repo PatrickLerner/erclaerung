@@ -17,9 +17,7 @@ import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
 
 /**
- * This engine analyses how common various ways to say the word modern German word "ich" exist in any source text. Some
- * variants "ik" are more common in northern German texts and softer variants such as "ich" are more common in central
- * and southern dialects.
+ * This engine analyses the distribution of some common prefixes.
  * 
  * @author patrick
  */
