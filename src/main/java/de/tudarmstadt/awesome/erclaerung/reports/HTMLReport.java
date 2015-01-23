@@ -34,6 +34,7 @@ public class HTMLReport extends BatchReportBase implements Constants {
 				FileInputStream f = new FileInputStream(store.getStorageFolder(subcontext.getId(),
 				                ExtractFeaturesAndPredictConnector.PREDICTION_MAP_FILE_NAME));
 				ObjectInputStream s = new ObjectInputStream(f);
+				@SuppressWarnings("unchecked")
 				Map<String, List<String>> resultMap = (Map<String, List<String>>) s.readObject();
 				s.close();
 

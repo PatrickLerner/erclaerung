@@ -17,10 +17,6 @@ public class LetterPositionDistributionDFE extends FeatureExtractorResource_Impl
 	public static final String LETTERS = "abcdefghijklmnopqrstuvwxyzßäöü";
 	public static final int[] POSITIONS = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
 
-	private void initializeHM(HashMap<String, Double> hashmap) {
-
-	}
-
 	private boolean positionsContains(int i) {
 		for (int j : POSITIONS) {
 			if (i == j)
