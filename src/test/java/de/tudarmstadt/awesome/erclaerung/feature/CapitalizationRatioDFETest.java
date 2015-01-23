@@ -1,4 +1,4 @@
-package de.tudarmstadt.awesome.erclaerung.feature.test;
+package de.tudarmstadt.awesome.erclaerung.feature;
 
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngine;
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
