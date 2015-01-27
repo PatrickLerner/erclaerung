@@ -9,13 +9,15 @@ import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
+import de.tudarmstadt.ukp.dkpro.tc.api.features.DocumentFeatureExtractor;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
 
-public class ReverseLetterPositionDistributionDFE extends FeatureExtractorResource_ImplBase {
-	public static final String FN_REVERSE_LETTER_POSITION_PREFIX = "Letter_Position";
+public class ReverseLetterPositionDistributionDFE extends FeatureExtractorResource_ImplBase implements
+                DocumentFeatureExtractor {
 	public static final String LETTERS = "abcdefghijklmnopqrstuvwxyzßäöü";
 	public static final int[] POSITIONS = { 0, 1 };
+	private static final String FN_REVERSE_LETTER_POSITION_PREFIX = "RevLetterPosition";
 
 	private boolean positionsContains(int i) {
 		for (int j : POSITIONS) {
@@ -45,16 +47,20 @@ public class ReverseLetterPositionDistributionDFE extends FeatureExtractorResour
 		List<String> tokens = JCasUtil.toText(JCasUtil.select(jcas, Token.class));
 		int count = 0;
 		for (String token : tokens) {
-			Character[] letterArray = ArrayUtils.toObject(token.toCharArray());
+			Character[] letterArray = ArrayUtils.toObject(token.toLowerCase().toCharArray());
 			for (int i = 0; i < letterArray.length; i++) {
-				if (positionsContains(i) && lettersContains(letterArray[letterArray.length - 1 - i]))
+				if (positionsContains(i) && lettersContains(letterArray[letterArray.length - 1 - i])) {
 					count++;
-				lettersAndPositions.put(letterArray[i].toString() + i,
-				                lettersAndPositions.get(letterArray[letterArray.length - 1 - i].toString() + i));
+					lettersAndPositions
+					                .put(letterArray[letterArray.length - 1 - i].toString() + i,
+					                                lettersAndPositions.get(letterArray[letterArray.length - 1 - i]
+					                                                .toString() + i) + 1);
+				}
 			}
 		}
 		List<Feature> featList = new ArrayList<Feature>();
 		for (String key : lettersAndPositions.keySet()) {
+			// System.out.println("key: " + key + " count: " + lettersAndPositions.get(key));
 			featList.add(new Feature(FN_REVERSE_LETTER_POSITION_PREFIX + key, lettersAndPositions.get(key) / count));
 		}
 		return featList;
