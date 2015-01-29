@@ -81,32 +81,32 @@ public class LevenshteinDistancePreComp {
 					if (++iter % 100 == 0)
 						System.out.println("Done: " + iter);
 					String token1 = tokensI.get(k).toLowerCase();
-					if (!tokensJ.contains(token1)) {
-						int len1 = token1.length();
-						if ((minWordLength == -1 || len1 >= minWordLength)
-						                && (maxWordLength == -1 || len1 <= maxWordLength)) {
-							for (int l = k + 1; l < tokensJ.size(); l++) {
-								String token2 = tokensJ.get(l).toLowerCase();
-								if (!tokensI.contains(token2)) {
-									int len2 = token2.length();
-									if ((minWordLength == -1 || len2 >= minWordLength)
-									                && (maxWordLength == -1 || len2 <= maxWordLength)) {
-										int levDist = computeLevenshteinDistance(token1, token2);
-										if (levDist <= maxDistance && levDist >= minDistance) {
-											String[] tuple = new String[] { token1, token2 };
-											String s = token1 + "_" + token2;
-											if (!closeToplesS.contains(s)) {
-												closeTuples.add(tuple);
-												closeToplesS.add(s);
-												System.out.println("Lev: " + levDist + " String1: " + token1
-												                + " String2:" + token2);
-											}
+					int len1 = token1.length();
+					if ((minWordLength == -1 || len1 >= minWordLength)
+					                && (maxWordLength == -1 || len1 <= maxWordLength)) {
+						for (int l = k + 1; l < tokensJ.size(); l++) {
+							String token2 = tokensJ.get(l).toLowerCase();
+							int len2 = token2.length();
+							if ((minWordLength == -1 || len2 >= minWordLength)
+							                && (maxWordLength == -1 || len2 <= maxWordLength)) {
+								int levDist = computeLevenshteinDistance(token1, token2);
+								if (levDist <= maxDistance && levDist >= minDistance) {
+									String[] tuple = new String[] { token1, token2 };
+									String s = token1 + "_" + token2;
+									if (!closeToplesS.contains(s)) {
+										if (!tokensJ.contains(token1) && !tokensI.contains(token2)) {
+											closeTuples.add(tuple);
+											closeToplesS.add(s);
+											System.out.println("Lev: " + levDist + " String1: " + token1 + " String2:"
+											                + token2);
 										}
 									}
 								}
 							}
+
 						}
 					}
+
 				}
 			}
 		}
