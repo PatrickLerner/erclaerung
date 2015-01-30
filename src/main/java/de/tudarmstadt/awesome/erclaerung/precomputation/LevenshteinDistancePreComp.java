@@ -118,8 +118,6 @@ public class LevenshteinDistancePreComp {
 											// + token2);
 											similarWordCount++;
 											writer.println(s);
-											writer.println(token1.substring(0, token1.length() - 1));
-											writer.println(token2.substring(0, token2.length() - 1));
 										}
 									}
 								}
