@@ -1,6 +1,8 @@
 package de.tudarmstadt.awesome.erclaerung.precomputation;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +27,11 @@ public class LevenshteinDistancePreComp {
 	private static int minDistance = 1;
 	private static int maxDistance = 1;
 	private static int maxWordLength = -1;
-	private static int minWordLength = 5;
+	private static int minWordLength = 7;
+	// Filters the last letters from levenshtein computation
+	private static int suffixRepression = 1;
+	private File output = new File("src/main/resources/precomputation/levenshtein.txt");
+	PrintWriter writer = new PrintWriter(output, "UTF-8");
 
 	// from dkpro.similarity.algorithms.api
 	// seems not to be in Maven -> copy/paste
@@ -63,28 +69,37 @@ public class LevenshteinDistancePreComp {
 		// Collect all jcas
 		System.out.println("Collecting documents for Levenshtein Comparison.");
 		ArrayList<List<String>> tokens = new ArrayList<List<String>>();
+		List<String> xmlNames = new ArrayList<String>();
 		for (JCas jcas : new JCasIterable(reader)) {
 			SimplePipeline.runPipeline(jcas, segmenter);
 			tokens.add(JCasUtil.toText(JCasUtil.select(jcas, Token.class)));
-			System.out.println("[LEV-PRE]" + " Added " + getDocumentName(jcas));
+			xmlNames.add(getDocumentName(jcas));
 		}
 		List<String[]> closeTuples = new ArrayList<String[]>();
 		List<String> closeToplesS = new ArrayList<String>();
-
+		// List A
 		for (int i = 0; i < tokens.size(); i++) {
 			List<String> tokensI = tokens.get(i);
+			// List B
 			for (int j = i + 1; j < tokens.size(); j++) {
+				int similarWordCount = 0;
+				System.out.println("[LEV-PRE] " + xmlNames.get(i) + "->" + xmlNames.get(j) + "(" + (j - i) + "/"
+				                + (tokens.size() - i - 1) + ")");
+				writer.println("\n\n" + xmlNames.get(i) + "->" + xmlNames.get(j) + "\n");
+				writer.flush();
 				List<String> tokensJ = tokens.get(j);
-				System.out.println("Checking " + tokensJ.size() + " tokens.");
 				int iter = 0;
+				// Token A
 				for (int k = 0; k < tokensI.size(); k++) {
-					if (++iter % 100 == 0)
-						System.out.println("Done: " + iter);
+					if (++iter % 500 == 0)
+						System.out.println("[LEV-PRE] Tokens: " + iter + "/" + tokensI.size());
+
 					String token1 = tokensI.get(k).toLowerCase();
 					int len1 = token1.length();
 					if ((minWordLength == -1 || len1 >= minWordLength)
 					                && (maxWordLength == -1 || len1 <= maxWordLength)) {
 						for (int l = k + 1; l < tokensJ.size(); l++) {
+							// Token B
 							String token2 = tokensJ.get(l).toLowerCase();
 							int len2 = token2.length();
 							if ((minWordLength == -1 || len2 >= minWordLength)
@@ -94,23 +109,40 @@ public class LevenshteinDistancePreComp {
 									String[] tuple = new String[] { token1, token2 };
 									String s = token1 + "_" + token2;
 									if (!closeToplesS.contains(s)) {
-										if (!tokensJ.contains(token1) && !tokensI.contains(token2)) {
+										if (manualFilter(token1, token2) && !tokensJ.contains(token1)
+										                && !tokensI.contains(token2)) {
 											closeTuples.add(tuple);
 											closeToplesS.add(s);
-											System.out.println("Lev: " + levDist + " String1: " + token1 + " String2:"
-											                + token2);
+											// System.out.println("Lev: " + levDist + " String1: " + token1 +
+											// " String2:"
+											// + token2);
+											similarWordCount++;
+											writer.println(s);
+											writer.println(token1.substring(0, token1.length() - 1));
+											writer.println(token2.substring(0, token2.length() - 1));
 										}
 									}
 								}
 							}
-
 						}
 					}
-
 				}
+				System.out.println("[LEV-PRE] Found " + similarWordCount + " similar words.");
+				writer.flush();
 			}
 		}
+		writer.close();
+	}
 
+	private boolean manualFilter(String token1, String token2) {
+		// strings are same except for last letter.
+		if (suffixRepression > 0) {
+			String token1Shave = token1.substring(0, token1.length() - suffixRepression);
+			String token2Shave = token2.substring(0, token2.length() - suffixRepression);
+			if (token1Shave.equals(token2) || token1Shave.equals(token2Shave) || token2Shave.equals(token1))
+				return false;
+		}
+		return true;
 	}
 
 	private String getDocumentName(final JCas jcas) {
