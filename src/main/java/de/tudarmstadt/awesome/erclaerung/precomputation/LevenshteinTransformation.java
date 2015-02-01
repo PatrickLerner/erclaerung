@@ -1,5 +1,6 @@
 package de.tudarmstadt.awesome.erclaerung.precomputation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LevenshteinTransformation {
@@ -40,6 +41,19 @@ public class LevenshteinTransformation {
 			}
 		}
 		return sb.toString();
+	}
+
+	public List<LevenshteinStep> getLevenshteinSteps() {
+		return this.steps;
+	}
+
+	public List<LevenshteinStep> getIndexReversedLevenshteinSteps() {
+		List<LevenshteinStep> reversed = new ArrayList<LevenshteinStep>();
+		for (LevenshteinStep step : steps) {
+			reversed.add(new LevenshteinStep(this.string1.length() - step.getIndex() - 1, step.getOp(), step
+			                .getLetter()));
+		}
+		return reversed;
 	}
 
 }

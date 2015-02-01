@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
@@ -54,10 +56,13 @@ public class LevenshteinDistancePreComp {
 		return Math.min(Math.min(a, b), c);
 	}
 
+	public static LevenshteinTransformation getTransformation(String string1, String string2) {
+		List<LevenshteinStep> steps = LevenshteinDistancePreComp.getSimplestTransformationPath(string1, string2);
+		return new LevenshteinTransformation(string1, string2, steps);
+	}
+
 	private static String getTransformationStepsPretty(String string1, String string2) {
-		LevenshteinTransformation trans = new LevenshteinTransformation(string1, string2,
-		                LevenshteinDistancePreComp.getSimplestTransformationPath(string1, string2));
-		return trans.toStringWithTransformation(false);
+		return LevenshteinDistancePreComp.getTransformation(string1, string2).toStringWithTransformation(false);
 	}
 
 	private static List<LevenshteinStep> computeSteps(int[][] levenshteinMatrix, String str1, String str2) {
@@ -195,6 +200,7 @@ public class LevenshteinDistancePreComp {
 		System.out.println("Collecting documents for Levenshtein Comparison.");
 		ArrayList<List<String>> tokens = new ArrayList<List<String>>();
 		List<String> xmlNames = new ArrayList<String>();
+		List<LevenshteinStep> collectedSteps = new ArrayList<LevenshteinStep>();
 		for (JCas jcas : new JCasIterable(reader)) {
 			SimplePipeline.runPipeline(jcas, segmenter);
 			tokens.add(JCasUtil.toText(JCasUtil.select(jcas, Token.class)));
@@ -243,6 +249,8 @@ public class LevenshteinDistancePreComp {
 											// + token2);
 											similarWordCount++;
 
+											collectedSteps.addAll(LevenshteinDistancePreComp.getTransformation(token1,
+											                token2).getIndexReversedLevenshteinSteps());
 											writer.println("\n"
 											                + LevenshteinDistancePreComp.getTransformationStepsPretty(
 											                                token1, token2));
@@ -253,10 +261,21 @@ public class LevenshteinDistancePreComp {
 						}
 					}
 				}
+				HashMap<LevenshteinStep, Integer> stepSet = new HashMap<LevenshteinStep, Integer>();
+				List<LevenshteinStep> seen = new ArrayList<LevenshteinStep>();
+				for (LevenshteinStep levenshteinStep : collectedSteps) {
+					if (!seen.contains(levenshteinStep)) {
+						seen.add(levenshteinStep);
+						if (levenshteinStep.getOp() != LevenshteinStep.Operation.NONOP)
+							stepSet.put(levenshteinStep, Collections.frequency(collectedSteps, levenshteinStep));
+					}
+				}
+				System.out.println(stepSet.toString().replace(",", "\n"));
 				System.out.println("[LEV-PRE] Found " + similarWordCount + " similar words.");
 				writer.flush();
 			}
 		}
+
 		writer.close();
 		long endTime = System.nanoTime();
 		System.out.println("Took " + (endTime - startTime) / 1000000 + " milliseconds.");

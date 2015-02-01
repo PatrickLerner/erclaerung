@@ -77,4 +77,12 @@ public class LevenshteinStep {
 		return op;
 	}
 
+	public int getIndex() {
+		return index;
+	}
+
+	public char getLetter() {
+		return letter;
+	}
+
 }
