@@ -29,7 +29,6 @@ public class LevenshteinDistancePreComp {
 	private static int maxDistance = 1;
 	private static int maxWordLength = -1;
 	private static int minWordLength = 7;
-	// Filters the last letters from levenshtein computation
 	private static int suffixRepression = 1;
 	private File output = new File("src/main/resources/precomputation/levenshtein.txt");
 	PrintWriter writer;
@@ -38,12 +37,14 @@ public class LevenshteinDistancePreComp {
 		writer = new PrintWriter(output, "UTF-8");
 	}
 
-	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
+	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException,
+	                AnalysisEngineProcessException, ResourceInitializationException {
 		LevenshteinDistancePreComp lev = new LevenshteinDistancePreComp();
-		System.out.println(getTransformationStepsPretty("parfum", "pxyzarfm"));
-		System.out.println(levenshteinDistance("parfum", "pxyzarfm"));
-		System.out.println(getTransformationStepsPretty("test", "ts"));
-		System.out.println(getTransformationStepsPretty("verboten", "vorboten"));
+		lev.computeList();
+		// System.out.println(getTransformationStepsPretty("parfum", "pxyzarfm"));
+		// System.out.println(levenshteinDistance("parfum", "pxyzarfm"));
+		// System.out.println(getTransformationStepsPretty("test", "ts"));
+		// System.out.println(getTransformationStepsPretty("verboten", "vorboten"));
 		// System.out.println(lev.computeLevenshteinDistance("parfum", "xxxxx"));
 		// System.out.println(lev.computeLevenshteinDistance("parfum", "hallo"));
 		// System.out.println(lev.computeLevenshteinDistance("parfum", "putzm"));
@@ -56,7 +57,7 @@ public class LevenshteinDistancePreComp {
 	private static String getTransformationStepsPretty(String string1, String string2) {
 		LevenshteinTransformation trans = new LevenshteinTransformation(string1, string2,
 		                LevenshteinDistancePreComp.getSimplestTransformationPath(string1, string2));
-		return trans.toStringWithTransformation();
+		return trans.toStringWithTransformation(false);
 	}
 
 	private static List<LevenshteinStep> computeSteps(int[][] levenshteinMatrix, String str1, String str2) {
@@ -170,17 +171,7 @@ public class LevenshteinDistancePreComp {
 
 				// keep minimum cost
 				newcost[i] = Math.min(Math.min(cost_insert, cost_delete), cost_replace);
-				if (newcost[i] > cost[i - 1]) {
-					if (cost_replace == newcost[i]) {
-						System.out.println(i + "/" + j + " Replace");
-					}
-					else if (cost_insert == newcost[i]) {
-						System.out.println(i + "/" + j + " Insert");
-					}
-					else if (cost_delete == newcost[i]) {
-						System.out.println(i + "/" + j + " Delete");
-					}
-				}
+
 			}
 
 			// swap cost/newcost arrays
@@ -251,7 +242,10 @@ public class LevenshteinDistancePreComp {
 											// " String2:"
 											// + token2);
 											similarWordCount++;
-											writer.println(s);
+
+											writer.println("\n"
+											                + LevenshteinDistancePreComp.getTransformationStepsPretty(
+											                                token1, token2));
 										}
 									}
 								}

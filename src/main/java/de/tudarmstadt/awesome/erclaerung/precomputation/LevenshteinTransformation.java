@@ -23,19 +23,21 @@ public class LevenshteinTransformation {
 		return sb.toString();
 	}
 
-	public String toStringWithTransformation() {
+	public String toStringWithTransformation(boolean withNonOp) {
 		StringBuilder sb = new StringBuilder();
 		String string = string1;
 		sb.append(this.string1 + "->" + this.string2 + ":");
 		int modifier = 0;
 		for (LevenshteinStep levenshteinStep : steps) {
-			sb.append("\n" + levenshteinStep.toString());
-			string = levenshteinStep.getAdjustedString(string, modifier);
-			sb.append(": " + string);
-			if (levenshteinStep.getOp() == LevenshteinStep.Operation.INSERT)
-				modifier++;
-			else if (levenshteinStep.getOp() == LevenshteinStep.Operation.DELETE)
-				modifier--;
+			if (withNonOp || !levenshteinStep.getOp().equals(LevenshteinStep.Operation.NONOP)) {
+				sb.append("\n" + levenshteinStep.toString());
+				string = levenshteinStep.getAdjustedString(string, modifier);
+				sb.append(": " + string);
+				if (levenshteinStep.getOp() == LevenshteinStep.Operation.INSERT)
+					modifier++;
+				else if (levenshteinStep.getOp() == LevenshteinStep.Operation.DELETE)
+					modifier--;
+			}
 		}
 		return sb.toString();
 	}
