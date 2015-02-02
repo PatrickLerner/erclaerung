@@ -1,7 +1,8 @@
 package de.tudarmstadt.awesome.erclaerung.precomputation;
 
-public class LevenshteinStep {
+public class LevenshteinStep implements Comparable<LevenshteinStep> {
 	private int index;
+	// private int indexOfString2;
 	private Operation op;
 	private char letter;
 
@@ -71,6 +72,18 @@ public class LevenshteinStep {
 	@Override
 	public String toString() {
 		return operationToString(op) + ": " + letter + " at " + index;
+	}
+
+	public int compareTo(LevenshteinStep o) {
+		int comIndex = Integer.compare(this.index, o.index);
+		if (comIndex == 0) {
+			int comOp = this.getOp().compareTo(o.getOp());
+			if (comOp == 0) {
+				return Character.compare(this.getLetter(), o.getLetter());
+			}
+			return comOp;
+		}
+		return comIndex;
 	}
 
 	public Operation getOp() {

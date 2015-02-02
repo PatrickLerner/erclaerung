@@ -15,6 +15,16 @@ public class LevenshteinTransformation {
 	}
 
 	@Override
+	public boolean equals(Object o) {
+		if (!o.getClass().equals(this.getClass()))
+			return false;
+		else if (o.toString().equals(this.toString()))
+			return true;
+		else
+			return false;
+	}
+
+	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(this.string1 + "->" + this.string2 + ":");
@@ -24,6 +34,13 @@ public class LevenshteinTransformation {
 		return sb.toString();
 	}
 
+	/**
+	 * Returns a String <strong>including intermediate results of the applied changes.</strong>
+	 * 
+	 * @param withNonOp
+	 *            When true Non-Operations are returned. Generally this should be false.
+	 * @return A printable String showing the complete calculation.
+	 */
 	public String toStringWithTransformation(boolean withNonOp) {
 		StringBuilder sb = new StringBuilder();
 		String string = string1;
@@ -43,15 +60,37 @@ public class LevenshteinTransformation {
 		return sb.toString();
 	}
 
-	public List<LevenshteinStep> getLevenshteinSteps() {
-		return this.steps;
+	/**
+	 * Returns the steps taken during the Transformation from one string to the other.
+	 * 
+	 * @param withNonOps
+	 *            When true Non-Operations are returned. Generally this should be false.
+	 * @return A List of {@link LevenshteinStep}s.
+	 */
+	public List<LevenshteinStep> getLevenshteinSteps(boolean withNonOps) {
+		List<LevenshteinStep> _return = new ArrayList<LevenshteinStep>();
+		for (LevenshteinStep step : this.steps) {
+			if (withNonOps || !step.getOp().equals(LevenshteinStep.Operation.NONOP))
+				_return.add(step);
+		}
+		return _return;
 	}
 
-	public List<LevenshteinStep> getIndexReversedLevenshteinSteps() {
+	/**
+	 * Returns the steps taken during the Transformation from one string to the other <strong>with the indexes of the
+	 * steps reversed regarding the length of the source string.</strong> This makes it easier to analyze changes of
+	 * suffixes.
+	 * 
+	 * @param withNonOps
+	 *            When true Non-Operations are returned. Generally this should be false.
+	 * @return A List of {@link LevenshteinStep}s.
+	 */
+	public List<LevenshteinStep> getIndexReversedLevenshteinSteps(boolean withNonOps) {
 		List<LevenshteinStep> reversed = new ArrayList<LevenshteinStep>();
-		for (LevenshteinStep step : steps) {
-			reversed.add(new LevenshteinStep(this.string1.length() - step.getIndex() - 1, step.getOp(), step
-			                .getLetter()));
+		for (LevenshteinStep step : this.steps) {
+			if (withNonOps || !step.getOp().equals(LevenshteinStep.Operation.NONOP))
+				reversed.add(new LevenshteinStep(this.string1.length() - step.getIndex() - 1, step.getOp(), step
+				                .getLetter()));
 		}
 		return reversed;
 	}

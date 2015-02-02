@@ -6,8 +6,13 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -25,6 +30,10 @@ import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
 
+/**
+ * @author Manuel
+ *
+ */
 public class LevenshteinDistancePreComp {
 
 	private static int minDistance = 1;
@@ -65,7 +74,18 @@ public class LevenshteinDistancePreComp {
 		return LevenshteinDistancePreComp.getTransformation(string1, string2).toStringWithTransformation(false);
 	}
 
-	private static List<LevenshteinStep> computeSteps(int[][] levenshteinMatrix, String str1, String str2) {
+	/**
+	 * Returns one of the simplest paths to convert one string into another in <Strong>correct order of indexes</Strong>
+	 * of source string.
+	 * 
+	 * @param str1
+	 *            Source String
+	 * @param str2
+	 *            Destination String
+	 * @return A List of {@link LevenshteinStep}s representing the steps from one string to another.
+	 */
+	public static List<LevenshteinStep> getSimplestTransformationPath(String str1, String str2) {
+		int[][] levenshteinMatrix = getLevenshteinMatrix(str1, str2);
 		List<LevenshteinStep> reverseSteps = new ArrayList<LevenshteinStep>();
 		int i = levenshteinMatrix.length - 1;
 		int j = levenshteinMatrix[0].length - 1;
@@ -115,7 +135,17 @@ public class LevenshteinDistancePreComp {
 		return steps;
 	}
 
-	public static List<LevenshteinStep> getSimplestTransformationPath(CharSequence str1, CharSequence str2) {
+	/**
+	 * Returns a matrix consisting of the possible steps to convert one string into another. See
+	 * http://stackoverflow.com/a/10641240 for an excellent explanation.
+	 * 
+	 * @param str1
+	 *            source string
+	 * @param str2
+	 *            destination string
+	 * @return A matrix containing all possible ways to go from one string to another.
+	 */
+	private static int[][] getLevenshteinMatrix(CharSequence str1, CharSequence str2) {
 		int[][] distance = new int[str1.length() + 1][str2.length() + 1];
 
 		for (int i = 0; i <= str1.length(); i++) {
@@ -140,11 +170,21 @@ public class LevenshteinDistancePreComp {
 			}
 		}
 		// System.out.println(Arrays.deepToString(distance).replace("],", "\n") + "\n");
-		return computeSteps(distance, str1.toString(), str2.toString());
+		return distance;
 		// return distance[str1.length()][str2.length()];
 	}
 
 	// from http://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#Java
+	/**
+	 * Returns the levenshtein distance between two strings which is a measure for the steps needed to convert one
+	 * string into another.
+	 * 
+	 * @param s0
+	 *            string 1.
+	 * @param s1
+	 *            string 2.
+	 * @return The levenshtein distance. see: http://en.wikipedia.org/wiki/Levenshtein_distance.
+	 */
 	public static int levenshteinDistance(String s0, String s1) {
 		int len0 = s0.length() + 1;
 		int len1 = s1.length() + 1;
@@ -250,7 +290,7 @@ public class LevenshteinDistancePreComp {
 											similarWordCount++;
 
 											collectedSteps.addAll(LevenshteinDistancePreComp.getTransformation(token1,
-											                token2).getIndexReversedLevenshteinSteps());
+											                token2).getIndexReversedLevenshteinSteps(false));
 											writer.println("\n"
 											                + LevenshteinDistancePreComp.getTransformationStepsPretty(
 											                                token1, token2));
@@ -266,11 +306,11 @@ public class LevenshteinDistancePreComp {
 				for (LevenshteinStep levenshteinStep : collectedSteps) {
 					if (!seen.contains(levenshteinStep)) {
 						seen.add(levenshteinStep);
-						if (levenshteinStep.getOp() != LevenshteinStep.Operation.NONOP)
-							stepSet.put(levenshteinStep, Collections.frequency(collectedSteps, levenshteinStep));
+						stepSet.put(levenshteinStep, Collections.frequency(collectedSteps, levenshteinStep));
 					}
 				}
-				System.out.println(stepSet.toString().replace(",", "\n"));
+				Map<LevenshteinStep, Integer> sortedStepSet = sortByComparator(stepSet, false);
+				System.out.println(sortedStepSet.toString().replace(",", "\n"));
 				System.out.println("[LEV-PRE] Found " + similarWordCount + " similar words.");
 				writer.flush();
 			}
@@ -295,6 +335,34 @@ public class LevenshteinDistancePreComp {
 	private String getDocumentName(final JCas jcas) {
 		DocumentMetaData aMetaData = DocumentMetaData.get(jcas);
 		return aMetaData.getDocumentId();
+	}
+
+	private static Map<LevenshteinStep, Integer> sortByComparator(Map<LevenshteinStep, Integer> unsortMap,
+	                final boolean ascending) {
+
+		List<Entry<LevenshteinStep, Integer>> list = new LinkedList<Entry<LevenshteinStep, Integer>>(
+		                unsortMap.entrySet());
+
+		// Sorting the list based on values
+		Collections.sort(list, new Comparator<Entry<LevenshteinStep, Integer>>() {
+			public int compare(Entry<LevenshteinStep, Integer> o1, Entry<LevenshteinStep, Integer> o2) {
+				if (ascending) {
+					return o1.getValue().compareTo(o2.getValue());
+				}
+				else {
+					return o2.getValue().compareTo(o1.getValue());
+
+				}
+			}
+		});
+
+		// Maintaining insertion order with the help of LinkedList
+		Map<LevenshteinStep, Integer> sortedMap = new LinkedHashMap<LevenshteinStep, Integer>();
+		for (Entry<LevenshteinStep, Integer> entry : list) {
+			sortedMap.put(entry.getKey(), entry.getValue());
+		}
+
+		return sortedMap;
 	}
 
 }
