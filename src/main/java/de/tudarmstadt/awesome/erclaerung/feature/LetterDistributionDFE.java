@@ -17,7 +17,7 @@ import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBas
  * @author patrick
  */
 public class LetterDistributionDFE extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor {
-	public static final String FN_LETTER_RATIO_PREFIX = "LetterRatio";
+	public static final String FN_LETTER_RATIO_PREFIX = "LetterRatio_";
 
 	/**
 	 * The letters we are actually looking at, discounting any 'special characters' or other unknown ones

@@ -2,7 +2,6 @@ package de.tudarmstadt.awesome.erclaerung.reports;
 
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,12 +31,12 @@ public class DebugReport extends BatchReportBase implements Constants {
 				Map<String, List<String>> resultMap = (Map<String, List<String>>) s.readObject();
 				s.close();
 
+				System.out.println("\n\nDEBUG REPORT:\n");
 				// temp output, should be in html somehow later on
 				for (String id : resultMap.keySet()) {
-					Map<String, String> row = new HashMap<String, String>();
-					row.put(predicted_value, StringUtils.join(resultMap.get(id), ","));
-					System.out.println(id + "\t" + row);
+					System.out.println(StringUtils.leftPad(id, 25) + ": " + StringUtils.join(resultMap.get(id), ","));
 				}
+				System.out.println("\nDEBUG REPORT END\n\n");
 			}
 		}
 	}
