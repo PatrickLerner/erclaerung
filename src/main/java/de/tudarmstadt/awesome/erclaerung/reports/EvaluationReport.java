@@ -30,7 +30,7 @@ public class EvaluationReport extends BatchReportBase implements Constants {
 			coords = new HashMap<String, Point>();
 
 			/*
-			 * Longitude and Latitude of where the dialect is uses must be defined here
+			 * Longitude and Latitude of where the dialect is used must be defined here
 			 */
 			coords.put("mbair", new Point(48, 11));
 			coords.put("schwaeb", new Point(47, 10));
