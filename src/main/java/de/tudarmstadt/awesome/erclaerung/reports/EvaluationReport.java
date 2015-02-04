@@ -1,7 +1,9 @@
 package de.tudarmstadt.awesome.erclaerung.reports;
 
 import java.awt.Point;
+import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.ObjectInputStream;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +15,7 @@ import de.tudarmstadt.ukp.dkpro.lab.reporting.BatchReportBase;
 import de.tudarmstadt.ukp.dkpro.lab.storage.StorageService;
 import de.tudarmstadt.ukp.dkpro.lab.task.TaskContextMetadata;
 import de.tudarmstadt.ukp.dkpro.tc.core.Constants;
+import de.tudarmstadt.ukp.dkpro.tc.weka.task.BatchTaskCrossValidation;
 import de.tudarmstadt.ukp.dkpro.tc.weka.task.ExtractFeaturesAndPredictTask;
 import de.tudarmstadt.ukp.dkpro.tc.weka.task.uima.ExtractFeaturesAndPredictConnector;
 
@@ -46,6 +49,10 @@ public class EvaluationReport extends BatchReportBase implements Constants {
 
 		StorageService store = getContext().getStorageService();
 		for (TaskContextMetadata subcontext : getSubtasks()) {
+			double sum = 0;
+			double count = 0;
+			System.out.println("\n\nEVALUATION REPORT:\n");
+			System.out.println("The smaller the number the better the prediction is.\n");
 			if (subcontext.getType().startsWith(ExtractFeaturesAndPredictTask.class.getName())) {
 				// deserialize file
 				FileInputStream f = new FileInputStream(store.getStorageFolder(subcontext.getId(),
@@ -55,22 +62,40 @@ public class EvaluationReport extends BatchReportBase implements Constants {
 				Map<String, List<String>> resultMap = (Map<String, List<String>>) s.readObject();
 				s.close();
 
-				double sum = 0;
-				double count = 0;
-				System.out.println("\n\nEVALUATION REPORT:\n");
-				System.out.println("The smaller the number the better the prediction is.\n");
 				for (String id : resultMap.keySet()) {
-					String fileName = id.substring(0, id.indexOf('.'));
+					String real = id.substring(0, id.indexOf('.'));
 					String pred = StringUtils.join(resultMap.get(id), ",");
-					double res = this.getDistance(fileName, pred);
+
+					double res = this.getDistance(real, pred);
 					count += 1;
 					sum += res;
+
 					System.out.println(StringUtils.leftPad(id, 25) + ": " + StringUtils.center(pred, 7) + " " + res);
 				}
-				System.out.println("");
-				System.out.println(StringUtils.leftPad("Average Result: ", 25) + (sum / count));
-				System.out.println("\nEVALUATION REPORT END\n\n");
 			}
+			else if (subcontext.getType().startsWith(BatchTaskCrossValidation.class.getName())) {
+				FileReader fileReader = new FileReader(store.getStorageFolder(subcontext.getId(), "id2outcome.txt"));
+				BufferedReader bufferedReader = new BufferedReader(fileReader);
+				String line;
+				while ((line = bufferedReader.readLine()) != null) {
+					if (line.contains("=")) {
+						String id = line.substring(0, line.indexOf('='));
+						String pred = line.substring(line.indexOf('=') + 1, line.indexOf(';'));
+						String real = line.substring(line.indexOf(';') + 1);
+
+						double res = this.getDistance(real, pred);
+						count += 1;
+						sum += res;
+
+						System.out.println(StringUtils.leftPad(id, 25) + ": " + StringUtils.center(real, 7) + " "
+						                + StringUtils.center(pred, 7) + " " + res);
+					}
+				}
+				fileReader.close();
+			}
+			System.out.println("");
+			System.out.println(StringUtils.leftPad("Average Result: ", 25) + (sum / count));
+			System.out.println("\nEVALUATION REPORT END\n\n");
 		}
 	}
 }

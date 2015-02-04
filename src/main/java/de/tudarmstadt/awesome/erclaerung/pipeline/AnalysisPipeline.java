@@ -29,10 +29,14 @@ import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
 import de.tudarmstadt.ukp.dkpro.lab.Lab;
 import de.tudarmstadt.ukp.dkpro.lab.task.Dimension;
 import de.tudarmstadt.ukp.dkpro.lab.task.ParameterSpace;
+import de.tudarmstadt.ukp.dkpro.lab.task.impl.BatchTask;
 import de.tudarmstadt.ukp.dkpro.tc.core.Constants;
 import de.tudarmstadt.ukp.dkpro.tc.features.length.NrOfTokensPerSentenceDFE;
 import de.tudarmstadt.ukp.dkpro.tc.features.ngram.LuceneNGramDFE;
 import de.tudarmstadt.ukp.dkpro.tc.features.ngram.base.FrequencyDistributionNGramFeatureExtractorBase;
+import de.tudarmstadt.ukp.dkpro.tc.weka.report.BatchCrossValidationReport;
+import de.tudarmstadt.ukp.dkpro.tc.weka.report.BatchRuntimeReport;
+import de.tudarmstadt.ukp.dkpro.tc.weka.task.BatchTaskCrossValidation;
 import de.tudarmstadt.ukp.dkpro.tc.weka.task.BatchTaskPrediction;
 import de.tudarmstadt.ukp.dkpro.tc.weka.writer.WekaDataWriter;
 
@@ -55,6 +59,9 @@ public class AnalysisPipeline implements Constants {
 	public void setTempDirectory(String path) {
 		this.tempDirectory = path;
 	}
+
+	@Option(name = "-v", usage = "run cross validation with 'leave one out'")
+	private boolean runCrossValidation;
 
 	private void setDkproHome() {
 		if (this.tempDirectory == null)
@@ -85,6 +92,7 @@ public class AnalysisPipeline implements Constants {
 		                Arrays.asList(new Object[] { BonnerXMLReader.PARAM_SOURCE_LOCATION,
 		                                "src/main/resources/bonner_korpora_train/*.xml" }));
 		// unlabeled data which will be classified using the trained model
+
 		dimReaders.put(DIM_READER_TEST, UnlabeledTextReader.class);
 		dimReaders.put(DIM_READER_TEST_PARAMS,
 		                Arrays.asList(new Object[] { UnlabeledTextReader.PARAM_SOURCE_LOCATION,
@@ -110,7 +118,6 @@ public class AnalysisPipeline implements Constants {
 		                                FrequencyDistributionNGramFeatureExtractorBase.PARAM_NGRAM_USE_TOP_K, "1000",
 		                                FrequencyDistributionNGramFeatureExtractorBase.PARAM_NGRAM_MIN_N, 1,
 		                                FrequencyDistributionNGramFeatureExtractorBase.PARAM_NGRAM_MAX_N, 5 }));
-
 		ParameterSpace pSpace = new ParameterSpace(Dimension.createBundle("readers", dimReaders), Dimension.create(
 		                DIM_DATA_WRITER, WekaDataWriter.class.getName()), Dimension.create(DIM_LEARNING_MODE,
 		                LM_SINGLE_LABEL), Dimension.create(DIM_FEATURE_MODE, FM_DOCUMENT), dimPipelineParameters,
@@ -120,15 +127,19 @@ public class AnalysisPipeline implements Constants {
 	}
 
 	protected void runPrediction(ParameterSpace pSpace) throws Exception {
-		BatchTaskPrediction batch = new BatchTaskPrediction("DialectPrediction", getPreprocessing());
-		// BatchTaskCrossValidation batch = new BatchTaskCrossValidation("Dialect", getPreprocessing(), 40);
+		BatchTask batch;
+		if (runCrossValidation)
+			batch = new BatchTaskCrossValidation("Dialect", getPreprocessing(), 40);
+		else
+			batch = new BatchTaskPrediction("DialectPrediction", getPreprocessing());
 		batch.setParameterSpace(pSpace);
 
 		batch.addReport(DebugReport.class);
 		batch.addReport(HTMLReport.class);
 		batch.addReport(EvaluationReport.class);
-		// batch.addReport(WekaBatchCrossValidationReport.class);
-		// batch.addReport(WekaBatchRuntimeReport.class);
+		if (runCrossValidation)
+			batch.addReport(BatchCrossValidationReport.class);
+		batch.addReport(BatchRuntimeReport.class);
 		// Run
 		Lab.getInstance().run(batch);
 	}
