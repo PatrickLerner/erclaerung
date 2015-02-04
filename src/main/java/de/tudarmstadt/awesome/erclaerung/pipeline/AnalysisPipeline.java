@@ -23,6 +23,7 @@ import de.tudarmstadt.awesome.erclaerung.feature.WSoundUUDominanceDFE;
 import de.tudarmstadt.awesome.erclaerung.readers.BonnerXMLReader;
 import de.tudarmstadt.awesome.erclaerung.readers.UnlabeledTextReader;
 import de.tudarmstadt.awesome.erclaerung.reports.DebugReport;
+import de.tudarmstadt.awesome.erclaerung.reports.EvaluationReport;
 import de.tudarmstadt.awesome.erclaerung.reports.HTMLReport;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
 import de.tudarmstadt.ukp.dkpro.lab.Lab;
@@ -125,6 +126,7 @@ public class AnalysisPipeline implements Constants {
 
 		batch.addReport(DebugReport.class);
 		batch.addReport(HTMLReport.class);
+		batch.addReport(EvaluationReport.class);
 		// batch.addReport(WekaBatchCrossValidationReport.class);
 		// batch.addReport(WekaBatchRuntimeReport.class);
 		// Run
