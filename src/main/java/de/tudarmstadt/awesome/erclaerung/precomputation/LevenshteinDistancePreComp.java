@@ -39,8 +39,8 @@ public class LevenshteinDistancePreComp {
 	private static int minDistance = 1;
 	private static int maxDistance = 1;
 	private static int maxWordLength = -1;
-	private static int minWordLength = 7;
-	private static int suffixRepression = 1;
+	private static int minWordLength = 6;
+	private static int suffixRepression = 0;
 	private File output = new File("src/main/resources/precomputation/levenshtein.txt");
 	PrintWriter writer;
 
@@ -65,6 +65,14 @@ public class LevenshteinDistancePreComp {
 		return Math.min(Math.min(a, b), c);
 	}
 
+	/**
+	 * Convenience method to quickly get a Transformation from two strings
+	 * 
+	 * @param string1
+	 * @param string2
+	 * @return A {@link LevenshteinTransformation} consisting of the simplest transformation path between the two
+	 *         strings.
+	 */
 	public static LevenshteinTransformation getTransformation(String string1, String string2) {
 		List<LevenshteinStep> steps = LevenshteinDistancePreComp.getSimplestTransformationPath(string1, string2);
 		return new LevenshteinTransformation(string1, string2, steps);
@@ -161,12 +169,6 @@ public class LevenshteinDistancePreComp {
 				int insert = distance[i][j - 1] + 1;
 				int replace = distance[i - 1][j - 1] + ((str1.charAt(i - 1) == str2.charAt(j - 1)) ? 0 : 1);
 				distance[i][j] = minimum(insert, delete, replace);
-				/*
-				 * if (insert <= delete && insert <= replace) System.out.println("insert " + distance[i][j]); if (delete
-				 * <= insert && delete <= replace) System.out.println("delete " + distance[i][j]); if (replace <= insert
-				 * && replace <= delete) System.out.println("replace " + distance[i][j]);
-				 */
-				// System.out.println(Arrays.deepToString(distance).replace("],", "\n") + "\n");
 			}
 		}
 		// System.out.println(Arrays.deepToString(distance).replace("],", "\n") + "\n");
@@ -241,30 +243,30 @@ public class LevenshteinDistancePreComp {
 		ArrayList<List<String>> tokens = new ArrayList<List<String>>();
 		List<String> xmlNames = new ArrayList<String>();
 		List<LevenshteinStep> collectedSteps = new ArrayList<LevenshteinStep>();
+		List<LevenshteinTransformation> collectedTransformations = new ArrayList<LevenshteinTransformation>();
+		// read Documents
 		for (JCas jcas : new JCasIterable(reader)) {
 			SimplePipeline.runPipeline(jcas, segmenter);
 			tokens.add(JCasUtil.toText(JCasUtil.select(jcas, Token.class)));
 			xmlNames.add(getDocumentName(jcas));
 		}
-		List<String[]> closeTuples = new ArrayList<String[]>();
-		List<String> closeToplesS = new ArrayList<String>();
-		// List A
+		List<String> closeTuplesS = new ArrayList<String>();
 		for (int i = 0; i < tokens.size(); i++) {
+			// List A
 			List<String> tokensI = tokens.get(i);
-			// List B
 			for (int j = i + 1; j < tokens.size(); j++) {
 				int similarWordCount = 0;
 				System.out.println("[LEV-PRE] " + xmlNames.get(i) + "->" + xmlNames.get(j) + "(" + (j - i) + "/"
 				                + (tokens.size() - i - 1) + ")");
 				writer.println("\n\n" + xmlNames.get(i) + "->" + xmlNames.get(j) + "\n");
 				writer.flush();
+				// List B
 				List<String> tokensJ = tokens.get(j);
 				int iter = 0;
-				// Token A
 				for (int k = 0; k < tokensI.size(); k++) {
 					if (++iter % 500 == 0)
 						System.out.println("[LEV-PRE] Tokens: " + iter + "/" + tokensI.size());
-
+					// Token A
 					String token1 = tokensI.get(k).toLowerCase();
 					int len1 = token1.length();
 					if ((minWordLength == -1 || len1 >= minWordLength)
@@ -275,25 +277,22 @@ public class LevenshteinDistancePreComp {
 							int len2 = token2.length();
 							if ((minWordLength == -1 || len2 >= minWordLength)
 							                && (maxWordLength == -1 || len2 <= maxWordLength)) {
+								// Get Levenshtein Distance
 								int levDist = levenshteinDistance(token1, token2);
 								if (levDist <= maxDistance && levDist >= minDistance) {
-									String[] tuple = new String[] { token1, token2 };
 									String s = token1 + "_" + token2;
-									if (!closeToplesS.contains(s)) {
+									if (!closeTuplesS.contains(s)) {
+										closeTuplesS.add(s);
 										if (manualFilter(token1, token2) && !tokensJ.contains(token1)
 										                && !tokensI.contains(token2)) {
-											closeTuples.add(tuple);
-											closeToplesS.add(s);
-											// System.out.println("Lev: " + levDist + " String1: " + token1 +
-											// " String2:"
-											// + token2);
 											similarWordCount++;
 
-											collectedSteps.addAll(LevenshteinDistancePreComp.getTransformation(token1,
-											                token2).getIndexReversedLevenshteinSteps(false));
-											writer.println("\n"
-											                + LevenshteinDistancePreComp.getTransformationStepsPretty(
-											                                token1, token2));
+											// collectedSteps.addAll(LevenshteinDistancePreComp.getTransformation(token1,
+											// token2).getIndexReversedLevenshteinSteps(false));
+											LevenshteinTransformation trans = LevenshteinDistancePreComp
+											                .getTransformation(token1, token2);
+											collectedTransformations.add(trans);
+											writer.println("\n" + trans.toStringWithTransformation(false));
 										}
 									}
 								}
@@ -301,21 +300,22 @@ public class LevenshteinDistancePreComp {
 						}
 					}
 				}
-				HashMap<LevenshteinStep, Integer> stepSet = new HashMap<LevenshteinStep, Integer>();
-				List<LevenshteinStep> seen = new ArrayList<LevenshteinStep>();
-				for (LevenshteinStep levenshteinStep : collectedSteps) {
-					if (!seen.contains(levenshteinStep)) {
-						seen.add(levenshteinStep);
-						stepSet.put(levenshteinStep, Collections.frequency(collectedSteps, levenshteinStep));
-					}
-				}
-				Map<LevenshteinStep, Integer> sortedStepSet = sortByComparator(stepSet, false);
-				System.out.println(sortedStepSet.toString().replace(",", "\n"));
+
 				System.out.println("[LEV-PRE] Found " + similarWordCount + " similar words.");
 				writer.flush();
 			}
-		}
 
+		}
+		HashMap<LevenshteinStep, Integer> stepSet = new HashMap<LevenshteinStep, Integer>();
+		List<LevenshteinStep> seen = new ArrayList<LevenshteinStep>();
+		for (LevenshteinStep levenshteinStep : collectedSteps) {
+			if (!seen.contains(levenshteinStep)) {
+				seen.add(levenshteinStep);
+				stepSet.put(levenshteinStep, Collections.frequency(collectedSteps, levenshteinStep));
+			}
+		}
+		Map<LevenshteinStep, Integer> sortedStepSet = sortByComparator(stepSet, false);
+		System.out.println(sortedStepSet.toString().replace(",", "\n"));
 		writer.close();
 		long endTime = System.nanoTime();
 		System.out.println("Took " + (endTime - startTime) / 1000000 + " milliseconds.");

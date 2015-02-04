@@ -24,6 +24,12 @@ public class LevenshteinTransformation {
 			return false;
 	}
 
+	public boolean indexReversedEquals(LevenshteinTransformation other) {
+		if (this.getIndexReversedLevenshteinSteps(false).equals(other.getIndexReversedLevenshteinSteps(false)))
+			return true;
+		return false;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
