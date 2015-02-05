@@ -23,8 +23,8 @@ public class StartsWithKOrChDominance extends FeatureExtractorResource_ImplBase 
 
 	public List<Feature> extract(JCas jcas) throws TextClassificationException {
 		List<String> tokens = JCasUtil.toText(JCasUtil.select(jcas, Token.class));
-		int k = 0;
-		int ch = 0;
+		long k = 0;
+		long ch = 0;
 		// initialize the count for all variants with zero
 
 		for (String token : tokens) {

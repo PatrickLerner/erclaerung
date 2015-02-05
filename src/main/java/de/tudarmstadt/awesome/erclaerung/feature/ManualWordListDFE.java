@@ -38,7 +38,9 @@ public class ManualWordListDFE extends FeatureExtractorResource_ImplBase impleme
 
 		// Collect manual word List
 		for (String line : lines) {
-			if (line.contains("->")) {
+			if (line == "" || line.contains("Insert") || line.contains("Delete") || line.contains("Substitution"))
+				; // Do nothing
+			else if (line.contains("->")) {
 				String[] words = line.split("->");
 				occurences.put(words[0], 0);
 				occurences.put(words[1], 0);
@@ -48,12 +50,13 @@ public class ManualWordListDFE extends FeatureExtractorResource_ImplBase impleme
 			}
 		}
 		for (String token : tokens) {
-			if (occurences.keySet().contains(token)) {
-				occurences.put(token, occurences.get(token) + 1);
+			String tokenLower = token.toLowerCase();
+			if (occurences.keySet().contains(tokenLower)) {
+				occurences.put(tokenLower, occurences.get(tokenLower) + 1);
 			}
 		}
 		for (String key : occurences.keySet()) {
-			featList.add(new Feature(FN_MANUAL_PREFIX + key, occurences.get(key) * 1000 / tokens.size()));
+			featList.add(new Feature(FN_MANUAL_PREFIX + key, occurences.get(key) * 1000 / occurences.keySet().size()));
 		}
 
 		return featList;
