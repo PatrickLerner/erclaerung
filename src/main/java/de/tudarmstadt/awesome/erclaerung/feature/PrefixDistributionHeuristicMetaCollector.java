@@ -53,10 +53,8 @@ public class PrefixDistributionHeuristicMetaCollector extends FreqDistBasedMetaC
 							int t = occurences.get(prefix) + 1;
 							occurences.put(prefix, t);
 						}
-
 						else {
 							occurences.put(prefix, 1);
-							System.out.println("[PRE_META] [" + prefix + "] " + 1);
 						}
 					}
 				}
@@ -64,6 +62,7 @@ public class PrefixDistributionHeuristicMetaCollector extends FreqDistBasedMetaC
 		}
 		// generate a fd
 		for (String key : occurences.keySet()) {
+			System.out.println("[PRE_META] [" + key + "] " + occurences.get(key));
 			fd.addSample(key, occurences.get(key));
 		}
 	}

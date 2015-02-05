@@ -1,11 +1,11 @@
 package de.tudarmstadt.awesome.erclaerung.reports;
 
-import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.ObjectInputStream;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -19,32 +19,59 @@ import de.tudarmstadt.ukp.dkpro.tc.weka.task.BatchTaskCrossValidation;
 import de.tudarmstadt.ukp.dkpro.tc.weka.task.ExtractFeaturesAndPredictTask;
 import de.tudarmstadt.ukp.dkpro.tc.weka.task.uima.ExtractFeaturesAndPredictConnector;
 
-public class EvaluationReport extends BatchReportBase implements Constants {
-	private HashMap<String, Point> coords;
+public class EvaluationReportNeighbors extends BatchReportBase implements Constants {
+	private HashMap<String, HashSet<String>> connections;
 
-	private double getDistance(String a, String b) {
-		Point ap = coords.get(a);
-		Point bp = coords.get(b);
-		return Math.sqrt(Math.pow(ap.getX() - bp.getX(), 2) + Math.pow(ap.getY() - bp.getY(), 2));
+	private void addConnection(String a, String b) {
+		HashSet<String> neighbors = new HashSet<String>();
+		if (this.connections.containsKey(a))
+			neighbors = this.connections.get(a);
+		neighbors.add(b);
+		this.connections.put(a, neighbors);
+
+		neighbors = new HashSet<String>();
+		if (this.connections.containsKey(b))
+			neighbors = this.connections.get(b);
+		neighbors.add(a);
+		this.connections.put(b, neighbors);
+	}
+
+	private double calculateNeighborScore(String real, String pred) {
+		HashSet<String> real_s = connections.get(real);
+		// HashSet<String> pred_s = connections.get(pred);
+		if (real.equals(pred))
+			return 0;
+		else if (real_s.contains(pred))
+			return 1;
+		else
+			return 5;
 	}
 
 	public void execute() throws Exception {
-		if (this.coords == null) {
-			coords = new HashMap<String, Point>();
-
-			/*
-			 * Longitude and Latitude of where the dialect is used must be defined here
-			 */
-			coords.put("mbair", new Point(48, 11));
-			coords.put("schwaeb", new Point(47, 10));
-			coords.put("ofr", new Point(49, 11));
-			coords.put("obs", new Point(51, 13));
-			coords.put("rip", new Point(50, 6));
-			coords.put("ohchal", new Point(47, 9));
-			coords.put("oschwaeb", new Point(48, 10));
-			coords.put("els", new Point(48, 7));
-			coords.put("hess", new Point(50, 8));
-			coords.put("thuer", new Point(50, 11));
+		if (this.connections == null) {
+			this.connections = new HashMap<String, HashSet<String>>();
+			addConnection("rip", "thuer");
+			addConnection("rip", "hess");
+			addConnection("thuer", "hess");
+			addConnection("ofr", "hess");
+			addConnection("ofr", "thuer");
+			addConnection("obs", "thuer");
+			addConnection("obs", "hess");
+			addConnection("els", "schwaeb");
+			addConnection("hess", "schwaeb");
+			addConnection("els", "hess");
+			addConnection("ofr", "schwaeb");
+			addConnection("ohchal", "els");
+			addConnection("ohchal", "schwaeb");
+			addConnection("oschwaeb", "schwaeb");
+			addConnection("ofr", "oschwaeb");
+			addConnection("ohchal", "mbair");
+			addConnection("mbair", "");
+			addConnection("oschwaeb", "");
+			addConnection("mbair", "schwaeb");
+			addConnection("ohchal", "oschwaeb");
+			addConnection("els", "rip");
+			addConnection("ofr", "mbair");
 		}
 
 		StorageService store = getContext().getStorageService();
@@ -53,7 +80,7 @@ public class EvaluationReport extends BatchReportBase implements Constants {
 			double count = 0;
 			if (subcontext.getType().startsWith(ExtractFeaturesAndPredictTask.class.getName())
 			                || subcontext.getType().startsWith(BatchTaskCrossValidation.class.getName())) {
-				System.out.println("\n\nEVALUATION REPORT:\n");
+				System.out.println("\n\nEVALUATION (NEIGHBORS) REPORT:\n");
 				System.out.println("The smaller the number the better the prediction is.\n");
 			}
 			if (subcontext.getType().startsWith(ExtractFeaturesAndPredictTask.class.getName())) {
@@ -69,13 +96,13 @@ public class EvaluationReport extends BatchReportBase implements Constants {
 					String real = id.substring(0, id.indexOf('_'));
 					String pred = StringUtils.join(resultMap.get(id), ",");
 
-					System.out.print(StringUtils.leftPad(id, 25) + ": " + StringUtils.center(pred, 7) + " ");
+					System.out.print(StringUtils.leftPad(id, 25) + ": ");
 
-					double res = this.getDistance(real, pred);
+					double res = this.calculateNeighborScore(real, pred);
 					count += 1;
 					sum += res;
 
-					System.out.println(res);
+					System.out.println(StringUtils.center(pred, 7) + " " + res);
 				}
 			}
 			else if (subcontext.getType().startsWith(BatchTaskCrossValidation.class.getName())) {
@@ -88,7 +115,7 @@ public class EvaluationReport extends BatchReportBase implements Constants {
 						String pred = line.substring(line.indexOf('=') + 1, line.indexOf(';'));
 						String real = line.substring(line.indexOf(';') + 1);
 
-						double res = this.getDistance(real, pred);
+						double res = this.calculateNeighborScore(real, pred);
 						count += 1;
 						sum += res;
 
@@ -102,7 +129,7 @@ public class EvaluationReport extends BatchReportBase implements Constants {
 			                || subcontext.getType().startsWith(BatchTaskCrossValidation.class.getName())) {
 				System.out.println("");
 				System.out.println(StringUtils.leftPad("Average Result: ", 25) + (sum / count));
-				System.out.println("\nEVALUATION REPORT END\n\n");
+				System.out.println("\nEVALUATION (NEIGHBORS) REPORT END\n\n");
 			}
 		}
 	}

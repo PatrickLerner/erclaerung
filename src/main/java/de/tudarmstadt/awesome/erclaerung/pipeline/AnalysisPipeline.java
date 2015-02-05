@@ -15,6 +15,7 @@ import org.kohsuke.args4j.Option;
 
 import weka.classifiers.bayes.NaiveBayes;
 import de.tudarmstadt.awesome.erclaerung.feature.CapitalizationRatioDFE;
+import de.tudarmstadt.awesome.erclaerung.feature.CzSoundTsDominanceDFE;
 import de.tudarmstadt.awesome.erclaerung.feature.IchVariantsCountDFE;
 import de.tudarmstadt.awesome.erclaerung.feature.LetterDistributionDFE;
 import de.tudarmstadt.awesome.erclaerung.feature.PrefixDistributionDFE;
@@ -24,6 +25,7 @@ import de.tudarmstadt.awesome.erclaerung.readers.BonnerXMLReader;
 import de.tudarmstadt.awesome.erclaerung.readers.UnlabeledTextReader;
 import de.tudarmstadt.awesome.erclaerung.reports.DebugReport;
 import de.tudarmstadt.awesome.erclaerung.reports.EvaluationReport;
+import de.tudarmstadt.awesome.erclaerung.reports.EvaluationReportNeighbors;
 import de.tudarmstadt.awesome.erclaerung.reports.HTMLReport;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
 import de.tudarmstadt.ukp.dkpro.lab.Lab;
@@ -96,21 +98,19 @@ public class AnalysisPipeline implements Constants {
 		dimReaders.put(DIM_READER_TEST, UnlabeledTextReader.class);
 		dimReaders.put(DIM_READER_TEST_PARAMS,
 		                Arrays.asList(new Object[] { UnlabeledTextReader.PARAM_SOURCE_LOCATION,
-		                                "src/main/resources/wiki_test/*.txt" }));
+		                                "src/main/resources/wiki_test/*_*.txt" }));
 
 		Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
 		                Arrays.asList(new String[] { NaiveBayes.class.getName() }));
 
-		Dimension<List<String>> dimFeatureSets = Dimension
-		                .create(DIM_FEATURE_SET,
-		                                Arrays.asList(new String[] { // PrefixDistributionHeuristicDFE.class.getName()
-		                                NrOfTokensPerSentenceDFE.class.getName(), IchVariantsCountDFE.class.getName(),
-		                                                LuceneNGramDFE.class.getName(),
-		                                                LetterDistributionDFE.class.getName(),
-		                                                UnSoundVnDominanceDFE.class.getName(),
-		                                                WSoundUUDominanceDFE.class.getName(),
-		                                                PrefixDistributionDFE.class.getName(),
-		                                                CapitalizationRatioDFE.class.getName() }));
+		Dimension<List<String>> dimFeatureSets = Dimension.create(
+		                DIM_FEATURE_SET,
+		                Arrays.asList(new String[] { // PrefixDistributionHeuristicDFE.class.getName()
+		                NrOfTokensPerSentenceDFE.class.getName(), IchVariantsCountDFE.class.getName(),
+		                                LuceneNGramDFE.class.getName(), LetterDistributionDFE.class.getName(),
+		                                UnSoundVnDominanceDFE.class.getName(), WSoundUUDominanceDFE.class.getName(),
+		                                PrefixDistributionDFE.class.getName(), CapitalizationRatioDFE.class.getName(),
+		                                CzSoundTsDominanceDFE.class.getName() }));
 
 		Dimension<List<Object>> dimPipelineParameters = Dimension.create(
 		                DIM_PIPELINE_PARAMS,
@@ -137,6 +137,7 @@ public class AnalysisPipeline implements Constants {
 		batch.addReport(DebugReport.class);
 		batch.addReport(HTMLReport.class);
 		batch.addReport(EvaluationReport.class);
+		batch.addReport(EvaluationReportNeighbors.class);
 		if (runCrossValidation)
 			batch.addReport(BatchCrossValidationReport.class);
 		batch.addReport(BatchRuntimeReport.class);
