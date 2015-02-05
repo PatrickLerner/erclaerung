@@ -21,6 +21,7 @@ import de.tudarmstadt.awesome.erclaerung.feature.LetterDistributionDFE;
 import de.tudarmstadt.awesome.erclaerung.feature.PrefixDistributionDFE;
 import de.tudarmstadt.awesome.erclaerung.feature.UnSoundVnDominanceDFE;
 import de.tudarmstadt.awesome.erclaerung.feature.WSoundUUDominanceDFE;
+import de.tudarmstadt.awesome.erclaerung.precomputation.PrefixDistributionHeuristicPre;
 import de.tudarmstadt.awesome.erclaerung.readers.BonnerXMLReader;
 import de.tudarmstadt.awesome.erclaerung.readers.UnlabeledTextReader;
 import de.tudarmstadt.awesome.erclaerung.reports.DebugReport;
@@ -80,6 +81,10 @@ public class AnalysisPipeline implements Constants {
 		if (this.input == null)
 			throw new RuntimeException("Input of pipeline is empty.");
 
+		// Precomputation
+		PrefixDistributionHeuristicPre prePre = new PrefixDistributionHeuristicPre();
+		prePre.computeList();
+
 		ParameterSpace pSpace = getParameterSpace();
 		runPrediction(pSpace);
 	}
@@ -103,14 +108,12 @@ public class AnalysisPipeline implements Constants {
 		Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
 		                Arrays.asList(new String[] { NaiveBayes.class.getName() }));
 
-		Dimension<List<String>> dimFeatureSets = Dimension.create(
-		                DIM_FEATURE_SET,
-		                Arrays.asList(new String[] { // PrefixDistributionHeuristicDFE.class.getName()
+		Dimension<List<String>> dimFeatureSets = Dimension.create(DIM_FEATURE_SET, Arrays.asList(new String[] {
 		                NrOfTokensPerSentenceDFE.class.getName(), IchVariantsCountDFE.class.getName(),
-		                                LuceneNGramDFE.class.getName(), LetterDistributionDFE.class.getName(),
-		                                UnSoundVnDominanceDFE.class.getName(), WSoundUUDominanceDFE.class.getName(),
-		                                PrefixDistributionDFE.class.getName(), CapitalizationRatioDFE.class.getName(),
-		                                CzSoundTsDominanceDFE.class.getName() }));
+		                LuceneNGramDFE.class.getName(), LetterDistributionDFE.class.getName(),
+		                UnSoundVnDominanceDFE.class.getName(), WSoundUUDominanceDFE.class.getName(),
+		                PrefixDistributionDFE.class.getName(), CapitalizationRatioDFE.class.getName(),
+		                CzSoundTsDominanceDFE.class.getName() }));
 
 		Dimension<List<Object>> dimPipelineParameters = Dimension.create(
 		                DIM_PIPELINE_PARAMS,

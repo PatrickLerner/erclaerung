@@ -37,7 +37,7 @@ public class LetterDistributionDFE extends FeatureExtractorResource_ImplBase imp
 		for (char l : documentText.toCharArray()) {
 			if (letterCount.containsKey(l)) {
 				letterCount.put(l, letterCount.get(l) + 1);
-				totalLetterCount += 1;
+				totalLetterCount++;
 			}
 		}
 
