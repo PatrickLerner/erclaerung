@@ -15,8 +15,8 @@ import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBas
 
 public class ReverseLetterPositionDistributionDFE extends FeatureExtractorResource_ImplBase implements
                 DocumentFeatureExtractor {
-	public static final String LETTERS = "abcdefghijklmnopqrstuvwxyzßäöü";
-	public static final int[] POSITIONS = { 0, 1 };
+	public static final String LETTERS = "e";
+	public static final int[] POSITIONS = { 1, 0 };
 	private static final String FN_REVERSE_LETTER_POSITION_PREFIX = "RevLetterPosition";
 
 	private boolean positionsContains(int i) {

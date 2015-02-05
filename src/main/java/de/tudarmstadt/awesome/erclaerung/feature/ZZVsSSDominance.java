@@ -32,10 +32,11 @@ public class ZZVsSSDominance extends FeatureExtractorResource_ImplBase implement
 				s++;
 			}
 		}
-		featList.add(new Feature(FN_ZZ_SS_PREFIX + "_ss", ss / tokens.size()));
-		featList.add(new Feature(FN_ZZ_SS_PREFIX + "_z", zz / tokens.size()));
-		featList.add(new Feature(FN_ZZ_SS_PREFIX + "_s", s / tokens.size()));
-		System.out.println("zz:" + (zz / tokens.size()) + " ss:" + (ss / tokens.size()) + "s:" + (s / tokens.size()));
+		featList.add(new Feature(FN_ZZ_SS_PREFIX + "_ss", ss * 1000 / tokens.size()));
+		featList.add(new Feature(FN_ZZ_SS_PREFIX + "_z", zz * 1000 / tokens.size()));
+		featList.add(new Feature(FN_ZZ_SS_PREFIX + "_s", s * 1000 / tokens.size()));
+		// System.out.println("zz:" + (zz / tokens.size()) + " ss:" + (ss / tokens.size()) + "s:" + (s /
+		// tokens.size()));
 		return featList;
 	}
 }

@@ -60,6 +60,8 @@ public class LetterPositionDistributionDFE extends FeatureExtractorResource_Impl
 		List<Feature> featList = new ArrayList<Feature>();
 		for (String key : lettersAndPositions.keySet()) {
 			// System.out.println("key: " + key + " count: " + lettersAndPositions.get(key));
+			System.out.println(FN_LETTER_POSITION_PREFIX + key);
+			System.out.println(lettersAndPositions.get(key) / count);
 			featList.add(new Feature(FN_LETTER_POSITION_PREFIX + key, lettersAndPositions.get(key) / count));
 		}
 		return featList;
