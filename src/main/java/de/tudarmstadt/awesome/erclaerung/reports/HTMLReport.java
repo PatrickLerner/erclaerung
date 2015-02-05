@@ -51,7 +51,7 @@ public class HTMLReport extends BatchReportBase implements Constants {
 		htmlString = htmlString.replace(dataPlaceHolder, "");
 
 		FileUtils.writeStringToFile(output, htmlString);
-		System.out.print("HTML report created at: " + output.getAbsolutePath());
+		System.out.println("HTML report created at: " + output.getAbsolutePath());
 	}
 
 }
