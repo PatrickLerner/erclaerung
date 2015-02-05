@@ -51,8 +51,11 @@ public class EvaluationReport extends BatchReportBase implements Constants {
 		for (TaskContextMetadata subcontext : getSubtasks()) {
 			double sum = 0;
 			double count = 0;
-			System.out.println("\n\nEVALUATION REPORT:\n");
-			System.out.println("The smaller the number the better the prediction is.\n");
+			if (subcontext.getType().startsWith(ExtractFeaturesAndPredictTask.class.getName())
+			                || subcontext.getType().startsWith(BatchTaskCrossValidation.class.getName())) {
+				System.out.println("\n\nEVALUATION REPORT:\n");
+				System.out.println("The smaller the number the better the prediction is.\n");
+			}
 			if (subcontext.getType().startsWith(ExtractFeaturesAndPredictTask.class.getName())) {
 				// deserialize file
 				FileInputStream f = new FileInputStream(store.getStorageFolder(subcontext.getId(),
@@ -93,9 +96,12 @@ public class EvaluationReport extends BatchReportBase implements Constants {
 				}
 				fileReader.close();
 			}
-			System.out.println("");
-			System.out.println(StringUtils.leftPad("Average Result: ", 25) + (sum / count));
-			System.out.println("\nEVALUATION REPORT END\n\n");
+			if (subcontext.getType().startsWith(ExtractFeaturesAndPredictTask.class.getName())
+			                || subcontext.getType().startsWith(BatchTaskCrossValidation.class.getName())) {
+				System.out.println("");
+				System.out.println(StringUtils.leftPad("Average Result: ", 25) + (sum / count));
+				System.out.println("\nEVALUATION REPORT END\n\n");
+			}
 		}
 	}
 }
