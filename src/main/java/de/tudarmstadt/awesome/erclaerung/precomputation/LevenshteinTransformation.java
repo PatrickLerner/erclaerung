@@ -3,6 +3,8 @@ package de.tudarmstadt.awesome.erclaerung.precomputation;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.tudarmstadt.awesome.erclaerung.precomputation.LevenshteinStep.Operation;
+
 public class LevenshteinTransformation {
 	private String string1;
 	private String string2;
@@ -14,20 +16,16 @@ public class LevenshteinTransformation {
 		this.steps = steps;
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (!o.getClass().equals(this.getClass()))
-			return false;
-		else if (o.toString().equals(this.toString()))
-			return true;
-		else
-			return false;
+	public boolean stepsEquals(LevenshteinTransformation other) {
+		return (this.getLevenshteinSteps(false).equals(other.getLevenshteinSteps(false)));
 	}
 
-	public boolean indexReversedEquals(LevenshteinTransformation other) {
-		if (this.getIndexReversedLevenshteinSteps(false).equals(other.getIndexReversedLevenshteinSteps(false)))
-			return true;
-		return false;
+	public boolean indexReversedStepsEquals(LevenshteinTransformation other) {
+		return (this.getIndexReversedLevenshteinSteps(false).equals(other.getIndexReversedLevenshteinSteps(false)));
+	}
+
+	public String toTitleString() {
+		return string1 + "->" + string2;
 	}
 
 	@Override
@@ -94,9 +92,15 @@ public class LevenshteinTransformation {
 	public List<LevenshteinStep> getIndexReversedLevenshteinSteps(boolean withNonOps) {
 		List<LevenshteinStep> reversed = new ArrayList<LevenshteinStep>();
 		for (LevenshteinStep step : this.steps) {
-			if (withNonOps || !step.getOp().equals(LevenshteinStep.Operation.NONOP))
-				reversed.add(new LevenshteinStep(this.string1.length() - step.getIndex() - 1, step.getOp(), step
-				                .getLetter()));
+			if (withNonOps || !step.getOp().equals(LevenshteinStep.Operation.NONOP)) {
+				if (step.getOp() == Operation.SUBSTITUTION)
+					reversed.add(new LevenshteinStep(this.string1.length() - step.getIndex(), step.getOp(), step
+					                .getLetter(), step.getLetter2()));
+				else
+					reversed.add(new LevenshteinStep(this.string1.length() - step.getIndex(), step.getOp(), step
+					                .getLetter()));
+			}
+
 		}
 		return reversed;
 	}

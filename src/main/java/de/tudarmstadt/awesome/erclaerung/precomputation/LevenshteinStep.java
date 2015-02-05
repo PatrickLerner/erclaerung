@@ -5,6 +5,18 @@ public class LevenshteinStep implements Comparable<LevenshteinStep> {
 	// private int indexOfString2;
 	private Operation op;
 	private char letter;
+	private char letter2;
+
+	public LevenshteinStep(int position, Operation operation, char letter) {
+		this.index = position;
+		this.op = operation;
+		this.letter = letter;
+	}
+
+	public LevenshteinStep(int position, Operation operation, char letter, char letter2) {
+		this(position, operation, letter);
+		this.letter2 = letter2;
+	}
 
 	public static enum Operation {
 		INSERT, DELETE, SUBSTITUTION, NONOP
@@ -24,15 +36,6 @@ public class LevenshteinStep implements Comparable<LevenshteinStep> {
 				return "Case not set.";
 
 		}
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (!o.getClass().equals(this.getClass()))
-			return false;
-		else if (o.toString().equals(this.toString()))
-			return true;
-		return false;
 	}
 
 	// Modifier is the number of inserts already done minus the deletes already done.
@@ -63,14 +66,10 @@ public class LevenshteinStep implements Comparable<LevenshteinStep> {
 		}
 	}
 
-	public LevenshteinStep(int position, Operation operation, char letter) {
-		this.index = position;
-		this.op = operation;
-		this.letter = letter;
-	}
-
 	@Override
 	public String toString() {
+		if (op == Operation.SUBSTITUTION)
+			return operationToString(op) + ": " + letter + " at " + index + " substituting " + this.letter2;
 		return operationToString(op) + ": " + letter + " at " + index;
 	}
 
@@ -79,7 +78,9 @@ public class LevenshteinStep implements Comparable<LevenshteinStep> {
 		if (comIndex == 0) {
 			int comOp = this.getOp().compareTo(o.getOp());
 			if (comOp == 0) {
-				return Character.compare(this.getLetter(), o.getLetter());
+				int comChar1 = Character.compare(this.getLetter(), o.getLetter());
+				if (comChar1 == 0)
+					return Character.compare(this.letter2, o.letter2);
 			}
 			return comOp;
 		}
@@ -96,6 +97,41 @@ public class LevenshteinStep implements Comparable<LevenshteinStep> {
 
 	public char getLetter() {
 		return letter;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + index;
+		result = prime * result + letter;
+		result = prime * result + letter2;
+		result = prime * result + ((op == null) ? 0 : op.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		LevenshteinStep other = (LevenshteinStep) obj;
+		if (index != other.index)
+			return false;
+		if (letter != other.letter)
+			return false;
+		if (letter2 != other.letter2)
+			return false;
+		if (op != other.op)
+			return false;
+		return true;
+	}
+
+	public char getLetter2() {
+		return letter2;
 	}
 
 }
