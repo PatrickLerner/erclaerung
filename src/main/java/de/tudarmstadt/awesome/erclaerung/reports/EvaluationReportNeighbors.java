@@ -102,7 +102,7 @@ public class EvaluationReportNeighbors extends BatchReportBase implements Consta
 					count += 1;
 					sum += res;
 
-					System.out.println(StringUtils.center(pred, 7) + " " + res);
+					System.out.println(StringUtils.center(pred, 9) + " " + res);
 				}
 			}
 			else if (subcontext.getType().startsWith(BatchTaskCrossValidation.class.getName())) {
@@ -119,7 +119,7 @@ public class EvaluationReportNeighbors extends BatchReportBase implements Consta
 						count += 1;
 						sum += res;
 
-						System.out.println(StringUtils.leftPad(id, 25) + ": " + StringUtils.center(real, 7) + " "
+						System.out.println(StringUtils.leftPad(id, 25) + ": " + StringUtils.center(real, 9) + " "
 						                + StringUtils.center(pred, 7) + " " + res);
 					}
 				}

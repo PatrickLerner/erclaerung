@@ -69,7 +69,7 @@ public class EvaluationReport extends BatchReportBase implements Constants {
 					String real = id.substring(0, id.indexOf('_'));
 					String pred = StringUtils.join(resultMap.get(id), ",");
 
-					System.out.print(StringUtils.leftPad(id, 25) + ": " + StringUtils.center(pred, 7) + " ");
+					System.out.print(StringUtils.leftPad(id, 25) + ": " + StringUtils.center(pred, 9) + " ");
 
 					double res = this.getDistance(real, pred);
 					count += 1;
@@ -92,7 +92,7 @@ public class EvaluationReport extends BatchReportBase implements Constants {
 						count += 1;
 						sum += res;
 
-						System.out.println(StringUtils.leftPad(id, 25) + ": " + StringUtils.center(real, 7) + " "
+						System.out.println(StringUtils.leftPad(id, 25) + ": " + StringUtils.center(real, 9) + " "
 						                + StringUtils.center(pred, 7) + " " + res);
 					}
 				}
