@@ -53,7 +53,7 @@ public class LevenshteinStep implements Comparable<LevenshteinStep> {
 				else
 					return source.substring(0, this.index + modifier) + source.substring(index + 1 + modifier);
 			case SUBSTITUTION:
-				if (this.index == 0)
+				if (this.index + modifier == 0)
 					return this.letter + source.substring(1);
 				else
 					return source.substring(0, this.index + modifier) + this.letter
