@@ -66,8 +66,7 @@ public class EvaluationReportNeighbors extends BatchReportBase implements Consta
 			addConnection("oschwaeb", "schwaeb");
 			addConnection("ofr", "oschwaeb");
 			addConnection("ohchal", "mbair");
-			addConnection("mbair", "");
-			addConnection("oschwaeb", "");
+			addConnection("mbair", "oschwaeb");
 			addConnection("mbair", "schwaeb");
 			addConnection("ohchal", "oschwaeb");
 			addConnection("els", "rip");
