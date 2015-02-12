@@ -13,7 +13,7 @@ import org.kohsuke.args4j.Option;
 
 import weka.classifiers.bayes.NaiveBayes;
 import de.tudarmstadt.awesome.erclaerung.feature.CapitalizationRatioDFE;
-import de.tudarmstadt.awesome.erclaerung.feature.CzSoundTsDominanceDFE;
+import de.tudarmstadt.awesome.erclaerung.feature.TsSoundCzZZVsSSDominanceDominanceDFE;
 import de.tudarmstadt.awesome.erclaerung.feature.IchVariantsCountDFE;
 import de.tudarmstadt.awesome.erclaerung.feature.LetterDistributionDFE;
 import de.tudarmstadt.awesome.erclaerung.feature.PrefixDistributionDFE;
@@ -103,7 +103,7 @@ public class AnalysisPipeline implements Constants {
 		                LuceneNGramDFE.class.getName(), LetterDistributionDFE.class.getName(),
 		                UnSoundVnDominanceDFE.class.getName(), WSoundUUDominanceDFE.class.getName(),
 		                PrefixDistributionDFE.class.getName(), CapitalizationRatioDFE.class.getName(),
-		                CzSoundTsDominanceDFE.class.getName() }));
+		                TsSoundCzZZVsSSDominanceDominanceDFE.class.getName() }));
 		// PrefixDistributionHeuristicDFE.class.getName() }));
 
 		Dimension<List<Object>> dimPipelineParameters = Dimension.create(

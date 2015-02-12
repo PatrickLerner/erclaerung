@@ -13,7 +13,7 @@ import de.tudarmstadt.ukp.dkpro.tc.api.features.DocumentFeatureExtractor;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
 
-public class CzSoundTsDominanceDFE extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor {
+public class TsSoundCzZZVsSSDominanceDominanceDFE extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor {
 	public static final String FN_CZ_DOMINANCE = "CZDominance";
 
 	public List<Feature> extract(JCas jcas) throws TextClassificationException {
