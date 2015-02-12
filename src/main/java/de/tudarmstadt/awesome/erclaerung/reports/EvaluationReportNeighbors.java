@@ -175,8 +175,8 @@ public class EvaluationReportNeighbors extends BatchReportBase implements Consta
 				System.out.println("");
 				System.out.println(StringUtils.leftPad("Average Result: ", 25) + (sum / count));
 				System.out.println(StringUtils.leftPad("Correct Hits: ", 25) + (hit / count * 100) + "%");
-				System.out.println(StringUtils.leftPad("Neighbor Hits: ", 25) + ((hit + neighbor_hit) / count * 100)
-				                + "%");
+				System.out.println(StringUtils.leftPad("Correct+Neighbor Hits: ", 25)
+				                + ((hit + neighbor_hit) / count * 100) + "%");
 				System.out.println(StringUtils.leftPad("Lower borderline value: ", 25) + finalSum / runs);
 				System.out.println(StringUtils.leftPad("Lower borderline hits: ", 25) + (finalhits / runs) * 100 + "%");
 				System.out.println(StringUtils.leftPad("Lower borderline neighbor hits: ", 25)

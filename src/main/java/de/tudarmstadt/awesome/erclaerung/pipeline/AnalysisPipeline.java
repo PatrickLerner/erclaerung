@@ -2,7 +2,6 @@ package de.tudarmstadt.awesome.erclaerung.pipeline;
 
 import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -10,12 +9,11 @@ import java.util.Map;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.Option;
 
 import weka.classifiers.bayes.NaiveBayes;
 import de.tudarmstadt.awesome.erclaerung.feature.CapitalizationRatioDFE;
-import de.tudarmstadt.awesome.erclaerung.feature.CzSoundTsDominanceDFE;
+import de.tudarmstadt.awesome.erclaerung.feature.TsSoundCzZZVsSSDominanceDominanceDFE;
 import de.tudarmstadt.awesome.erclaerung.feature.IchVariantsCountDFE;
 import de.tudarmstadt.awesome.erclaerung.feature.LetterDistributionDFE;
 import de.tudarmstadt.awesome.erclaerung.feature.PrefixDistributionDFE;
@@ -50,13 +48,7 @@ import de.tudarmstadt.ukp.dkpro.tc.weka.writer.WekaDataWriter;
  *
  */
 public class AnalysisPipeline implements Constants {
-	private File input;
 	private String tempDirectory;
-
-	@Argument
-	public void setInputFile(File input) {
-		this.input = input;
-	}
 
 	@Option(name = "-t", usage = "Sets the path to the temporary directory")
 	public void setTempDirectory(String path) {
@@ -78,8 +70,6 @@ public class AnalysisPipeline implements Constants {
 	 */
 	public void run() throws Exception {
 		this.setDkproHome();
-		if (this.input == null)
-			throw new RuntimeException("Input of pipeline is empty.");
 
 		// Precomputation
 		PrefixDistributionHeuristicPre prePre = new PrefixDistributionHeuristicPre();
@@ -103,7 +93,7 @@ public class AnalysisPipeline implements Constants {
 		dimReaders.put(DIM_READER_TEST, UnlabeledTextReader.class);
 		dimReaders.put(DIM_READER_TEST_PARAMS,
 		                Arrays.asList(new Object[] { UnlabeledTextReader.PARAM_SOURCE_LOCATION,
-		                                "src/main/resources/wiki_test/*_*.txt" }));
+		                                "src/main/resources/test_data/*_*.txt" }));
 
 		Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
 		                Arrays.asList(new String[] { NaiveBayes.class.getName() }));
@@ -113,7 +103,7 @@ public class AnalysisPipeline implements Constants {
 		                LuceneNGramDFE.class.getName(), LetterDistributionDFE.class.getName(),
 		                UnSoundVnDominanceDFE.class.getName(), WSoundUUDominanceDFE.class.getName(),
 		                PrefixDistributionDFE.class.getName(), CapitalizationRatioDFE.class.getName(),
-		                CzSoundTsDominanceDFE.class.getName() }));
+		                TsSoundCzZZVsSSDominanceDominanceDFE.class.getName() }));
 		// PrefixDistributionHeuristicDFE.class.getName() }));
 
 		Dimension<List<Object>> dimPipelineParameters = Dimension.create(
