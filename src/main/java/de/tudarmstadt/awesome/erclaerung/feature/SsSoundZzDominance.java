@@ -12,24 +12,26 @@ import de.tudarmstadt.ukp.dkpro.tc.api.features.DocumentFeatureExtractor;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
 
-public class AiVsEiDominance extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor {
-	public static final String FN_EI_AI_PREFIX = "Ai_Ei_";
+public class SsSoundZzDominance extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor {
+	public static final String FN_ZZ_SS_PREFIX = "Zz_Ss_";
 
 	public List<Feature> extract(JCas jcas) throws TextClassificationException {
-		int ei = 0;
-		int ai = 0;
+		float ss = 0;
+		float zz = 0;
 		List<Feature> featList = new ArrayList<Feature>();
 		List<String> tokens = JCasUtil.toText(JCasUtil.select(jcas, Token.class));
 		for (String token : tokens) {
-			if (token.toLowerCase().contains("ai")) {
-				ai++;
+			if (token.toLowerCase().contains("zz")) {
+				zz++;
 			}
-			if (token.toLowerCase().contains("ei")) {
-				ei++;
+			if (token.toLowerCase().contains("ss")) {
+				ss++;
 			}
 		}
-		featList.add(new Feature(FN_EI_AI_PREFIX, ei / ei + ai));
+		featList.add(new Feature(FN_ZZ_SS_PREFIX + "_ss", ss * 1000 / tokens.size()));
+		featList.add(new Feature(FN_ZZ_SS_PREFIX + "_z", zz * 1000 / tokens.size()));
+		// System.out.println("zz:" + (zz / tokens.size()) + " ss:" + (ss / tokens.size()) + "s:" + (s /
+		// tokens.size()));
 		return featList;
 	}
-
 }

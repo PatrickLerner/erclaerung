@@ -15,7 +15,7 @@ import de.tudarmstadt.ukp.dkpro.tc.api.features.DocumentFeatureExtractor;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
 
-public class StartsWithKOrChDominance extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor {
+public class StartsWithKOrChDominanceDFE extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor {
 
 	public static final String FN_K_VS_CH_PREFIX = "KvsCh_";
 	public final String[] PREFIXES = { "ch", "k" };
