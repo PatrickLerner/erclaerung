@@ -77,6 +77,8 @@ public class EvaluationReportNeighbors extends BatchReportBase implements Consta
 		for (TaskContextMetadata subcontext : getSubtasks()) {
 			double sum = 0;
 			double count = 0;
+			double hit = 0;
+			double neighbor_hit = 0;
 			if (subcontext.getType().startsWith(ExtractFeaturesAndPredictTask.class.getName())
 			                || subcontext.getType().startsWith(BatchTaskCrossValidation.class.getName())) {
 				System.out.println("\n\nEVALUATION (NEIGHBORS) REPORT:\n");
@@ -100,6 +102,10 @@ public class EvaluationReportNeighbors extends BatchReportBase implements Consta
 					double res = this.calculateNeighborScore(real, pred);
 					count += 1;
 					sum += res;
+					if (res == 0)
+						hit += 1;
+					if (res == 1)
+						neighbor_hit += 1;
 
 					System.out.println(StringUtils.center(pred, 9) + " " + res);
 				}
@@ -117,6 +123,10 @@ public class EvaluationReportNeighbors extends BatchReportBase implements Consta
 						double res = this.calculateNeighborScore(real, pred);
 						count += 1;
 						sum += res;
+						if (res == 0)
+							hit += 1;
+						if (res == 1)
+							neighbor_hit += 1;
 
 						System.out.println(StringUtils.leftPad(id, 25) + ": " + StringUtils.center(real, 9) + " "
 						                + StringUtils.center(pred, 7) + " " + res);
@@ -128,6 +138,9 @@ public class EvaluationReportNeighbors extends BatchReportBase implements Consta
 			                || subcontext.getType().startsWith(BatchTaskCrossValidation.class.getName())) {
 				System.out.println("");
 				System.out.println(StringUtils.leftPad("Average Result: ", 25) + (sum / count));
+				System.out.println(StringUtils.leftPad("Correct Hits: ", 25) + (hit / count * 100) + "%");
+				System.out.println(StringUtils.leftPad("Neighbor Hits: ", 25) + ((hit + neighbor_hit) / count * 100)
+				                + "%");
 				System.out.println("\nEVALUATION (NEIGHBORS) REPORT END\n\n");
 			}
 		}
