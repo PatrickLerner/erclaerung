@@ -41,9 +41,9 @@ public class LevenshteinDistancePreComp {
 	private static int maxWordLength = -1;
 	private static int minWordLength = 6;
 	private static int suffixRepression = 0;
-	private File outputRaw = new File("src/main/resources/precomputation/levenshtein.txt");
-	private File outputTransGrouped = new File("src/main/resources/precomputation/levenshteinGrouped.txt");
-	private File outputTransGroupedRev = new File("src/main/resources/precomputation/levenshteinGroupedRev.txt");
+	private File outputRaw = new File("target/precomputation/levenshtein.txt");
+	private File outputTransGrouped = new File("target/precomputation/levenshteinGrouped.txt");
+	private File outputTransGroupedRev = new File("target/precomputation/levenshteinGroupedRev.txt");
 
 	private PrintWriter writerRaw;
 	private PrintWriter writerGroupedRev;
@@ -59,7 +59,7 @@ public class LevenshteinDistancePreComp {
 	                AnalysisEngineProcessException, ResourceInitializationException {
 		LevenshteinDistancePreComp lev = new LevenshteinDistancePreComp();
 		lev.computeList();
-		// System.out.println(getTransformationStepsPretty("gewant", "gewaxnt"));
+		// System.out.println(getTransformationStepsPretty("bruch", "geruch"));
 		// System.out.println(getTransformationStepsPretty("parfum", "pxyzarfm"));
 		// System.out.println(levenshteinDistance("parfum", "pxyzarfm"));
 		// System.out.println(getTransformationStepsPretty("test", "ts"));
