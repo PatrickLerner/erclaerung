@@ -40,7 +40,10 @@ public class StartsWithKOrCDominanceDFE extends FeatureExtractorResource_ImplBas
 
 		// generate a feature list
 		List<Feature> featList = new ArrayList<Feature>();
-		featList.add(new Feature(FN_K_VS_CH_PREFIX, new Float((k * 1000) / (k + c))));
+		if (k + c == 0)
+			featList.add(new Feature(FN_K_VS_CH_PREFIX, new Float(0.5)));
+		else
+			featList.add(new Feature(FN_K_VS_CH_PREFIX, new Float((k * 1000) / (k + c))));
 		return featList;
 	}
 
