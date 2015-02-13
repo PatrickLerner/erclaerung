@@ -152,7 +152,7 @@ public class AnalysisPipeline implements Constants {
 		batch.setParameterSpace(pSpace);
 
 		batch.addReport(HTMLReport.class);
-		if (this.inputDirectory != null || runCrossValidation)
+		if (this.inputDirectory == null || runCrossValidation)
 			batch.addReport(EvaluationReportNeighbors.class);
 		if (runCrossValidation)
 			batch.addReport(BatchCrossValidationReport.class);
