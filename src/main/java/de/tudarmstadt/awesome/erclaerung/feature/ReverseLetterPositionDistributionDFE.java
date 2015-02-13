@@ -60,7 +60,7 @@ public class ReverseLetterPositionDistributionDFE extends FeatureExtractorResour
 		}
 		List<Feature> featList = new ArrayList<Feature>();
 		for (String key : lettersAndPositions.keySet()) {
-			System.out.println("key: " + key + " count: " + (lettersAndPositions.get(key) * 1000) / count);
+			// System.out.println("key: " + key + " count: " + (lettersAndPositions.get(key) * 1000) / count);
 			featList.add(new Feature(FN_REVERSE_LETTER_POSITION_PREFIX + key, new Float(
 			                (lettersAndPositions.get(key) * 1000) / count)));
 		}
