@@ -94,7 +94,7 @@ public class EvaluationReportNeighborsManuel extends BatchReportBase implements 
 			double finalneighborhits = 0;
 			if (subcontext.getType().startsWith(ExtractFeaturesAndPredictTask.class.getName())
 			                || subcontext.getType().startsWith(BatchTaskCrossValidation.class.getName())) {
-				System.out.println("\n\nEVALUATION (NEIGHBORS) REPORT:\n");
+				System.out.println("\n\nEVALUATION (NEIGHBORS / MANUEL) REPORT:\n");
 				System.out.println("The smaller the number the better the prediction is.\n");
 			}
 			if (subcontext.getType().startsWith(ExtractFeaturesAndPredictTask.class.getName())) {
@@ -181,7 +181,7 @@ public class EvaluationReportNeighborsManuel extends BatchReportBase implements 
 				System.out.println(StringUtils.leftPad("Lower borderline hits: ", 25) + (finalhits / runs) * 100 + "%");
 				System.out.println(StringUtils.leftPad("Lower borderline neighbor hits: ", 25)
 				                + (finalneighborhits / runs) * 100 + "%");
-				System.out.println("\nEVALUATION (NEIGHBORS) REPORT END\n\n");
+				System.out.println("\nEVALUATION (NEIGHBORS / MANUEL) REPORT END\n\n");
 			}
 		}
 	}
