@@ -18,7 +18,8 @@ import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
 import de.tudarmstadt.ukp.dkpro.tc.core.util.FeatureTestUtil;
 
-public class LetterPositionDistributionDFETest {
+public class ReverseLetterPositionDistributionDFETest {
+
 	private JCas jcas1;
 
 	@Before
@@ -44,24 +45,23 @@ public class LetterPositionDistributionDFETest {
 
 	@Test
 	public void extractTest1() throws Exception {
-		LetterPositionDistributionDFE extractor = new LetterPositionDistributionDFE();
+		ReverseLetterPositionDistributionDFE extractor = new ReverseLetterPositionDistributionDFE();
 		List<Feature> features = extractor.extract(this.jcas1);
-		String prefix = LetterPositionDistributionDFE.FN_LETTER_POSITION_PREFIX;
-		assertEquals(LetterPositionDistributionDFE.LETTERS.length() * LetterPositionDistributionDFE.POSITIONS.length,
-		                features.size());
+		String prefix = ReverseLetterPositionDistributionDFE.FN_REVERSE_LETTER_POSITION_PREFIX;
+		assertEquals(ReverseLetterPositionDistributionDFE.LETTERS.length()
+		                * ReverseLetterPositionDistributionDFE.POSITIONS.length, features.size());
 		for (Feature feature : features) {
-			if (feature.getName() == prefix + "n0")
-				FeatureTestUtil.assertFeature(prefix + "n0", new Float(13.966480446927374), feature);
-			else if (feature.getName() == prefix + "n1")
-				FeatureTestUtil.assertFeature(prefix + "n1", new Float(50.279329608938546), feature);
-			else if (feature.getName() == prefix + "g0")
-				FeatureTestUtil.assertFeature(prefix + "g0", new Float(30.726256983240223), feature);
-			else if (feature.getName() == prefix + "f0")
-				FeatureTestUtil.assertFeature(prefix + "f0", new Float(5.58659217877095), feature);
-			else if (feature.getName() == prefix + "j0")
+			if (feature.getName().equals(prefix + "n0"))
+				FeatureTestUtil.assertFeature(prefix + "n0", new Float(145.65826330532212), feature);
+			else if (feature.getName().equals(prefix + "n1"))
+				FeatureTestUtil.assertFeature(prefix + "n1", new Float(44.817927170868344), feature);
+			else if (feature.getName().equals(prefix + "g0"))
+				FeatureTestUtil.assertFeature(prefix + "g0", new Float(16.80672268907563), feature);
+			else if (feature.getName().equals(prefix + "f0"))
+				FeatureTestUtil.assertFeature(prefix + "f0", new Float(5.602240896358543), feature);
+			else if (feature.getName().equals(prefix + "j0"))
 				FeatureTestUtil.assertFeature(prefix + "j0", new Float(0.0), feature);
 		}
 
 	}
-
 }

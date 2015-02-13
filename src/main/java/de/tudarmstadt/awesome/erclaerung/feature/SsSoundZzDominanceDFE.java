@@ -12,7 +12,7 @@ import de.tudarmstadt.ukp.dkpro.tc.api.features.DocumentFeatureExtractor;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
 
-public class SsSoundZzDominance extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor {
+public class SsSoundZzDominanceDFE extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor {
 	public static final String FN_ZZ_SS_PREFIX = "Zz_Ss_";
 
 	public List<Feature> extract(JCas jcas) throws TextClassificationException {
@@ -28,10 +28,7 @@ public class SsSoundZzDominance extends FeatureExtractorResource_ImplBase implem
 				ss++;
 			}
 		}
-		featList.add(new Feature(FN_ZZ_SS_PREFIX + "_ss", ss * 1000 / tokens.size()));
-		featList.add(new Feature(FN_ZZ_SS_PREFIX + "_z", zz * 1000 / tokens.size()));
-		// System.out.println("zz:" + (zz / tokens.size()) + " ss:" + (ss / tokens.size()) + "s:" + (s /
-		// tokens.size()));
+		featList.add(new Feature(FN_ZZ_SS_PREFIX, (ss * 1000) / (ss + zz)));
 		return featList;
 	}
 }

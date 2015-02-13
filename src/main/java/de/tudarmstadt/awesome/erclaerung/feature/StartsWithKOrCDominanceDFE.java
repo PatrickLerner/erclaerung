@@ -15,7 +15,7 @@ import de.tudarmstadt.ukp.dkpro.tc.api.features.DocumentFeatureExtractor;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
 
-public class StartsWithKOrChDominanceDFE extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor {
+public class StartsWithKOrCDominanceDFE extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor {
 
 	public static final String FN_K_VS_CH_PREFIX = "KvsCh_";
 	public final String[] PREFIXES = { "ch", "k" };
@@ -23,20 +23,18 @@ public class StartsWithKOrChDominanceDFE extends FeatureExtractorResource_ImplBa
 
 	public List<Feature> extract(JCas jcas) throws TextClassificationException {
 		List<String> tokens = JCasUtil.toText(JCasUtil.select(jcas, Token.class));
-		long k = 0;
-		long ch = 0;
-		// initialize the count for all variants with zero
-
+		int k = 0;
+		int c = 0;
 		for (String token : tokens) {
 			if (token.toLowerCase().startsWith("k"))
 				k++;
-			else if (token.toLowerCase().startsWith("ch"))
-				ch++;
+			else if (token.toLowerCase().startsWith("c"))
+				c++;
 		}
 
 		// generate a feature list
 		List<Feature> featList = new ArrayList<Feature>();
-		featList.add(new Feature(FN_K_VS_CH_PREFIX, k / k + ch));
+		featList.add(new Feature(FN_K_VS_CH_PREFIX, new Float((k * 1000) / (k + c))));
 		return featList;
 	}
 

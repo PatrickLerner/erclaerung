@@ -15,9 +15,9 @@ import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBas
 
 public class ReverseLetterPositionDistributionDFE extends FeatureExtractorResource_ImplBase implements
                 DocumentFeatureExtractor {
-	public static final String LETTERS = "e";
+	public static final String LETTERS = "abcdefghijklmnopqrstuvwxyzäöüß";
 	public static final int[] POSITIONS = { 1, 0 };
-	private static final String FN_REVERSE_LETTER_POSITION_PREFIX = "RevLetterPosition";
+	static final String FN_REVERSE_LETTER_POSITION_PREFIX = "RevLetterPosition";
 
 	private boolean positionsContains(int i) {
 		for (int j : POSITIONS) {
@@ -60,8 +60,9 @@ public class ReverseLetterPositionDistributionDFE extends FeatureExtractorResour
 		}
 		List<Feature> featList = new ArrayList<Feature>();
 		for (String key : lettersAndPositions.keySet()) {
-			// System.out.println("key: " + key + " count: " + lettersAndPositions.get(key));
-			featList.add(new Feature(FN_REVERSE_LETTER_POSITION_PREFIX + key, lettersAndPositions.get(key) / count));
+			System.out.println("key: " + key + " count: " + (lettersAndPositions.get(key) * 1000) / count);
+			featList.add(new Feature(FN_REVERSE_LETTER_POSITION_PREFIX + key, new Float(
+			                (lettersAndPositions.get(key) * 1000) / count)));
 		}
 		return featList;
 	}
