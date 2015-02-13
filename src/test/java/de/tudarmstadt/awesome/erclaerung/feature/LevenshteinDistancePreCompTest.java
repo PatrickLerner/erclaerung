@@ -1,6 +1,5 @@
 package de.tudarmstadt.awesome.erclaerung.feature;
 
-import static org.apache.uima.fit.factory.AnalysisEngineFactory.createEngineDescription;
 import static org.junit.Assert.assertEquals;
 
 import java.io.FileNotFoundException;
@@ -8,7 +7,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.junit.Before;
@@ -18,15 +16,17 @@ import de.tudarmstadt.awesome.erclaerung.precomputation.LevenshteinDistancePreCo
 import de.tudarmstadt.awesome.erclaerung.precomputation.LevenshteinStep;
 import de.tudarmstadt.awesome.erclaerung.precomputation.LevenshteinStep.Operation;
 import de.tudarmstadt.awesome.erclaerung.precomputation.LevenshteinTransformation;
-import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
 
+/**
+ * @author Manuel
+ *
+ */
 public class LevenshteinDistancePreCompTest {
 	LevenshteinDistancePreComp levenshtein;
 
 	@Before
 	public void setUp() throws ResourceInitializationException, AnalysisEngineProcessException, FileNotFoundException,
 	                UnsupportedEncodingException {
-		AnalysisEngineDescription desc = createEngineDescription(BreakIteratorSegmenter.class);
 		levenshtein = new LevenshteinDistancePreComp();
 	}
 

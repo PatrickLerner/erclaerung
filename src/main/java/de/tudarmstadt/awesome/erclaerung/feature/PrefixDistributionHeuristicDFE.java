@@ -22,12 +22,12 @@ import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBas
 /**
  * This engine dynamically extracts a list of prefixes from the given tokens.
  * 
- * @author manuel
+ * @author Manuel
  */
 public class PrefixDistributionHeuristicDFE extends FeatureExtractorResource_ImplBase implements
                 DocumentFeatureExtractor {
 	public static final String FN_PREFIX_VARIANT_PREFIX_HEU = "PrefixHeuRatio_";
-	private File input = new File("src/main/resources/precomputation/prefixHeuristic.txt");
+	private File input = new File("target/precomputation/prefixHeuristic.txt");
 	private static int MAX_PREFIX_LENGTH = 3;
 	private static int MIN_PREFIX_LENGTH = 2;
 
@@ -78,22 +78,6 @@ public class PrefixDistributionHeuristicDFE extends FeatureExtractorResource_Imp
 			featList.add(new Feature(FN_PREFIX_VARIANT_PREFIX_HEU + prefix, count));
 		}
 		return featList;
-		/*
-		 * List<String> tokens = JCasUtil.toText(JCasUtil.select(jcas, Token.class)); HashMap<String, Integer>
-		 * occurences = new HashMap<String, Integer>(); String[] tokensArray = tokens.toArray(new
-		 * String[tokens.size()]); for (int tokenIndex = 0; tokenIndex < tokensArray.length; tokenIndex++) { String
-		 * token = tokensArray[tokenIndex]; // If token is longer than permitted maxSize set it to maxSize else to a
-		 * letter less than the token is long. int letterMax = maxSize != -1 && token.length() - 1 > maxSize ? maxSize :
-		 * token.length() - 2; for (int letterIndex = letterMax; letterIndex >= minSize; letterIndex--) { String prefix
-		 * = token.substring(0, letterIndex + 1); for (int comTokenIndex = tokenIndex + 1; comTokenIndex <
-		 * tokensArray.length; comTokenIndex++) { if (tokensArray[comTokenIndex].startsWith(prefix)) { if
-		 * (occurences.containsKey(prefix)) { int t = occurences.get(prefix) + 1; occurences.put(prefix, t); }
-		 * 
-		 * else { occurences.put(prefix, 1); System.out.println("[PREFIX-VAR] [" + prefix + "] " + 1); } } } } } //
-		 * generate a feature list List<Feature> featList = new ArrayList<Feature>(); for (String prefix :
-		 * occurences.keySet()) { double count = occurences.get(prefix) * 1000 / tokens.size(); featList.add(new
-		 * Feature(FN_PREFIX_VARIANT_PREFIX_HEU + prefix, count)); } return featList;
-		 */
 
 	}
 }

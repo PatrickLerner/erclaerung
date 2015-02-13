@@ -13,6 +13,12 @@ import de.tudarmstadt.ukp.dkpro.tc.api.features.DocumentFeatureExtractor;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
 
+/**
+ * LetterPositionDistributionDFE generates a value of dominance for various letters at various positions in words in a
+ * text. See also: {@link ReverseLetterPositionDistributionDFE}.
+ * 
+ * @author Manuel
+ */
 public class LetterPositionDistributionDFE extends FeatureExtractorResource_ImplBase implements
                 DocumentFeatureExtractor {
 	public static final String FN_LETTER_POSITION_PREFIX = "LetterPosition";

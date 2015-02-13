@@ -12,6 +12,12 @@ import de.tudarmstadt.ukp.dkpro.tc.api.features.DocumentFeatureExtractor;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
 
+/**
+ * SsSoundZzDominanceDFE calculates a value for the dominance of "ss" in words in a text compared to "zz" in words in a
+ * text.
+ * 
+ * @author Manuel
+ */
 public class SsSoundZzDominanceDFE extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor {
 	public static final String FN_ZZ_SS_PREFIX = "Zz_Ss_";
 

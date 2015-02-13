@@ -18,6 +18,7 @@ import de.tudarmstadt.awesome.erclaerung.feature.EiSoundAiDominanceDFE;
 import de.tudarmstadt.awesome.erclaerung.feature.IchVariantsCountDFE;
 import de.tudarmstadt.awesome.erclaerung.feature.LetterDistributionDFE;
 import de.tudarmstadt.awesome.erclaerung.feature.LetterPositionDistributionDFE;
+import de.tudarmstadt.awesome.erclaerung.feature.ManualWordListDFE;
 import de.tudarmstadt.awesome.erclaerung.feature.PrefixDistributionDFE;
 import de.tudarmstadt.awesome.erclaerung.feature.ReverseLetterPositionDistributionDFE;
 import de.tudarmstadt.awesome.erclaerung.feature.SsSoundZzDominanceDFE;
@@ -121,7 +122,7 @@ public class AnalysisPipeline implements Constants {
 		                                EiSoundAiDominanceDFE.class.getName(), IchVariantsCountDFE.class.getName(),
 		                                LetterDistributionDFE.class.getName(),
 		                                LetterPositionDistributionDFE.class.getName(),
-		                                PrefixDistributionDFE.class.getName(),
+		                                PrefixDistributionDFE.class.getName(), ManualWordListDFE.class.getName(),
 		                                ReverseLetterPositionDistributionDFE.class.getName(),
 		                                SsSoundZzDominanceDFE.class.getName(),
 		                                StartsWithKOrCDominanceDFE.class.getName(),

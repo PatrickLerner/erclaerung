@@ -30,7 +30,7 @@ public class PrefixDistributionHeuristicPre {
 	private static int MAX_PREFIX_LENGTH = 3;
 	private static int MIN_PREFIX_LENGTH = 2;
 	private static int MIN_OCCURENCES = 20;
-	private File outputRaw = new File("src/main/resources/precomputation/prefixHeuristic.txt");
+	private File outputRaw = new File("target/precomputation/prefixHeuristic.txt");
 	private PrintWriter writerRaw;
 
 	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException,
@@ -44,6 +44,12 @@ public class PrefixDistributionHeuristicPre {
 		writerRaw = new PrintWriter(outputRaw, "UTF-8");
 	}
 
+	/**
+	 * Computes a list of prefixes for the feature extractor.
+	 * 
+	 * @throws ResourceInitializationException
+	 * @throws AnalysisEngineProcessException
+	 */
 	public void computeList() throws ResourceInitializationException, AnalysisEngineProcessException {
 		long startTime = System.nanoTime();
 		CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(BonnerXMLReader.class,
