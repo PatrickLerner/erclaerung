@@ -13,10 +13,9 @@ import org.kohsuke.args4j.Option;
 
 import weka.classifiers.bayes.NaiveBayes;
 import de.tudarmstadt.awesome.erclaerung.feature.CapitalizationRatioDFE;
-import de.tudarmstadt.awesome.erclaerung.feature.TsSoundCzZZVsSSDominanceDominanceDFE;
-import de.tudarmstadt.awesome.erclaerung.feature.IchVariantsCountDFE;
 import de.tudarmstadt.awesome.erclaerung.feature.LetterDistributionDFE;
 import de.tudarmstadt.awesome.erclaerung.feature.PrefixDistributionDFE;
+import de.tudarmstadt.awesome.erclaerung.feature.TsSoundCzDominanceDFE;
 import de.tudarmstadt.awesome.erclaerung.feature.UnSoundVnDominanceDFE;
 import de.tudarmstadt.awesome.erclaerung.feature.WSoundUUDominanceDFE;
 import de.tudarmstadt.awesome.erclaerung.precomputation.PrefixDistributionHeuristicPre;
@@ -98,12 +97,13 @@ public class AnalysisPipeline implements Constants {
 		Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
 		                Arrays.asList(new String[] { NaiveBayes.class.getName() }));
 
-		Dimension<List<String>> dimFeatureSets = Dimension.create(DIM_FEATURE_SET, Arrays.asList(new String[] {
-		                NrOfTokensPerSentenceDFE.class.getName(), IchVariantsCountDFE.class.getName(),
-		                LuceneNGramDFE.class.getName(), LetterDistributionDFE.class.getName(),
-		                UnSoundVnDominanceDFE.class.getName(), WSoundUUDominanceDFE.class.getName(),
-		                PrefixDistributionDFE.class.getName(), CapitalizationRatioDFE.class.getName(),
-		                TsSoundCzZZVsSSDominanceDominanceDFE.class.getName() }));
+		Dimension<List<String>> dimFeatureSets = Dimension.create(
+		                DIM_FEATURE_SET,
+		                Arrays.asList(new String[] { NrOfTokensPerSentenceDFE.class.getName(),
+		                                LuceneNGramDFE.class.getName(), LetterDistributionDFE.class.getName(),
+		                                UnSoundVnDominanceDFE.class.getName(), WSoundUUDominanceDFE.class.getName(),
+		                                PrefixDistributionDFE.class.getName(), CapitalizationRatioDFE.class.getName(),
+		                                TsSoundCzDominanceDFE.class.getName() }));
 		// PrefixDistributionHeuristicDFE.class.getName() }));
 
 		Dimension<List<Object>> dimPipelineParameters = Dimension.create(
