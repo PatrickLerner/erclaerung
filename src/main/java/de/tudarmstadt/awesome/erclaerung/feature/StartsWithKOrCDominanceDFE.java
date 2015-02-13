@@ -15,6 +15,12 @@ import de.tudarmstadt.ukp.dkpro.tc.api.features.DocumentFeatureExtractor;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
 
+/**
+ * StartsWithKOrCDominanceDFE calculates a value for the dominance of "k" for the beginning of words in a text compared
+ * to "c" in the beginning of words in a text.
+ * 
+ * @author Manuel
+ */
 public class StartsWithKOrCDominanceDFE extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor {
 
 	public static final String FN_K_VS_CH_PREFIX = "KvsCh_";

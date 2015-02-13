@@ -19,6 +19,12 @@ import de.tudarmstadt.ukp.dkpro.tc.api.features.DocumentFeatureExtractor;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
 
+/**
+ * Uses a predefined list to create a feature distribution.
+ * 
+ * @author Manuel
+ *
+ */
 public class ManualWordListDFE extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor {
 
 	public static final String FN_MANUAL_PREFIX = "Manual_";
@@ -26,7 +32,7 @@ public class ManualWordListDFE extends FeatureExtractorResource_ImplBase impleme
 	public List<Feature> extract(JCas jcas) throws TextClassificationException {
 		List<String> tokens = JCasUtil.toText(JCasUtil.select(jcas, Token.class));
 		List<Feature> featList = new ArrayList<Feature>();
-		File wordListFile = new File("src/main/resources/bonner_korpora_train/manualList.txt");
+		File wordListFile = new File("src/main/resources/manual_list/manualList.txt");
 		List<String> lines = null;
 		try {
 			lines = Files.readLines(wordListFile, Charsets.UTF_8);

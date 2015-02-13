@@ -12,6 +12,14 @@ import de.tudarmstadt.ukp.dkpro.tc.api.features.DocumentFeatureExtractor;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
 
+/**
+ * EiSoundAiDominanceDFE calculates a value for the dominance of "ai" in words in a text compared to "ei" in words in a
+ * text.
+ * 
+ * @author Manuel
+ *
+ * 
+ */
 public class EiSoundAiDominanceDFE extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor {
 	public static final String FN_EI_AI_PREFIX = "Ai_Ei_";
 

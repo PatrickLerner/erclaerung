@@ -22,7 +22,7 @@ import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBas
 /**
  * This engine dynamically extracts a list of prefixes from the given tokens.
  * 
- * @author manuel
+ * @author Manuel
  */
 public class PrefixDistributionHeuristicDFE extends FeatureExtractorResource_ImplBase implements
                 DocumentFeatureExtractor {
