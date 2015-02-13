@@ -27,7 +27,7 @@ import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBas
 public class PrefixDistributionHeuristicDFE extends FeatureExtractorResource_ImplBase implements
                 DocumentFeatureExtractor {
 	public static final String FN_PREFIX_VARIANT_PREFIX_HEU = "PrefixHeuRatio_";
-	private File input = new File("target/precomputation/prefixHeuristic.txt");
+	private File input = new File("target/prefixHeuristic.txt");
 	private static int MAX_PREFIX_LENGTH = 3;
 	private static int MIN_PREFIX_LENGTH = 2;
 

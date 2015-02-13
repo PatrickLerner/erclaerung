@@ -27,10 +27,12 @@ public class StartsWithKOrCDominanceDFE extends FeatureExtractorResource_ImplBas
 		int k = 0;
 		int c = 0;
 		for (String token : tokens) {
-			if (token.toLowerCase().startsWith("k"))
-				k++;
-			else if (token.toLowerCase().startsWith("c"))
-				c++;
+			if (token != null) {
+				if (token.toLowerCase().startsWith("k"))
+					k++;
+				else if (token.toLowerCase().startsWith("c"))
+					c++;
+			}
 		}
 
 		// generate a feature list
@@ -39,7 +41,6 @@ public class StartsWithKOrCDominanceDFE extends FeatureExtractorResource_ImplBas
 			featList.add(new Feature(FN_K_VS_CH_PREFIX, new Float(0.5)));
 		else
 			featList.add(new Feature(FN_K_VS_CH_PREFIX, new Float(new Float(k * 1000) / new Float(k + c))));
-		// System.out.println(new Float((k * 1000) / (k + c)));
 		return featList;
 	}
 
