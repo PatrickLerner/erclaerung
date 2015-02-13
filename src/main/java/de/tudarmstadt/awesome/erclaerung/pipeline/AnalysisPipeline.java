@@ -31,6 +31,7 @@ import de.tudarmstadt.awesome.erclaerung.readers.BonnerXMLReader;
 import de.tudarmstadt.awesome.erclaerung.readers.UnlabeledTextReader;
 import de.tudarmstadt.awesome.erclaerung.reports.EvaluationReportNeighbors;
 import de.tudarmstadt.awesome.erclaerung.reports.HTMLReport;
+import de.tudarmstadt.awesome.erclaerung.reports.HTMLReportDetailed;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
 import de.tudarmstadt.ukp.dkpro.lab.Lab;
 import de.tudarmstadt.ukp.dkpro.lab.task.Dimension;
@@ -150,7 +151,7 @@ public class AnalysisPipeline implements Constants {
 		else
 			batch = new BatchTaskPrediction("DialectPrediction", getPreprocessing());
 		batch.setParameterSpace(pSpace);
-
+		batch.addReport(HTMLReportDetailed.class);
 		batch.addReport(HTMLReport.class);
 		if (this.inputDirectory == null || runCrossValidation)
 			batch.addReport(EvaluationReportNeighbors.class);
