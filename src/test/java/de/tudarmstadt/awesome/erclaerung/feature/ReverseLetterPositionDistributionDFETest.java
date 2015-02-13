@@ -18,6 +18,10 @@ import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
 import de.tudarmstadt.ukp.dkpro.tc.core.util.FeatureTestUtil;
 
+/**
+ * @author Manuel
+ *
+ */
 public class ReverseLetterPositionDistributionDFETest {
 
 	private JCas jcas1;
