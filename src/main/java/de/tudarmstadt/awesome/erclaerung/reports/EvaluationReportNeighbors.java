@@ -19,9 +19,23 @@ import de.tudarmstadt.ukp.dkpro.tc.weka.task.BatchTaskCrossValidation;
 import de.tudarmstadt.ukp.dkpro.tc.weka.task.ExtractFeaturesAndPredictTask;
 import de.tudarmstadt.ukp.dkpro.tc.weka.task.uima.ExtractFeaturesAndPredictConnector;
 
+/**
+ * This report class evaluates the result of a text classification based on how many predictions were correct and how
+ * many were not quite correct, but at least a neighboring dialect.
+ * 
+ * @author Patrick Lerner
+ */
 public class EvaluationReportNeighbors extends BatchReportBase implements Constants {
 	private HashMap<String, HashSet<String>> connections;
 
+	/**
+	 * Adds a neighbor pair
+	 * 
+	 * @param a
+	 *            a dialect
+	 * @param b
+	 *            another dialect who is next to the first
+	 */
 	private void addConnection(String a, String b) {
 		HashSet<String> neighbors = new HashSet<String>();
 		if (this.connections.containsKey(a))
@@ -36,9 +50,18 @@ public class EvaluationReportNeighbors extends BatchReportBase implements Consta
 		this.connections.put(b, neighbors);
 	}
 
+	/**
+	 * Calculates a scoring between two dialects. If the prediction is correct, it yields a score of 0, if it is not
+	 * correct, it yields 1 if it is at least a neighboring dialect, otherwise it yields 5.
+	 * 
+	 * @param real
+	 *            the real dialect that should have been detected
+	 * @param pred
+	 *            the dialect that was predicted
+	 * @return a scoring value which is either 0, 1 or 5
+	 */
 	private double calculateNeighborScore(String real, String pred) {
 		HashSet<String> real_s = connections.get(real);
-		// HashSet<String> pred_s = connections.get(pred);
 		if (real.equals(pred))
 			return 0;
 		else if (real_s.contains(pred))
@@ -48,6 +71,7 @@ public class EvaluationReportNeighbors extends BatchReportBase implements Consta
 	}
 
 	public void execute() throws Exception {
+		// initialize neighbors
 		if (this.connections == null) {
 			this.connections = new HashMap<String, HashSet<String>>();
 			addConnection("rip", "thuer");
@@ -110,6 +134,7 @@ public class EvaluationReportNeighbors extends BatchReportBase implements Consta
 					System.out.println(StringUtils.center(pred, 9) + " " + res);
 				}
 			}
+			// evaluate cross validation instead
 			else if (subcontext.getType().startsWith(BatchTaskCrossValidation.class.getName())) {
 				FileReader fileReader = new FileReader(store.getStorageFolder(subcontext.getId(), "id2outcome.txt"));
 				BufferedReader bufferedReader = new BufferedReader(fileReader);

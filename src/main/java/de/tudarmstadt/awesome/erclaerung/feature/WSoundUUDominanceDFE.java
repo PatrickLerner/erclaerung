@@ -13,6 +13,12 @@ import de.tudarmstadt.ukp.dkpro.tc.api.features.DocumentFeatureExtractor;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
 
+/**
+ * Determines how common it is for a w-sound to be expressed by the letters 'uu'. This is a remaining feature from Old
+ * High German, where this was by far more common and can be useful to find more conservative dialects.
+ * 
+ * @author Patrick Lerner
+ */
 public class WSoundUUDominanceDFE extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor {
 	public static final String FN_UU_DOMINANCE = "UUDominance";
 

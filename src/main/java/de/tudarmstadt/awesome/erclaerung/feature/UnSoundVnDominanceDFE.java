@@ -13,6 +13,12 @@ import de.tudarmstadt.ukp.dkpro.tc.api.features.DocumentFeatureExtractor;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
 
+/**
+ * This engine determines how common it is for the un-sound to be expressed as the otherwise very uncommon letter
+ * combination vn, which is a remainder of Old High German in more conservative dialects.
+ * 
+ * @author Patrick Lerner
+ */
 public class UnSoundVnDominanceDFE extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor {
 	public static final String FN_UU_DOMINANCE = "VnDominance";
 

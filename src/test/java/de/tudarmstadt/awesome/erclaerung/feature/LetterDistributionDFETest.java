@@ -18,6 +18,9 @@ import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
 import de.tudarmstadt.ukp.dkpro.tc.core.util.FeatureTestUtil;
 
+/**
+ * @author Patrick Lerner
+ */
 public class LetterDistributionDFETest {
 	private JCas jcas1;
 

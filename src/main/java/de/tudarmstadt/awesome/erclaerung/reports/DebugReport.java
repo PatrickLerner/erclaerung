@@ -17,6 +17,12 @@ import de.tudarmstadt.ukp.dkpro.tc.weka.task.BatchTaskCrossValidation;
 import de.tudarmstadt.ukp.dkpro.tc.weka.task.ExtractFeaturesAndPredictTask;
 import de.tudarmstadt.ukp.dkpro.tc.weka.task.uima.ExtractFeaturesAndPredictConnector;
 
+/**
+ * Only prints out the result on the console for quick and dirty debugging.
+ * 
+ * @author Patrick Lerner
+ * @deprecated
+ */
 public class DebugReport extends BatchReportBase implements Constants {
 	@SuppressWarnings("unchecked")
 	public void execute() throws Exception {

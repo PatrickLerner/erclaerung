@@ -19,9 +19,25 @@ import de.tudarmstadt.ukp.dkpro.tc.weka.task.BatchTaskCrossValidation;
 import de.tudarmstadt.ukp.dkpro.tc.weka.task.ExtractFeaturesAndPredictTask;
 import de.tudarmstadt.ukp.dkpro.tc.weka.task.uima.ExtractFeaturesAndPredictConnector;
 
+/**
+ * This report evaluates the result of a text classification based on the physical proximity in the real world between
+ * dialects. Scores awarded here are distances in longitude/latitude units between the centers of the dialect.
+ * 
+ * @author Patrick Lerner
+ * @deprecated
+ */
 public class EvaluationReport extends BatchReportBase implements Constants {
 	private HashMap<String, Point> coords;
 
+	/**
+	 * Determines the distance between two dialects
+	 * 
+	 * @param a
+	 *            a dialect
+	 * @param b
+	 *            another dialect
+	 * @return the distance between them.
+	 */
 	private double getDistance(String a, String b) {
 		Point ap = coords.get(a);
 		Point bp = coords.get(b);

@@ -13,6 +13,11 @@ import de.tudarmstadt.ukp.dkpro.tc.api.features.DocumentFeatureExtractor;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
 
+/**
+ * This engine determines how often a ts-sound is expressed as the otherwise rather uncommon 'cz' letter combination.
+ * 
+ * @author Patrick Lerner
+ */
 public class TsSoundCzDominanceDFE extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor {
 	public static final String FN_CZ_DOMINANCE = "CZDominance";
 
