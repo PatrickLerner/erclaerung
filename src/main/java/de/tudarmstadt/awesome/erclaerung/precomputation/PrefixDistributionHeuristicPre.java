@@ -30,7 +30,7 @@ public class PrefixDistributionHeuristicPre {
 	private static int MAX_PREFIX_LENGTH = 3;
 	private static int MIN_PREFIX_LENGTH = 2;
 	private static int MIN_OCCURENCES = 20;
-	private File outputRaw = new File("target/precomputation/prefixHeuristic.txt");
+	private File outputRaw = new File("target/prefixHeuristic.txt");
 	private PrintWriter writerRaw;
 
 	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException,
