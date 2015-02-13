@@ -207,10 +207,11 @@ public class HTMLReportDetailed extends BatchReportBase implements Constants {
 				htmlString = htmlString.replace(correctHitsPlaceHolder, Double.toString(hit / count * 100));
 				htmlString = htmlString.replace(correctPlusNeighborPlaceHolder,
 				                Double.toString(((hit + neighbor_hit) / count * 100)));
-				htmlString = htmlString.replace(lowerValuePlaceHolder, Double.toString(finalSum / runs));
-				htmlString = htmlString.replace(lowerHitsPlaceHolder, Double.toString((finalhits / runs) * 100));
-				htmlString = htmlString.replace(lowerNeighborPlaceHolder,
-				                Double.toString((finalneighborhits / runs) * 100));
+				/*
+				 * htmlString = htmlString.replace(lowerValuePlaceHolder, Double.toString(finalSum / runs)); htmlString
+				 * = htmlString.replace(lowerHitsPlaceHolder, Double.toString((finalhits / runs) * 100)); htmlString =
+				 * htmlString.replace(lowerNeighborPlaceHolder, Double.toString((finalneighborhits / runs) * 100));
+				 */
 
 				/*
 				 * System.out.println(""); System.out.println(StringUtils.leftPad("Average Result: ", 25) + (sum /

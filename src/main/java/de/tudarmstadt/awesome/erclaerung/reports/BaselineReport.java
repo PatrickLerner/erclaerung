@@ -22,10 +22,8 @@ import de.tudarmstadt.ukp.dkpro.tc.weka.task.uima.ExtractFeaturesAndPredictConne
 
 /**
  * @author Patrick Lerner, Manuel Spari
- * @deprecated
- * @see EvaluationReportNeighbor
  */
-public class EvaluationReportNeighborsManuel extends BatchReportBase implements Constants {
+public class BaselineReport extends BatchReportBase implements Constants {
 	private HashMap<String, HashSet<String>> connections;
 	private Random rnd = new Random();
 
@@ -89,18 +87,13 @@ public class EvaluationReportNeighborsManuel extends BatchReportBase implements 
 
 		StorageService store = getContext().getStorageService();
 		for (TaskContextMetadata subcontext : getSubtasks()) {
-			double sum = 0;
-			double count = 0;
-			double hit = 0;
-			double neighbor_hit = 0;
 			double finalSum = 0;
 			double runs = 10000;
 			double finalhits = 0;
 			double finalneighborhits = 0;
 			if (subcontext.getType().startsWith(ExtractFeaturesAndPredictTask.class.getName())
 			                || subcontext.getType().startsWith(BatchTaskCrossValidation.class.getName())) {
-				System.out.println("\n\nEVALUATION (NEIGHBORS / MANUEL) REPORT:\n");
-				System.out.println("The smaller the number the better the prediction is.\n");
+				System.out.println("\nBASELINE REPORT");
 			}
 			if (subcontext.getType().startsWith(ExtractFeaturesAndPredictTask.class.getName())) {
 				// deserialize file
@@ -132,61 +125,45 @@ public class EvaluationReportNeighborsManuel extends BatchReportBase implements 
 					finalhits += hits_exp / count_exp;
 					finalneighborhits += neighbor_hits_exp / count_exp;
 				}
-
-				// Check the real values
-				for (String id : resultMap.keySet()) {
-					String real = id.substring(0, id.indexOf('_'));
-					String pred = StringUtils.join(resultMap.get(id), ",");
-
-					System.out.print(StringUtils.leftPad(id, 25) + ": ");
-
-					double res = this.calculateNeighborScore(real, pred);
-					count += 1;
-					sum += res;
-					if (res == 0)
-						hit += 1;
-					if (res == 1)
-						neighbor_hit += 1;
-
-					System.out.println(StringUtils.center(pred, 9) + " " + res);
-				}
 			}
 			else if (subcontext.getType().startsWith(BatchTaskCrossValidation.class.getName())) {
 				FileReader fileReader = new FileReader(store.getStorageFolder(subcontext.getId(), "id2outcome.txt"));
 				BufferedReader bufferedReader = new BufferedReader(fileReader);
 				String line;
-				while ((line = bufferedReader.readLine()) != null) {
-					if (line.contains("=")) {
-						String id = line.substring(0, line.indexOf('='));
-						String pred = line.substring(line.indexOf('=') + 1, line.indexOf(';'));
-						String real = line.substring(line.indexOf(';') + 1);
+				for (int i = 0; i < runs; i++) {
+					double sum_exp = 0;
+					double count_exp = 0;
+					double hits_exp = 0;
+					double neighbor_hits_exp = 0;
+					while ((line = bufferedReader.readLine()) != null) {
+						if (line.contains("=")) {
+							String pred = line.substring(line.indexOf('=') + 1, line.indexOf(';'));
+							String real = line.substring(line.indexOf(';') + 1);
 
-						double res = this.calculateNeighborScore(real, pred);
-						count += 1;
-						sum += res;
-						if (res == 0)
-							hit += 1;
-						if (res == 1)
-							neighbor_hit += 1;
+							double res = this.calculateNeighborScore(real, pred);
+							count_exp += 1;
+							sum_exp += res;
+							if (res == 0)
+								hits_exp += 1;
+							if (res == 1)
+								neighbor_hits_exp += 1;
 
-						System.out.println(StringUtils.leftPad(id, 25) + ": " + StringUtils.center(real, 9) + " "
-						                + StringUtils.center(pred, 7) + " " + res);
+						}
 					}
+					finalSum += sum_exp / count_exp;
+					finalhits += hits_exp / count_exp;
+					finalneighborhits += neighbor_hits_exp / count_exp;
 				}
 				fileReader.close();
 			}
 			if (subcontext.getType().startsWith(ExtractFeaturesAndPredictTask.class.getName())
 			                || subcontext.getType().startsWith(BatchTaskCrossValidation.class.getName())) {
 				System.out.println("");
-				System.out.println(StringUtils.leftPad("Average Result: ", 25) + (sum / count));
-				System.out.println(StringUtils.leftPad("Correct Hits: ", 25) + (hit / count * 100) + "%");
-				System.out.println(StringUtils.leftPad("Correct+Neighbor Hits: ", 25)
-				                + ((hit + neighbor_hit) / count * 100) + "%");
-				System.out.println(StringUtils.leftPad("Lower borderline value: ", 25) + finalSum / runs);
-				System.out.println(StringUtils.leftPad("Lower borderline hits: ", 25) + (finalhits / runs) * 100 + "%");
-				System.out.println(StringUtils.leftPad("Lower borderline neighbor hits: ", 25)
-				                + (finalneighborhits / runs) * 100 + "%");
-				System.out.println("\nEVALUATION (NEIGHBORS / MANUEL) REPORT END\n\n");
+				System.out.println(StringUtils.leftPad("Baseline value: ", 25) + finalSum / runs);
+				System.out.println(StringUtils.leftPad("Baseline hits: ", 25) + (finalhits / runs) * 100 + "%");
+				System.out.println(StringUtils.leftPad("Baseline neighbor hits: ", 25) + (finalneighborhits / runs)
+				                * 100 + "%");
+				System.out.println("\nBASELINE REPORT END\n");
 			}
 		}
 	}
