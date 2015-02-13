@@ -27,7 +27,7 @@ public class StartsWithKOrCDominanceDFE extends FeatureExtractorResource_ImplBas
 		int k = 0;
 		int c = 0;
 		for (String token : tokens) {
-			if (token != null) {
+			if (token != null && token != "") {
 				if (token.toLowerCase().startsWith("k"))
 					k++;
 				else if (token.toLowerCase().startsWith("c"))
