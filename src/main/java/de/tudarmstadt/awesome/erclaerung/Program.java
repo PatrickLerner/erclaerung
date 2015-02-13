@@ -1,5 +1,7 @@
 package de.tudarmstadt.awesome.erclaerung;
 
+import java.io.File;
+
 import org.kohsuke.args4j.CmdLineParser;
 
 import de.tudarmstadt.awesome.erclaerung.pipeline.AnalysisPipeline;
@@ -27,7 +29,10 @@ public class Program {
 	 */
 	private void doMain(String[] args) {
 		AnalysisPipeline pipeline = new AnalysisPipeline();
-
+		File target = new File("target/");
+		if (!target.exists()) {
+			target.mkdir();
+		}
 		CmdLineParser parser = new CmdLineParser(pipeline);
 
 		try {
