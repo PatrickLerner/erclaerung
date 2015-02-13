@@ -13,8 +13,14 @@ import org.kohsuke.args4j.Option;
 
 import weka.classifiers.bayes.NaiveBayes;
 import de.tudarmstadt.awesome.erclaerung.feature.CapitalizationRatioDFE;
+import de.tudarmstadt.awesome.erclaerung.feature.EiSoundAiDominanceDFE;
+import de.tudarmstadt.awesome.erclaerung.feature.IchVariantsCountDFE;
 import de.tudarmstadt.awesome.erclaerung.feature.LetterDistributionDFE;
+import de.tudarmstadt.awesome.erclaerung.feature.LetterPositionDistributionDFE;
 import de.tudarmstadt.awesome.erclaerung.feature.PrefixDistributionDFE;
+import de.tudarmstadt.awesome.erclaerung.feature.ReverseLetterPositionDistributionDFE;
+import de.tudarmstadt.awesome.erclaerung.feature.SsSoundZzDominanceDFE;
+import de.tudarmstadt.awesome.erclaerung.feature.StartsWithKOrCDominanceDFE;
 import de.tudarmstadt.awesome.erclaerung.feature.TsSoundCzDominanceDFE;
 import de.tudarmstadt.awesome.erclaerung.feature.UnSoundVnDominanceDFE;
 import de.tudarmstadt.awesome.erclaerung.feature.WSoundUUDominanceDFE;
@@ -100,11 +106,16 @@ public class AnalysisPipeline implements Constants {
 		Dimension<List<String>> dimFeatureSets = Dimension.create(
 		                DIM_FEATURE_SET,
 		                Arrays.asList(new String[] { NrOfTokensPerSentenceDFE.class.getName(),
-		                                LuceneNGramDFE.class.getName(), LetterDistributionDFE.class.getName(),
-		                                UnSoundVnDominanceDFE.class.getName(), WSoundUUDominanceDFE.class.getName(),
-		                                PrefixDistributionDFE.class.getName(), CapitalizationRatioDFE.class.getName(),
-		                                TsSoundCzDominanceDFE.class.getName() }));
-		// PrefixDistributionHeuristicDFE.class.getName() }));
+		                                LuceneNGramDFE.class.getName(), CapitalizationRatioDFE.class.getName(),
+		                                EiSoundAiDominanceDFE.class.getName(), IchVariantsCountDFE.class.getName(),
+		                                LetterDistributionDFE.class.getName(),
+		                                LetterPositionDistributionDFE.class.getName(),
+		                                PrefixDistributionDFE.class.getName(),
+		                                ReverseLetterPositionDistributionDFE.class.getName(),
+		                                SsSoundZzDominanceDFE.class.getName(),
+		                                StartsWithKOrCDominanceDFE.class.getName(),
+		                                TsSoundCzDominanceDFE.class.getName(), UnSoundVnDominanceDFE.class.getName(),
+		                                WSoundUUDominanceDFE.class.getName() }));
 
 		Dimension<List<Object>> dimPipelineParameters = Dimension.create(
 		                DIM_PIPELINE_PARAMS,
