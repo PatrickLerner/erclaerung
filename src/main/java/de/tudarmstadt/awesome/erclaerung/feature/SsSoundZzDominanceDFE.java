@@ -37,7 +37,7 @@ public class SsSoundZzDominanceDFE extends FeatureExtractorResource_ImplBase imp
 		if (ss + zz == 0)
 			featList.add(new Feature(FN_ZZ_SS_PREFIX, new Float(0.5)));
 		else
-			featList.add(new Feature(FN_ZZ_SS_PREFIX, new Float((ss * 1000) / (ss + zz))));
+			featList.add(new Feature(FN_ZZ_SS_PREFIX, new Float(new Float(ss * 1000) / new Float(ss + zz))));
 		return featList;
 	}
 }

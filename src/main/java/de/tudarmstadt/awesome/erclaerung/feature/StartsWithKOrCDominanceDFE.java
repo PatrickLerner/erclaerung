@@ -38,7 +38,8 @@ public class StartsWithKOrCDominanceDFE extends FeatureExtractorResource_ImplBas
 		if (k + c == 0)
 			featList.add(new Feature(FN_K_VS_CH_PREFIX, new Float(0.5)));
 		else
-			featList.add(new Feature(FN_K_VS_CH_PREFIX, new Float((k * 1000) / (k + c))));
+			featList.add(new Feature(FN_K_VS_CH_PREFIX, new Float(new Float(k * 1000) / new Float(k + c))));
+		System.out.println(new Float((k * 1000) / (k + c)));
 		return featList;
 	}
 

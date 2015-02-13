@@ -40,7 +40,7 @@ public class EiSoundAiDominanceDFE extends FeatureExtractorResource_ImplBase imp
 			featList.add(new Feature(FN_EI_AI_PREFIX, new Float(0.5)));
 		}
 		else {
-			featList.add(new Feature(FN_EI_AI_PREFIX, new Float((ei * 1000) / (ei + ai))));
+			featList.add(new Feature(FN_EI_AI_PREFIX, new Float(new Float(ei * 1000) / new Float(ei + ai))));
 		}
 
 		return featList;

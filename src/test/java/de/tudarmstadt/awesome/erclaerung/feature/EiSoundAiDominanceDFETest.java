@@ -57,7 +57,7 @@ public class EiSoundAiDominanceDFETest {
 		}
 		for (Feature feature : features) {
 			FeatureTestUtil.assertFeature(EiSoundAiDominanceDFE.FN_EI_AI_PREFIX, new Float(500), feature);
-			assertEquals(feature.getValue(), new Float((ei * 1000) / (ai + ei)));
+			assertEquals(feature.getValue(), new Float(new Float(ei * 1000) / new Float(ai + ei)));
 		}
 	}
 
