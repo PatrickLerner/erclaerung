@@ -14,11 +14,13 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.tudarmstadt.awesome.erclaerung.feature.CapitalizationRatioDFE;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
 import de.tudarmstadt.ukp.dkpro.tc.core.util.FeatureTestUtil;
 
+/**
+ * @author Patrick Lerner
+ */
 public class CapitalizationRatioDFETest {
 	private JCas jcas1;
 

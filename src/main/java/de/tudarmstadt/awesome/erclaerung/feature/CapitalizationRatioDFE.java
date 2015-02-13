@@ -10,6 +10,13 @@ import de.tudarmstadt.ukp.dkpro.tc.api.features.DocumentFeatureExtractor;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
 
+/**
+ * This engine determines what the ratio of capital letters is to lower case letters, as capitalization only became
+ * common in German rather late and thus can be used to differentiate certain dialects where this change took place
+ * earlier than others.
+ * 
+ * @author Patrick Lerner
+ */
 public class CapitalizationRatioDFE extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor {
 	public static final String FN_CAPITAL_RATIO = "CapitalizationRatio";
 

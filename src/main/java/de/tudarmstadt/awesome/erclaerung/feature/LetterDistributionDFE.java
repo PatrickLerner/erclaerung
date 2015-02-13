@@ -12,9 +12,9 @@ import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
 
 /**
- * The following engine analyses how often specific letters are used in a text.
+ * The following engine analyzes how often specific letters are used in a text.
  * 
- * @author patrick
+ * @author Patrick Lerner
  */
 public class LetterDistributionDFE extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor {
 	public static final String FN_LETTER_RATIO_PREFIX = "LetterRatio_";

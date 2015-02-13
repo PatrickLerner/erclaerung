@@ -17,9 +17,9 @@ import de.tudarmstadt.ukp.dkpro.tc.api.features.Feature;
 import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBase;
 
 /**
- * This engine analyses the distribution of some common prefixes.
+ * This engine analyzes the distribution of some common prefixes for Early Modern German.
  * 
- * @author patrick
+ * @author Patrick Lerner
  */
 public class PrefixDistributionDFE extends FeatureExtractorResource_ImplBase implements DocumentFeatureExtractor {
 	public static final String FN_PREFIX_VARIANT_PREFIX = "PrefixRatio_";

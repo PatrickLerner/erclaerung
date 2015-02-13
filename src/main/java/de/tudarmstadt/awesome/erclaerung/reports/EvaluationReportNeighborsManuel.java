@@ -20,6 +20,11 @@ import de.tudarmstadt.ukp.dkpro.tc.weka.task.BatchTaskCrossValidation;
 import de.tudarmstadt.ukp.dkpro.tc.weka.task.ExtractFeaturesAndPredictTask;
 import de.tudarmstadt.ukp.dkpro.tc.weka.task.uima.ExtractFeaturesAndPredictConnector;
 
+/**
+ * @author Patrick Lerner, Manuel Spari
+ * @deprecated
+ * @see EvaluationReportNeighbor
+ */
 public class EvaluationReportNeighborsManuel extends BatchReportBase implements Constants {
 	private HashMap<String, HashSet<String>> connections;
 	private Random rnd = new Random();

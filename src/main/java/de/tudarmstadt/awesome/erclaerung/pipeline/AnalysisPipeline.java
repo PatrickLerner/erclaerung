@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.apache.uima.analysis_engine.AnalysisEngineDescription;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.Option;
 
 import weka.classifiers.bayes.NaiveBayes;
@@ -27,8 +28,6 @@ import de.tudarmstadt.awesome.erclaerung.feature.WSoundUUDominanceDFE;
 import de.tudarmstadt.awesome.erclaerung.precomputation.PrefixDistributionHeuristicPre;
 import de.tudarmstadt.awesome.erclaerung.readers.BonnerXMLReader;
 import de.tudarmstadt.awesome.erclaerung.readers.UnlabeledTextReader;
-import de.tudarmstadt.awesome.erclaerung.reports.DebugReport;
-import de.tudarmstadt.awesome.erclaerung.reports.EvaluationReport;
 import de.tudarmstadt.awesome.erclaerung.reports.EvaluationReportNeighbors;
 import de.tudarmstadt.awesome.erclaerung.reports.HTMLReport;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
@@ -50,10 +49,15 @@ import de.tudarmstadt.ukp.dkpro.tc.weka.writer.WekaDataWriter;
  * This the main pipeline which is called when an analysis is supposed to take place
  * 
  * @author Patrick Lerner
- *
  */
 public class AnalysisPipeline implements Constants {
+	private String inputDirectory;
 	private String tempDirectory;
+
+	@Argument
+	public void setInputDirectory(String inputDirectory) {
+		this.inputDirectory = inputDirectory;
+	}
 
 	@Option(name = "-t", usage = "Sets the path to the temporary directory")
 	public void setTempDirectory(String path) {
@@ -63,6 +67,10 @@ public class AnalysisPipeline implements Constants {
 	@Option(name = "-v", usage = "run cross validation with 'leave one out'")
 	private boolean runCrossValidation;
 
+	/**
+	 * Sets up DKPro Home where DKProTC likes to store it's data. If the user doesn't specift it, just use the OS's temp
+	 * directory.
+	 */
 	private void setDkproHome() {
 		if (this.tempDirectory == null)
 			this.tempDirectory = System.getProperty("java.io.tmpdir");
@@ -85,7 +93,7 @@ public class AnalysisPipeline implements Constants {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static ParameterSpace getParameterSpace() {
+	public ParameterSpace getParameterSpace() {
 
 		// training data to learn a model
 		Map<String, Object> dimReaders = new HashMap<String, Object>();
@@ -95,10 +103,13 @@ public class AnalysisPipeline implements Constants {
 		                                "src/main/resources/bonner_korpora_train/*.xml" }));
 		// unlabeled data which will be classified using the trained model
 
+		String testDirectory = "src/main/resources/test_data/*_*.txt";
+		if (this.inputDirectory != null)
+			testDirectory = this.inputDirectory + "/*.txt";
+
 		dimReaders.put(DIM_READER_TEST, UnlabeledTextReader.class);
 		dimReaders.put(DIM_READER_TEST_PARAMS,
-		                Arrays.asList(new Object[] { UnlabeledTextReader.PARAM_SOURCE_LOCATION,
-		                                "src/main/resources/test_data/*_*.txt" }));
+		                Arrays.asList(new Object[] { UnlabeledTextReader.PARAM_SOURCE_LOCATION, testDirectory }));
 
 		Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
 		                Arrays.asList(new String[] { NaiveBayes.class.getName() }));
@@ -139,10 +150,9 @@ public class AnalysisPipeline implements Constants {
 			batch = new BatchTaskPrediction("DialectPrediction", getPreprocessing());
 		batch.setParameterSpace(pSpace);
 
-		batch.addReport(DebugReport.class);
 		batch.addReport(HTMLReport.class);
-		batch.addReport(EvaluationReport.class);
-		batch.addReport(EvaluationReportNeighbors.class);
+		if (this.inputDirectory != null || runCrossValidation)
+			batch.addReport(EvaluationReportNeighbors.class);
 		if (runCrossValidation)
 			batch.addReport(BatchCrossValidationReport.class);
 		batch.addReport(BatchRuntimeReport.class);
