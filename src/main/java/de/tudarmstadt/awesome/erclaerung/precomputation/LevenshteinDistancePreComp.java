@@ -43,9 +43,9 @@ public class LevenshteinDistancePreComp {
 	private static int maxWordLength = -1;
 	private static int minWordLength = 6;
 	private static int suffixRepression = 0;
-	private File outputRaw = new File("target/precomputation/levenshtein.txt");
-	private File outputTransGrouped = new File("target/precomputation/levenshteinGrouped.txt");
-	private File outputTransGroupedRev = new File("target/precomputation/levenshteinGroupedRev.txt");
+	private File outputRaw = new File("target/levenshtein.txt");
+	private File outputTransGrouped = new File("target/levenshteinGrouped.txt");
+	private File outputTransGroupedRev = new File("target/levenshteinGroupedRev.txt");
 
 	private PrintWriter writerRaw;
 	private PrintWriter writerGroupedRev;
@@ -59,6 +59,7 @@ public class LevenshteinDistancePreComp {
 
 	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException,
 	                AnalysisEngineProcessException, ResourceInitializationException {
+		System.out.println("Levenshtein stand-alone mode.");
 		LevenshteinDistancePreComp lev = new LevenshteinDistancePreComp();
 		lev.computeList();
 		// System.out.println(getTransformationStepsPretty("bruch", "geruch"));
@@ -69,6 +70,10 @@ public class LevenshteinDistancePreComp {
 		// System.out.println(lev.computeLevenshteinDistance("parfum", "xxxxx"));
 		// System.out.println(lev.computeLevenshteinDistance("parfum", "hallo"));
 		// System.out.println(lev.computeLevenshteinDistance("parfum", "putzm"));
+		System.out.println("Created lists in: /target/:");
+		System.out.println("levenshtein.txt");
+		System.out.println("levenshteinGrouped.txt");
+		System.out.println("levenshteinGroupedRev.txt");
 	}
 
 	private static int minimum(int a, int b, int c) {

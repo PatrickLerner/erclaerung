@@ -35,8 +35,11 @@ public class PrefixDistributionHeuristicPre {
 
 	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException,
 	                AnalysisEngineProcessException, ResourceInitializationException {
+		System.out.println("PrefixHeuristic stand-alone mode.");
 		PrefixDistributionHeuristicPre prefixDisHeu = new PrefixDistributionHeuristicPre();
 		prefixDisHeu.computeList();
+		System.out.println("Created list in /target/:");
+		System.out.println("prefixHeuristic.txt");
 	}
 
 	public PrefixDistributionHeuristicPre() throws FileNotFoundException, UnsupportedEncodingException,

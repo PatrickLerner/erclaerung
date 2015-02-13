@@ -35,8 +35,11 @@ public class HTMLReportDetailed extends BatchReportBase implements Constants {
 	private final String avgResultPlaceHolder = "$avgResult";
 	private final String correctHitsPlaceHolder = "$correctHits";
 	private final String correctPlusNeighborPlaceHolder = "$correctPlusNeighbor";
+	@SuppressWarnings("unused")
 	private final String lowerValuePlaceHolder = "$lowerValue";
+	@SuppressWarnings("unused")
 	private final String lowerHitsPlaceHolder = "$lowerHits";
+	@SuppressWarnings("unused")
 	private final String lowerNeighborPlaceHolder = "$lowerNeighbor";
 	private final String nextRowReplace = "<tr>\n	<td align=\"right\">$name</td>\n	<td align=\"center\">$result</td>\n	<td >$score</td>\n</tr>\n$nextRow";
 	private final String nextRowReplaceLou = "<tr>\n	<td align=\"right\">$name</td>\n	<td align=\"right\">$real</td>\n	<td align=\"center\">$result</td>\n	<td >$score</td>\n</tr>\n$nextRow";
@@ -75,6 +78,7 @@ public class HTMLReportDetailed extends BatchReportBase implements Constants {
 
 	}
 
+	@SuppressWarnings("unused")
 	public void execute() throws Exception {
 		if (this.connections == null) {
 			this.connections = new HashMap<String, HashSet<String>>();
