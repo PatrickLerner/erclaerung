@@ -31,6 +31,8 @@ import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
 
 /**
+ * Can be called using main as a standalone. Or can be instantiated and executed with compute list.
+ * 
  * @author Manuel
  *
  */
@@ -399,6 +401,7 @@ public class LevenshteinDistancePreComp {
 	}
 
 	// Would be way better with generics. If I have the time...
+	@SuppressWarnings("unused")
 	private static Map<LevenshteinStep, Integer> sortByComparator(Map<LevenshteinStep, Integer> unsortMap,
 	                final boolean ascending) {
 
