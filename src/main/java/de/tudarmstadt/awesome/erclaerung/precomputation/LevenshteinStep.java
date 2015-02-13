@@ -22,6 +22,13 @@ public class LevenshteinStep implements Comparable<LevenshteinStep> {
 		INSERT, DELETE, SUBSTITUTION, NONOP
 	}
 
+	/**
+	 * Returns the operation in string form
+	 * 
+	 * @param op
+	 *            The operation
+	 * @return Insert, Delete, Substitution or Non-Op
+	 */
 	private String operationToString(Operation op) {
 		switch (op) {
 			case INSERT:
@@ -38,7 +45,15 @@ public class LevenshteinStep implements Comparable<LevenshteinStep> {
 		}
 	}
 
-	// Modifier is the number of inserts already done minus the deletes already done.
+	/**
+	 * Returns the adjusted string after the operation was done on the source string
+	 * 
+	 * @param source
+	 *            The string in its current step
+	 * @param modifier
+	 *            Number of already done inserts minus the number of already done deletes
+	 * @return The adjusted string after the operation was completed.
+	 */
 	public String getAdjustedString(String source, int modifier) {
 		switch (op) {
 			case INSERT:
@@ -87,16 +102,41 @@ public class LevenshteinStep implements Comparable<LevenshteinStep> {
 		return comIndex;
 	}
 
+	/**
+	 * Returns the operation.
+	 * 
+	 * @return The operation
+	 */
 	public Operation getOp() {
 		return op;
 	}
 
+	/**
+	 * Always returns the position of the operation in relation to the original word.
+	 * 
+	 * @return
+	 */
 	public int getIndex() {
 		return index;
 	}
 
+	/**
+	 * For an insert operation the inserted letter, for a substitution the inserted letter, for a deletion the delteted
+	 * letter and for a non-op the letter at that position.
+	 * 
+	 * @return The letter of the operation
+	 */
 	public char getLetter() {
 		return letter;
+	}
+
+	/**
+	 * Returns the second letter of a substitution else the default char.
+	 * 
+	 * @return The second letter of a substitution else the default char.
+	 */
+	public char getLetter2() {
+		return letter2;
 	}
 
 	@Override
@@ -128,10 +168,6 @@ public class LevenshteinStep implements Comparable<LevenshteinStep> {
 		if (op != other.op)
 			return false;
 		return true;
-	}
-
-	public char getLetter2() {
-		return letter2;
 	}
 
 }

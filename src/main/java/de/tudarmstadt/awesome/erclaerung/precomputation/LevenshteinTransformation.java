@@ -20,6 +20,15 @@ public class LevenshteinTransformation {
 		return (this.getLevenshteinSteps(false).equals(other.getLevenshteinSteps(false)));
 	}
 
+	public boolean equals(Object o) {
+		if (!(o instanceof LevenshteinTransformation))
+			return false;
+		else {
+			LevenshteinTransformation other = (LevenshteinTransformation) o;
+			return this.toStringWithTransformation(true).equals(other.toStringWithTransformation(true));
+		}
+	}
+
 	public boolean indexReversedStepsEquals(LevenshteinTransformation other) {
 		return (this.getIndexReversedLevenshteinSteps(false).equals(other.getIndexReversedLevenshteinSteps(false)));
 	}

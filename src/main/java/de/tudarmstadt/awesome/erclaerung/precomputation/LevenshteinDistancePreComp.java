@@ -239,6 +239,14 @@ public class LevenshteinDistancePreComp {
 		return cost[len0 - 1];
 	}
 
+	/**
+	 * Computes three lists and stores them in the target/precomputation folder: levenshtein.txt: A collection of all
+	 * viable pairs of strings that fullfill the requirements. levenshteinGrouped.txt: A grouped collection of the
+	 * pairs. levenshteinGroupedRev.txt: An index-reversed grouped collection of the pairs.
+	 * 
+	 * @throws ResourceInitializationException
+	 * @throws AnalysisEngineProcessException
+	 */
 	public void computeList() throws ResourceInitializationException, AnalysisEngineProcessException {
 		long startTime = System.nanoTime();
 		CollectionReaderDescription reader = CollectionReaderFactory.createReaderDescription(BonnerXMLReader.class,
