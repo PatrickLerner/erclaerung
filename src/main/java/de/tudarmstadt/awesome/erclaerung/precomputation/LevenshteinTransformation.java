@@ -5,6 +5,12 @@ import java.util.List;
 
 import de.tudarmstadt.awesome.erclaerung.precomputation.LevenshteinStep.Operation;
 
+/**
+ * Represents a transformation between two strings
+ * 
+ * @author Manuel
+ *
+ */
 public class LevenshteinTransformation {
 	private String string1;
 	private String string2;
@@ -16,6 +22,14 @@ public class LevenshteinTransformation {
 		this.steps = steps;
 	}
 
+	/**
+	 * Returns if the steps in the two transformations are the same, ignoring non-ops E.g. hallo->hxyzallo has the same
+	 * steps as morgen->mxyzorgen.
+	 * 
+	 * @param other
+	 *            The other transformation
+	 * @return
+	 */
 	public boolean stepsEquals(LevenshteinTransformation other) {
 		return (this.getLevenshteinSteps(false).equals(other.getLevenshteinSteps(false)));
 	}
@@ -29,10 +43,23 @@ public class LevenshteinTransformation {
 		}
 	}
 
+	/**
+	 * Returns if the steps in the two transformations are the same, ignoring non-ops and index reversed. E.g.
+	 * borgen->borgend has the same steps as herniederlegen->herniederlegend.
+	 * 
+	 * @param other
+	 *            The other transformation
+	 * @return
+	 */
 	public boolean indexReversedStepsEquals(LevenshteinTransformation other) {
 		return (this.getIndexReversedLevenshteinSteps(false).equals(other.getIndexReversedLevenshteinSteps(false)));
 	}
 
+	/**
+	 * Returns a title string. E.g. "liegen->warten"
+	 * 
+	 * @return
+	 */
 	public String toTitleString() {
 		return string1 + "->" + string2;
 	}

@@ -1,5 +1,11 @@
 package de.tudarmstadt.awesome.erclaerung.precomputation;
 
+/**
+ * Represents a step in a transformation
+ * 
+ * @author Manuel
+ *
+ */
 public class LevenshteinStep implements Comparable<LevenshteinStep> {
 	private int index;
 	// private int indexOfString2;
