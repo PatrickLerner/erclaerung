@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.ObjectInputStream;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -88,7 +89,7 @@ public class BaselineReport extends BatchReportBase implements Constants {
 		StorageService store = getContext().getStorageService();
 		for (TaskContextMetadata subcontext : getSubtasks()) {
 			double finalSum = 0;
-			double runs = 10000;
+			double runs = 500;
 			double finalhits = 0;
 			double finalneighborhits = 0;
 			if (subcontext.getType().startsWith(ExtractFeaturesAndPredictTask.class.getName())
@@ -121,9 +122,9 @@ public class BaselineReport extends BatchReportBase implements Constants {
 						if (res == 1)
 							neighbor_hits_exp += 1;
 					}
-					finalSum += sum_exp / count_exp;
-					finalhits += hits_exp / count_exp;
-					finalneighborhits += neighbor_hits_exp / count_exp;
+					finalSum += new Double(sum_exp / count_exp);
+					finalhits += new Double(hits_exp / count_exp);
+					finalneighborhits += new Double(neighbor_hits_exp / count_exp);
 				}
 			}
 			else if (subcontext.getType().startsWith(BatchTaskCrossValidation.class.getName())) {
@@ -150,9 +151,9 @@ public class BaselineReport extends BatchReportBase implements Constants {
 
 						}
 					}
-					finalSum += sum_exp / count_exp;
-					finalhits += hits_exp / count_exp;
-					finalneighborhits += neighbor_hits_exp / count_exp;
+					finalSum += new Double(sum_exp / count_exp);
+					finalhits += new Double(hits_exp / count_exp);
+					finalneighborhits += new Double(neighbor_hits_exp / count_exp);
 				}
 				fileReader.close();
 			}
@@ -161,8 +162,8 @@ public class BaselineReport extends BatchReportBase implements Constants {
 				System.out.println("");
 				System.out.println(StringUtils.leftPad("Baseline value: ", 25) + finalSum / runs);
 				System.out.println(StringUtils.leftPad("Baseline hits: ", 25) + (finalhits / runs) * 100 + "%");
-				System.out.println(StringUtils.leftPad("Baseline neighbor hits: ", 25) + (finalneighborhits / runs)
-				                * 100 + "%");
+				System.out.println(StringUtils.leftPad("Baseline neighbor hits: ", 25)
+				                + ((finalhits + finalneighborhits) / runs) * 100 + "%");
 				System.out.println("\nBASELINE REPORT END\n");
 			}
 		}
