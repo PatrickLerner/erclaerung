@@ -23,7 +23,7 @@ import de.tudarmstadt.ukp.dkpro.tc.api.features.FeatureExtractorResource_ImplBas
 public class ReverseLetterPositionDistributionDFE extends FeatureExtractorResource_ImplBase implements
                 DocumentFeatureExtractor {
 	public static final String LETTERS = "abcdefghijklmnopqrstuvwxyzäöüß";
-	public static final int[] POSITIONS = { 1, 0 };
+	public static final int[] POSITIONS = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 	static final String FN_REVERSE_LETTER_POSITION_PREFIX = "RevLetterPosition";
 
 	private boolean positionsContains(int i) {
