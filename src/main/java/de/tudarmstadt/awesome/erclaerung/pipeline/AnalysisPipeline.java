@@ -17,6 +17,7 @@ import de.tudarmstadt.awesome.erclaerung.feature.CapitalizationRatioDFE;
 import de.tudarmstadt.awesome.erclaerung.feature.EiSoundAiDominanceDFE;
 import de.tudarmstadt.awesome.erclaerung.feature.IchVariantsCountDFE;
 import de.tudarmstadt.awesome.erclaerung.feature.LetterDistributionDFE;
+import de.tudarmstadt.awesome.erclaerung.feature.LetterPositionDistributionDFE;
 import de.tudarmstadt.awesome.erclaerung.feature.ManualWordListDFE;
 import de.tudarmstadt.awesome.erclaerung.feature.PrefixDistributionDFE;
 import de.tudarmstadt.awesome.erclaerung.feature.ReverseLetterPositionDistributionDFE;
@@ -113,14 +114,13 @@ public class AnalysisPipeline implements Constants {
 
 		Dimension<List<String>> dimClassificationArgs = Dimension.create(DIM_CLASSIFICATION_ARGS,
 		                Arrays.asList(new String[] { NaiveBayes.class.getName() }));
-		// LetterPositionDistributionDFE.class.getName(),
 		Dimension<List<String>> dimFeatureSets = Dimension.create(
 		                DIM_FEATURE_SET,
 		                Arrays.asList(new String[] { NrOfTokensPerSentenceDFE.class.getName(),
 		                                LuceneNGramDFE.class.getName(), CapitalizationRatioDFE.class.getName(),
 		                                EiSoundAiDominanceDFE.class.getName(), IchVariantsCountDFE.class.getName(),
 		                                LetterDistributionDFE.class.getName(),
-
+		                                LetterPositionDistributionDFE.class.getName(),
 		                                PrefixDistributionDFE.class.getName(), ManualWordListDFE.class.getName(),
 		                                ReverseLetterPositionDistributionDFE.class.getName(),
 		                                SsSoundZzDominanceDFE.class.getName(),
