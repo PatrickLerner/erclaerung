@@ -17,6 +17,10 @@ import de.tudarmstadt.ukp.dkpro.tc.core.Constants;
 import de.tudarmstadt.ukp.dkpro.tc.weka.task.ExtractFeaturesAndPredictTask;
 import de.tudarmstadt.ukp.dkpro.tc.weka.task.uima.ExtractFeaturesAndPredictConnector;
 
+/**
+ * @author Manuel
+ *
+ */
 public class HTMLReport extends BatchReportBase implements Constants {
 	private static final String predicted_value = "Prediction";
 	private String dataPlaceHolder = "$data";

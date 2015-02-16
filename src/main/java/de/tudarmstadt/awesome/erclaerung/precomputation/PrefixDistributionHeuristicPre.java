@@ -25,15 +25,18 @@ import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
 
+/**
+ * @author Manuel
+ *
+ */
 public class PrefixDistributionHeuristicPre {
 
 	private static int MAX_PREFIX_LENGTH = 3;
 	private static int MIN_PREFIX_LENGTH = 2;
 	private static int MIN_OCCURENCES = 20;
-	private File outputRaw;
+	private File outputRaw = new File("target/prefixHeuristic.txt");
 	private PrintWriter writerRaw;
-	
-	
+
 	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException,
 	                AnalysisEngineProcessException, ResourceInitializationException {
 		System.out.println("PrefixHeuristic stand-alone mode.");
@@ -45,7 +48,7 @@ public class PrefixDistributionHeuristicPre {
 
 	public PrefixDistributionHeuristicPre() throws FileNotFoundException, UnsupportedEncodingException,
 	                AnalysisEngineProcessException, ResourceInitializationException {
-		outputRaw = new File("target/prefixHeuristic.txt");
+
 		writerRaw = new PrintWriter(outputRaw, "UTF-8");
 	}
 

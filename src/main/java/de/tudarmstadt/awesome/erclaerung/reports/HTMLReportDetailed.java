@@ -22,6 +22,10 @@ import de.tudarmstadt.ukp.dkpro.tc.weka.task.BatchTaskCrossValidation;
 import de.tudarmstadt.ukp.dkpro.tc.weka.task.ExtractFeaturesAndPredictTask;
 import de.tudarmstadt.ukp.dkpro.tc.weka.task.uima.ExtractFeaturesAndPredictConnector;
 
+/**
+ * @author Manuel
+ *
+ */
 public class HTMLReportDetailed extends BatchReportBase implements Constants {
 
 	private HashMap<String, HashSet<String>> connections;
